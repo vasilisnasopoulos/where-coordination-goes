@@ -11,7 +11,7 @@ and **unique-choice** commitment. For each we show where the unavoidable coordin
 or after it — and what it is paid in: refusals, or latency to finality. We conjecture that, once membership is fixed, the only
 non-monotone fact any of the three requires is a decision about **silence**: that a participant who stopped talking will add nothing
 more to a period. Two small models make the claims precise; both are checked with TLC and their safety invariants are proved with
-TLAPS for any number of participants. A leaderless system running on three continents provides the measurements.
+TLAPS for any number of participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
 
 ## 1. The question
 
@@ -63,7 +63,7 @@ state it against the patterns of Complete CALM and measure it.
 
 ## 4. Measurements
 
-A leaderless replicated ledger on equal devices, no coordinator.
+All measurements were made with **Vortex**, my own leaderless replicated ledger: equal devices, no coordinator.
 
 | what | result |
 |---|---|
@@ -72,7 +72,7 @@ A leaderless replicated ledger on equal devices, no coordinator.
 | unique-choice under a cut / a device switched off | exactly one holder at any time; 0 diverging decisions |
 
 Raw data and scripts that recompute the bounded-cardinality and normal-operation numbers: https://github.com/vasilisnasopoulos/vortex-festival-demo.
-The engine itself is not public; the models here describe *where* coordination sits, not how the engine implements it.
+Vortex's code is not public. The models here describe *where* coordination sits, not how Vortex implements it.
 
 ## 5. What this is not
 - Not new mechanisms. Escrow (O'Neil 1986; Barbará & Garcia-Molina 1992; bounded counters, Balegas et al. 2015), batched ordering
