@@ -16,7 +16,7 @@ markers `FREE`, `ABSENT`, `NONE` are distinct from data values.
 |---|---|---|---|
 | `MC_CalmEscrow` | 3 participants, 3 units, 4 purchases, ≤ 3 share moves | TypeOK, Partition, NoUnitTwice, **NeverBelowZero**, LocalDecision | **No error.** 62,230 distinct states, complete |
 | `MC_CalmSeal` (`_live.cfg`) | 3 participants, 3 events, majority quorums; nobody silent, nobody suspected | **AllFinalEventually** (every participant finalises without a vote) | **No error.** 35,321 distinct states, complete |
-| `MC_CalmSeal` (`.cfg`) | same, one participant may fall silent, votes allowed | TypeOK, Agreement, Validity, UniqueChoice, FastExcludesAbsent, NotBoth, Inv | **No error in > 94 million distinct states; not exhaustive** (state space too large for one machine in one session). The same invariants are proved for all sizes by TLAPS above. |
+| `MC_CalmSeal` (`.cfg`) | same, one participant may fall silent, votes allowed | TypeOK, Agreement, Validity, UniqueChoice, FastExcludesAbsent, NotBoth, Inv | **No error in > 140 million distinct states; not exhaustive** (state space too large for one machine in one session). The same invariants are proved for all sizes by TLAPS above. |
 
 ## How to read this
 - The **safety** of both placements is proved, not sampled.

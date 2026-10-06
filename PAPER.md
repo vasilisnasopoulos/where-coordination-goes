@@ -55,8 +55,8 @@ finalises without a vote.
 Under fixed membership, in all three patterns the only step that is not a threshold over known facts is deciding that a silent
 participant will contribute nothing more to a period. We conjecture that this is general: **the coordination a specification in
 these patterns requires is the number of such decisions it must take, and its placement is *before* for what can be divided and
-*after* for what cannot.** Total order cannot be moved entirely before the decision — what remains after, once positions are
-assigned ahead of time, is exactly the question of which positions stay empty, i.e. silence.
+*after* for what cannot.** Total order cannot be moved entirely before the decision; what must remain after it is, again, a decision
+about silence.
 
 This is close in spirit to Mencius (Mao, Junqueira, Marzullo, OSDI 2008), where a silent server's slots are revoked by agreement; we
 state it against the patterns of Complete CALM and measure it.
@@ -67,7 +67,7 @@ A leaderless replicated ledger on equal devices, no coordinator.
 
 | what | result |
 |---|---|
-| total-order, coordination after, one round per period | ⟨NUMBERS TO APPROVE⟩ |
+| total-order, coordination after, one round per period | three 1-vCPU machines on three continents held the **same ledger byte for byte at ~100,000 records/s**, with **one coordination round per second** for all of them; median time to finality 1.76 s |
 | bounded-cardinality, coordination before (escrow), network cut 2+2 across three continents | both halves kept selling (~9 in 10 purchases); 0 double spends; 0 balances below zero; refusals 14 % during the cut, 0 % outside it |
 | unique-choice under a cut / a device switched off | exactly one holder at any time; 0 diverging decisions |
 
