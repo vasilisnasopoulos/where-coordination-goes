@@ -6,7 +6,7 @@ patterns of Complete CALM*.
 Complete CALM (Hellerstein, arXiv 2602.09435) says exactly **when** a specification needs coordination. This repository addresses the
 question its conclusion leaves open — **how much, and when** — for the three patterns its Appendix F identifies (total-order,
 bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked proofs, and measurements made with **Vortex**, the
-author's own leaderless engine (its code is not public).
+author's own leaderless engine.
 
 ## Models
 
@@ -29,7 +29,6 @@ author's own leaderless engine (its code is not public).
 ### What is not claimed
 - The conjecture of the paper (§3) is not proved. The models are instances.
 - The mechanisms are prior art (escrow 1986, demarcation 1992, Calvin 2012, Mencius 2008). See PAPER.md §5.
-- The models describe *where* coordination sits, not how any implementation numbers, orders or transports records.
 
 ## Re-running
 

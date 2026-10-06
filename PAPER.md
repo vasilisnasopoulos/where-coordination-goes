@@ -72,7 +72,7 @@ All measurements were made with **Vortex**, my own leaderless replicated ledger:
 | unique-choice under a cut / a device switched off | exactly one holder at any time; 0 diverging decisions |
 
 Raw data and scripts that recompute the bounded-cardinality and normal-operation numbers: https://github.com/vasilisnasopoulos/vortex-festival-demo.
-Vortex's code is not public. The models here describe *where* coordination sits, not how Vortex implements it.
+The models here describe *where* coordination sits.
 
 ## 5. What this is not
 - Not new mechanisms. Escrow (O'Neil 1986; Barbará & Garcia-Molina 1992; bounded counters, Balegas et al. 2015), batched ordering
