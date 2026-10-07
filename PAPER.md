@@ -8,9 +8,10 @@ Complete CALM (Hellerstein, 2026) characterises exactly *when* a specification n
 Its conclusion leaves open *how much* coordination a non-monotone specification needs. We give a constructive, measured answer for
 the three patterns of non-monotonicity that the same paper identifies in classical problems: **total-order**, **bounded-cardinality**
 and **unique-choice** commitment. For each we show where the unavoidable coordination can be *placed in time* — before the decision
-or after it — and what it is paid in: refusals, or latency to finality. We conjecture that, once membership is fixed, the only
-non-monotone fact any of the three requires is a decision about **silence**: that a participant who stopped talking will add nothing
-more to a period. Two small models make the claims precise; both are checked with TLC and their safety invariants are proved with
+or after it — and what it is paid in: refusals, or latency to finality. Once membership is fixed, the only non-monotone fact any of
+the three requires is a decision about **silence**: that a participant who stopped talking will add nothing more to a period. For
+**any** specification, one commitment at a time, the least coordination is exactly the hitting number of such silence commitments,
+and no other move of a mechanism is coordination ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small models make the claims precise; both are checked with TLC and their safety invariants are proved with
 TLAPS for any number of participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
 
 ## 1. The question
@@ -59,7 +60,10 @@ these patterns requires is the number of such decisions it must take, and its pl
 about silence.
 
 For the specifications of §2 this is proved — definition, necessity, nothing else, sufficiency, and the exact count — in
-[SILENCE.md](SILENCE.md); for every specification it gives an upper bound, and the minimum remains the conjecture above.
+[SILENCE.md](SILENCE.md). **Update (7 October 2026):** for every specification, per commitment, it is proved in
+[MINIMAL_SILENCE.md](MINIMAL_SILENCE.md): the least coordination is the hitting number of the coalitions of open participants that
+could invalidate the outcome (TLAPS 112/112 for the core), and any mechanism contributes to correctness only through silence
+commitments (TLAPS 36/36); TLC counterexamples break it exactly at the stated limits. What remains open is listed there.
 
 This is close in spirit to Mencius (Mao, Junqueira, Marzullo, OSDI 2008), where a silent server's slots are revoked by agreement; we
 state it against the patterns of Complete CALM and measure it.
@@ -80,7 +84,9 @@ The models here describe *where* coordination sits.
 ## 5. What this is not
 - Not new mechanisms. Escrow (O'Neil 1986; Barbará & Garcia-Molina 1992; bounded counters, Balegas et al. 2015), batched ordering
   (Calvin, 2012), owned positions and revoking a silent owner's slots (Mencius, 2008) are all prior art.
-- Not a proof of the conjecture. The models prove safety of two instances; the measurements are examples.
+- Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
+  total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
+  measurements are examples.
 - The vote-free fast path in `CalmSeal` describes the placement the conjecture needs; the measured system uses a more conservative
   variant that votes once per period whether or not anyone is silent. Its coordination is therefore *one round per period*, still
   independent of the number of decisions.
@@ -88,6 +94,8 @@ The models here describe *where* coordination sits.
 ## References
 - J. M. Hellerstein, *Complete CALM: A Coordination Criterion for Specifications*, arXiv 2602.09435 (2026).
 - J. M. Hellerstein, P. Alvaro, *Keeping CALM: When Distributed Consistency is Easy*, CACM 63(9), 2020.
+- G. Goren, Y. Moses, *Silence*, J. ACM 67(1), 2020; R. Nataf, G. Goren, Y. Moses, *Null Messages, Information and Coordination*, DISC 2023.
+- K. E. Taylor, *Knowledge and Inhibition in Asynchronous Distributed Systems*, PhD thesis, Cornell, 1990.
 - P. O'Neil, *The Escrow Transactional Method*, ACM TODS 11(4), 1986.
 - D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, VLDB J. 3, 1994.
 - V. Balegas et al., *Extending Eventually Consistent Cloud Databases for Enforcing Numeric Invariants*, SRDS 2015.
