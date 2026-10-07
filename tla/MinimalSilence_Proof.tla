@@ -13,9 +13,10 @@
 (*                                                                             *)
 (* Proved here: Safe(D) <=> D meets every invalidating coalition of open       *)
 (* participants (and equivalently every MINIMAL one). Hence the least |D| is   *)
-(* exactly the hitting number of F_open. What is NOT proved here: that every   *)
-(* coordination saving o is a silence commitment (the modelling step,          *)
-(* Theorem 2(b)) -- that rests on the definition, not on set theory.           *)
+(* exactly the hitting number of F_open. Also here: SilenceNecessary (any rule *)
+(* "who takes effect" that saves o silences someone in each coalition),        *)
+(* RunUnion, VertexCover. For mechanisms that also compensate or choose the    *)
+(* outcome, see ThreeMoves_Proof.tla.                                          *)
 EXTENDS FiniteSets, FiniteSetTheorems, TLAPS
 
 CONSTANTS N, Open, Inv

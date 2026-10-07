@@ -77,15 +77,17 @@ suffice**.
 | alarm "only if both i and j press", commit "no alarm" | {{i, j}} | **1** | one decision (silence of i *or* j), not two |
 
 ## 6. What is NOT shown
-1. **Per commitment.** One silence commitment can serve many outcomes (a whole period); the least total over a run is a covering
-   problem over time — open.
-2. **Liveness.** That commitments get taken needs a partial-synchrony / failure-detector assumption (FLP). Safety only.
-3. **Suspected ≠ silent.** In practice the commitment is about a participant not yet heard from; it may be merely slow.
-4. **Outside the setting:** changing membership, lying participants, real-time deadlines.
+1. **Per commitment.** One silence commitment can serve many outcomes (a whole period). Same-time commitments of one scope: §8.2
+   (union). Commitments taken at different times inside one scope — open.
+2. **Liveness.** That commitments get taken needs a partial-synchrony / failure-detector assumption (FLP). §8.5: Ω suffices; whether it
+   is necessary — open.
+3. **Suspected ≠ silent.** In practice the commitment is about a participant not yet heard from; it may be merely slow (§8.6).
+4. **Outside the setting:** changing membership (§8.7), lying participants (§8.8, paper only), real-time deadlines; counterexamples
+   at these boundaries in §8.10.
 5. **Partly machine-checked.** [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (TLAPS, 112/112, 7/10) proves the set-theoretic core, see §8: safe ⇔ D hits every
-   open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number. Otherwise Theorems 1–3 are paper proofs over the definitions in §0–1; §2(b)/§3(b) rest on the definition of a silence
-   commitment as *any* restriction that makes a not-yet-issued invocation of an open participant ineffective. A reviewer will test that
-   definition first.
+   open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
+   mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
+   step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
 6. **Prior art** — searched 7/10/2026; below. Nothing found that states the least coordination of a commitment as a hitting number of
    silences in the CALM / monotonicity framework. Absence of a hit is not proof of absence.
 
@@ -93,16 +95,16 @@ suffice**.
 
 | work | what it shows | how this note differs |
 |---|---|---|
-| ⚠️ **Goren & Moses, "Silence"**, PODC 2018 / JACM 2020; **Nataf, Goren & Moses, "Null Messages, Information and Coordination"**, arXiv 2208.10866 | in **synchronous** systems, *not sending* carries information (null messages); "silent choir" = f+1 agents whose silence can be relied on; message patterns **necessary and sufficient** for information transfer and for the *Ordered Response* coordination task | **the closest work, and the same word.** They use silence *as a channel* under time bounds; here the system is **asynchronous** and silence is not observed but **decided** — a non-monotone commitment in Complete CALM's sense — and the result is a count (hitting number) per commitment. Must be cited prominently; the term "silence commitment" must be defined against theirs |
+| ⚠️ **Goren & Moses, "Silence"**, PODC 2018 / JACM 2020; **Nataf, Goren & Moses, "Null Messages, Information and Coordination"**, arXiv 2208.10866 | in **synchronous** systems, *not sending* carries information (null messages); "silent choir" = f+1 agents whose silence can be relied on; message patterns **necessary and sufficient** for information transfer and for the *Ordered Response* coordination task | **the closest work, and the same word.** They use silence *as a channel* under time bounds; here the system is **asynchronous** and silence is not observed but **decided** — a non-monotone commitment in Complete CALM's sense — and the result is a count (hitting number) per commitment. cited prominently here, and "silence commitment" is defined against their notion |
 | **Chandra, Hadzilacos & Toueg**, J.ACM 1996 — the weakest failure detector for consensus is Ω | exactly **what information about failures** (≈ about silence) is necessary and sufficient to solve **consensus** | same *shape* (necessary and sufficient knowledge about who is silent) for one problem; this note gives a **count** for any specification's commitment, in the monotonicity framework, not the weakest detector |
 | **Chandy & Misra**, null messages in conservative distributed simulation (1979); **Tucker, Maier et al.**, punctuations (TKDE 2003) | a participant's **promise** that it will send nothing more below a bound lets blocking operators proceed | this is the **closure** of §0 — prior art for closure; not claimed |
-| **Ameloot, Ketsman, Neven, Zinn** (TODS 2015), policy-aware transducers | knowing *who may still contribute* turns some non-monotone queries coordination-free | the open set C(H) plays that role; their results are qualitative (free or not), not a count |
+| **Ameloot, Ketsman, Neven, Zinn**, TODS 40(4), 2016 (PODS 2014); policy-aware transducers (Zinn, Green, Ludäscher, ICDT 2012) | knowing *who may still contribute* turns some non-monotone queries coordination-free | the open set C(H) plays that role; their results are qualitative (free or not), not a count |
 | **Mencius** (OSDI 2008) | a silent owner's slots are revoked by agreement | one instance of a silence commitment (Seal) |
 | **Ju, "When Coordination Is Avoidable"**, arXiv 2602.18673 (2026) | classifies organisational tasks as monotone or not; "coordination tax" = share of spending that is avoidable | qualitative per task; no minimum count |
 | Quorum-system literature | quorums must intersect | used, not claimed |
 | **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
-| **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
-| **Bailis et al.**, invariant confluence (VLDB 2015) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
+| **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
+| **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
 | **Garcia-Molina & Salem**, Sagas (1987); **Helland & Campbell**, "Building on Quicksand" / apologies (CIDR 2009) | compensating actions instead of prevention | move (3) of §8.9b; claimed only: it is either unsafe (relies on a free participant) or a change of specification |
 
 **Second search (7/10, evening):** CALM/coordination+compensation, minimal coordination as hitting set, failure-detector minimality,

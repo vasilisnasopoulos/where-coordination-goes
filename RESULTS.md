@@ -1,4 +1,4 @@
-# Results of the checks in this repository (6 October 2026)
+# Results of the checks in this repository (6–7 October 2026)
 
 Tools: TLC (tla2tools, Java 26) · TLAPS 1.5.0 (tlapm). TLAPS exits 0 even when obligations fail, so the verdict is the last line.
 
@@ -11,11 +11,14 @@ Tools: TLC (tla2tools, Java 26) · TLAPS 1.5.0 (tlapm). TLAPS exits 0 even when 
 | [`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla) *(7/10)* | any mechanism = remove + ask for compensation + choose outcome, participants free (may decline/crash): correct ⇒ it removes someone in every open invalidating coalition; choice alone and compensation alone never save | **All 36 obligations proved** · non-vacuity: [`tla/counter/tm/TM_Check.tla`](tla/counter/tm/TM_Check.tla) (TLC: assumptions satisfiable, silence-only mechanism correct, compensation-only not) |
 
 Assumptions used: quorums pairwise intersect (`QuorumAssumption`); shares initially partition the units (`ShareAssumption`); the
-markers `FREE`, `ABSENT`, `NONE` are distinct from data values.
+markers `FREE`, `ABSENT`, `NONE` are distinct from data values. `MinimalSilence_Proof`: membership finite, invalidating coalitions
+upward closed. `ThreeMoves_Proof`: participants are free (an asked participant may decline or crash); protocol actions change outcomes
+only through the specification.
 
 ## TLC — exhaustive model checking, small sizes
 
 *Counterexamples (7/10): [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md) — 3 breaks at the stated boundaries, 2(b) survives the compensation candidate.*
+
 | model | instance | property | verdict |
 |---|---|---|---|
 | `MC_CalmEscrow` | 3 participants, 3 units, 4 purchases, ≤ 3 share moves | TypeOK, Partition, NoUnitTwice, **NeverBelowZero**, LocalDecision | **No error.** 62,230 distinct states, complete |
@@ -25,4 +28,6 @@ markers `FREE`, `ABSENT`, `NONE` are distinct from data values.
 ## How to read this
 - The **safety** of both placements is proved, not sampled.
 - The **liveness** claim (no silence ⇒ no vote) is model-checked for three participants only.
-- The **conjecture** in PAPER.md §3 (coordination = decisions about silence, in general) is **not** proved by any of this.
+- The **conjecture** in PAPER.md §3 is proved **per commitment**, for any specification: the core in `MinimalSilence_Proof` and
+  `ThreeMoves_Proof` above, the rest on paper in MINIMAL_SILENCE.md. Still open: commitments of one scope taken at different times;
+  necessity of Ω for liveness; lying participants (mechanised).

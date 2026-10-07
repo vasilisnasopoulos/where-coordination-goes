@@ -11,8 +11,9 @@ and **unique-choice** commitment. For each we show where the unavoidable coordin
 or after it — and what it is paid in: refusals, or latency to finality. Once membership is fixed, the only non-monotone fact any of
 the three requires is a decision about **silence**: that a participant who stopped talking will add nothing more to a period. For
 **any** specification, one commitment at a time, the least coordination is exactly the hitting number of such silence commitments,
-and no other move of a mechanism is coordination ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small models make the claims precise; both are checked with TLC and their safety invariants are proved with
-TLAPS for any number of participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
+and no other move of a mechanism is coordination ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small
+models make the claims precise; both are checked with TLC and their safety invariants are proved with TLAPS for any number of
+participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
 
 ## 1. The question
 
@@ -51,7 +52,7 @@ Participants put events in a period and then close it. A period becomes final in
 participant is decided both PRESENT and ABSENT. **Checked (TLC):** with nobody silent and nobody suspected, every participant
 finalises without a vote.
 
-## 3. Conjecture: coordination is the number of decisions about silence
+## 3. Coordination is the number of decisions about silence (conjectured here; proved per commitment in MINIMAL_SILENCE.md)
 
 Under fixed membership, in all three patterns the only step that is not a threshold over known facts is deciding that a silent
 participant will contribute nothing more to a period. We conjecture that this is general: **the coordination a specification in
@@ -95,10 +96,10 @@ The models here describe *where* coordination sits.
 - J. M. Hellerstein, *Complete CALM: A Coordination Criterion for Specifications*, arXiv 2602.09435 (2026).
 - J. M. Hellerstein, P. Alvaro, *Keeping CALM: When Distributed Consistency is Easy*, CACM 63(9), 2020.
 - G. Goren, Y. Moses, *Silence*, J. ACM 67(1), 2020; R. Nataf, G. Goren, Y. Moses, *Null Messages, Information and Coordination*, DISC 2023.
-- K. E. Taylor, *Knowledge and Inhibition in Asynchronous Distributed Systems*, PhD thesis, Cornell, 1990.
+- K. E. Taylor, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell CS Technical Report 90-1139, 1990.
 - P. O'Neil, *The Escrow Transactional Method*, ACM TODS 11(4), 1986.
 - D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, VLDB J. 3, 1994.
 - V. Balegas et al., *Extending Eventually Consistent Cloud Databases for Enforcing Numeric Invariants*, SRDS 2015.
 - Y. Mao, F. Junqueira, K. Marzullo, *Mencius*, OSDI 2008.
 - A. Thomson et al., *Calvin*, SIGMOD 2012.
-- P. Bailis et al., *Coordination Avoidance in Database Systems*, VLDB 2014.
+- P. Bailis et al., *Coordination Avoidance in Database Systems*, PVLDB 8(3), 2014.
