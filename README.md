@@ -13,7 +13,7 @@ author's own leaderless engine.
 | model | pattern | coordination | checked |
 |---|---|---|---|
 | [`tla/CalmEscrow.tla`](tla/CalmEscrow.tla) | bounded-cardinality (a budget, each unit to at most one purchase) | **before** the decision (per-participant shares) | TLC: exhaustive · TLAPS: inductive invariant, any sizes |
-| [`tla/CalmSeal.tla`](tla/CalmSeal.tla) | total-order and unique-choice | **after** the decision, a vote only about a participant nobody has heard from | TLC · TLAPS: inductive invariant, any number of participants |
+| [`tla/CalmSeal.tla`](tla/CalmSeal.tla) | total-order and unique-choice | **after** the decision, a vote only about a participant nobody has heard from | TLC: exhaustive · TLAPS: inductive invariant, any number of participants |
 
 ### What is proved (TLAPS, for any sizes)
 - **Escrow** (`CalmEscrow_Proof.tla`): shares stay a partition; no unit serves two purchases; a unit is taken only by a purchase made
