@@ -11,7 +11,8 @@ author's own leaderless engine.
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
-  **hitting number** of silence commitments; prior art (Goren & Moses, "Silence"; Chandra, Hadzilacos & Toueg) and how this differs.
+  **hitting number** of silence commitments; every mechanism has three moves and only removal (silence) is coordination; hardness,
+  rounds, liveness, membership, counterexamples; prior art (Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990) and how this differs.
 
 ## Models
 
@@ -26,13 +27,25 @@ author's own leaderless engine.
 - **Seal** (`CalmSeal_Proof.tla`): every participant that finalises a period holds the same content (*Agreement*), hence the same
   order and the same unique winner (*UniqueChoice*); a vote-free finalisation never coexists with an ABSENT decision; nobody is
   decided both PRESENT and ABSENT.
+- **Any specification, one commitment** (`MinimalSilence_Proof.tla`, 112/112): safe ⇔ the silence commitments hit every open
+  coalition that could invalidate the outcome ⇔ they hit every minimal one — the least number is the hitting number; a mechanism
+  that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (vertex-cover reduction).
+- **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
+  the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
+
+### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
+A lying closure, a newcomer in an already-committed scope, and "commit and hope" break the result — exactly at the stated boundaries.
+Compensation by a participant that may crash is not a safe mechanism; compensation built into the specification needs no coordination.
 
 ### What is only model-checked (TLC, small sizes)
 - Escrow: approved purchases never exceed the budget (a cardinality bound).
 - Seal: with nobody silent and nobody suspected, every participant finalises **without a vote** (liveness).
 
 ### What is not claimed
-- The conjecture of the paper (§3) is not proved. The models are instances.
+- The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
+  when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
+  version with lying participants. The weight of the three-move result is on its modelling assumptions (free participants; protocol
+  actions change outcomes only through the specification), stated in the file.
 - The mechanisms are prior art (escrow 1986, demarcation 1992, Calvin 2012, Mencius 2008). See PAPER.md §5.
 
 ## Re-running
@@ -46,6 +59,13 @@ java -cp tla2tools.jar tlc2.TLC -config tla/MC_CalmSeal_live.cfg tla/MC_CalmSeal
 # TLAPS 1.5 (note: tlapm exits 0 even when obligations fail — read the last line)
 tlapm --toolbox 0 0 tla/CalmEscrow_Proof.tla
 tlapm --toolbox 0 0 tla/CalmSeal_Proof.tla
+tlapm --toolbox 0 0 tla/MinimalSilence_Proof.tla
+tlapm --toolbox 0 0 tla/ThreeMoves_Proof.tla
+
+# counterexamples: see the table in tla/counter/RESULTS.md (each .cfg sets the variant)
+java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counter/CE1_Liar.tla
+# non-vacuity of ThreeMoves (needs TLAPS.tla on the library path)
+cd tla/counter/tm && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config TM_Check.cfg TM_Check.tla
 ```
 
 ## Results of the runs in this repository

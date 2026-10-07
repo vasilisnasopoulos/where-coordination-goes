@@ -82,7 +82,8 @@ suffice**.
 2. **Liveness.** That commitments get taken needs a partial-synchrony / failure-detector assumption (FLP). Safety only.
 3. **Suspected ≠ silent.** In practice the commitment is about a participant not yet heard from; it may be merely slow.
 4. **Outside the setting:** changing membership, lying participants, real-time deadlines.
-5. **Not machine-checked.** Theorems 1–3 are paper proofs over the definitions in §0–1; §2(b)/§3(b) rest on the definition of a silence
+5. **Partly machine-checked.** [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (TLAPS, 112/112, 7/10) proves the set-theoretic core, see §8: safe ⇔ D hits every
+   open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number. Otherwise Theorems 1–3 are paper proofs over the definitions in §0–1; §2(b)/§3(b) rest on the definition of a silence
    commitment as *any* restriction that makes a not-yet-issued invocation of an open participant ineffective. A reviewer will test that
    definition first.
 6. **Prior art** — searched 7/10/2026; below. Nothing found that states the least coordination of a commitment as a hitting number of
@@ -99,8 +100,84 @@ suffice**.
 | **Mencius** (OSDI 2008) | a silent owner's slots are revoked by agreement | one instance of a silence commitment (Seal) |
 | **Ju, "When Coordination Is Avoidable"**, arXiv 2602.18673 (2026) | classifies organisational tasks as monotone or not; "coordination tax" = share of spending that is avoidable | qualitative per task; no minimum count |
 | Quorum-system literature | quorums must intersect | used, not claimed |
+| **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
+| **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
+| **Bailis et al.**, invariant confluence (VLDB 2015) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
+| **Garcia-Molina & Salem**, Sagas (1987); **Helland & Campbell**, "Building on Quicksand" / apologies (CIDR 2009) | compensating actions instead of prevention | move (3) of §8.9b; claimed only: it is either unsafe (relies on a free participant) or a change of specification |
+
+**Second search (7/10, evening):** CALM/coordination+compensation, minimal coordination as hitting set, failure-detector minimality,
+knowledge/inhibition, I-confluence. No work found stating (a) coordination of a commitment = silence commitments only, with (b) the
+exact count as a hitting number and (c) the three-move exhaustiveness. Closest: Taylor 1990 (inhibition), Goren & Moses (silence,
+synchronous), CHT 1996 (information about failures). Absence of a hit is not proof of absence.
 
 **Verdict.** The result appears new as stated (least coordination per commitment = hitting number of silence commitments, in the
 Complete CALM framework, asynchronous). It is **not** new that silence/absence carries the essential information (Goren & Moses;
 Chandra, Hadzilacos & Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say
 both.
+
+## 8. Beyond the count — what else follows (7 October 2026)
+
+Machine-checked parts are in [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (TLAPS, **112/112**); the rest are paper proofs, marked.
+
+**8.1 Every mechanism silences someone (Theorem 2(b), checked).** Model a mechanism as *any* rule Eff that, in the extension where
+coalition S acts, lets only Eff[S] ⊆ S take effect. If it keeps o correct in every extension, then for every S ∈ F_open, S \ Eff[S] ≠ ∅
+(`SilenceNecessary`). A commitment taken at H, before anyone acts, is the case Eff[S] = S \ D for one D (`FixedMechanism`), and then
+`Exact` gives |D| ≥ τ. *What is still a modelling step:* that "takes effect" is the right abstraction of every mechanism's contribution.
+
+**8.2 Over a run (checked for the union step).** A commitment about i in a scope serves every outcome of that scope. Hitting the families
+of several outcomes = hitting their union (`RunUnion`), so the least total per scope is **τ(⋃ₒ F_open(o))**, and over a run the sum over
+scopes. Open: when commitments in one scope may be taken at different times (H differs per outcome), the families change in between.
+
+**8.3 Hardness (reduction checked).** For any graph G, the alarm specification "alarm iff both ends of some edge press; commit *no alarm*"
+has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). Hence: *computing the least
+coordination of a commitment is NP-hard* (decision version NP-complete when F_open is given explicitly; greedy gives a ln n
+approximation; polynomial when all minimal coalitions are singletons — the Seal case, τ = number open). *Paper:* deciding τ = 0 is
+deciding whether the commitment is monotone, undecidable in general (Complete CALM §3.6); so τ is **uncomputable** in general.
+
+**8.4 Rounds (paper).** τ counts decisions, not rounds. All τ commitments of one scope fit in **one** agreement instance (a vector
+PRESENT/ABSENT per member of D). So: τ = 0 ⇒ no round; τ ≥ 1 ⇒ the cost of one agreement instance, **independent of τ**. Messages scale
+with τ only through the vector size.
+
+**8.5 Liveness (paper, sufficiency only).** Each commitment is an agreement on PRESENT/ABSENT; with a majority correct and the leader
+oracle Ω, Paxos-style agreement terminates (CalmSeal's vote is such an agreement). And with nobody silent no vote is needed at all —
+model-checked for 3 participants (`tla/MC_CalmSeal_live.cfg`, [RESULTS](RESULTS.md)). *Open:* that Ω is also **necessary** (a reduction from consensus to one silence
+commitment); conjectured, not proved.
+
+**8.6 Suspected ≠ silent (paper).** Safety never depends on the suspicion being right (8.1 uses no detector). A wrong suspicion costs
+(i) one commitment that was not needed and (ii) the late invocations of that participant falling out of that scope. With an eventually
+perfect detector (◇P) false suspicions are finite per participant, so the excess over τ is finite per run.
+
+**8.7 Changing membership (paper).** Removing i = one commitment that i is silent in every later scope (one agreement, Complete CALM
+Remark 3). Adding j is safe if j's invocations count only in scopes opened after its admission — j is *closed by construction* for the
+earlier ones, so F_open of every earlier outcome is unchanged. Theorems 1–3 then hold per membership epoch; each change costs one
+agreement.
+
+**8.8 A lying closure (paper, partial).** If a participant closes and then issues an invocation, replicas that treat the closure as a fact
+must reject the later invocation — detectable equivocation.
+With f Byzantine *replicas*, agreement on the commitments needs n ≥ 3f+1; the count τ is unchanged, computed with Inv over coalitions that
+may include Byzantine participants. *Open:* a mechanised statement.
+
+**8.9 Against Goren & Moses (paper).** In their synchronous model silence is **observed**: after a round with no message, a process
+knows; a "silent choir" of f+1 is needed to learn through silence under f crashes. Here (asynchronous) silence cannot be observed, only
+**decided** — that is exactly why it is coordination. Adding a clock turns a decided silence into an observed one; that is the
+synchronous special case, not a competing result.
+
+**8.9b Three moves, only one is coordination (checked, [`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), TLAPS 36/36).** Whatever a mechanism is called, in
+the extension where S acts it can only (1) choose which admissible outcome to report, (2) remove invocations (silence), (3) ask
+participants for compensating invocations. With participants free — a mechanism cannot force an invocation, an asked participant may
+decline or crash — a correct mechanism removes someone in every open invalidating coalition (`OnlyRemovalSaves`); (1) alone and (3)
+alone never save (`ChoiceAlone`, `CompensationAlone`). Assumptions shown satisfiable by TLC ([`tla/counter/tm/TM_Check.tla`](tla/counter/tm/TM_Check.tla)).
+*The weight is on two modelling assumptions, not on the proof:* participants are free, and protocol actions change outcomes only
+through the specification. Drop the first (a participant that is *guaranteed* to compensate) and silence is no longer necessary — that
+participant is then not a free participant but part of the specification. This *speaks to* — does not settle — CALM 2019 ("Keeping CALM", the
+paragraph on compensation): Hellerstein asks whether coordination and compensation could be "up-leveled" into one concept of eventual
+non-deterministic agreement. The result here points the other way: compensation that *changes the specification* (the apology is an
+acceptable outcome) is not coordination at all; compensation that *relies on a participant* is unsafe. Whether his unified concept
+exists at the level of specifications is a different question, not answered here.
+
+**8.10 Counterexamples (TLC, [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)).** A lying closure, a newcomer in a committed scope, and "commit and hope" each
+break the result — exactly the boundaries of §0. A mechanism that forces another participant to compensate instead of silencing breaks
+safety when that participant crashes; made deterministic, it removes the coalition and τ = 0. Theorem 2(b) survives both.
+
+**Still open after §8:** necessity of Ω (8.5) · different commitment times inside a scope (8.2) · mechanised Byzantine version (8.8) ·
+mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
