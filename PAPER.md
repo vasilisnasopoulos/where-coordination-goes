@@ -58,6 +58,9 @@ these patterns requires is the number of such decisions it must take, and its pl
 *after* for what cannot.** Total order cannot be moved entirely before the decision; what must remain after it is, again, a decision
 about silence.
 
+For the specifications of §2 this is proved — definition, necessity, nothing else, sufficiency, and the exact count — in
+[SILENCE.md](SILENCE.md); for every specification it gives an upper bound, and the minimum remains the conjecture above.
+
 This is close in spirit to Mencius (Mao, Junqueira, Marzullo, OSDI 2008), where a silent server's slots are revoked by agreement; we
 state it against the patterns of Complete CALM and measure it.
 
