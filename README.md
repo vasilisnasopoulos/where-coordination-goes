@@ -8,6 +8,11 @@ question its conclusion leaves open — **how much, and when** — for the three
 bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked proofs, and measurements made with **Vortex**, the
 author's own leaderless engine.
 
+## Notes
+- [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
+- [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
+  **hitting number** of silence commitments; prior art (Goren & Moses, "Silence"; Chandra, Hadzilacos & Toueg) and how this differs.
+
 ## Models
 
 | model | pattern | coordination | checked |

@@ -94,7 +94,9 @@ i's silence. The minimum is the open question:
 > **Conjecture.** The least coordination a specification requires equals the number of silence decisions about participants whose
 > undeclared events could still change its outcome (directly, or by causally enabling others' events).
 
-The lower half follows the argument of Theorem 1; the upper half for every specification is **not** proved here.
+The lower half follows the argument of Theorem 1. **Update:** [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) corrects the wording — the
+least amount is not the *number* of such participants but the **hitting number** of the coalitions that could change the outcome — and
+proves it, per commitment, for any specification (paper proofs).
 
 ## 7. What this does NOT prove — said plainly
 
