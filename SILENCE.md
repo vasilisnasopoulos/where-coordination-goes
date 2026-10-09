@@ -114,4 +114,5 @@ proves it, per commitment, for any specification (core machine-checked: `tla/Min
    Remark 3) and is not a silence decision.
 6. **Prior art.** Deciding the absence of a silent owner by agreement is the move of Mencius (2008); closure-based finality is the
    idea behind punctuations in stream processing. What is offered here is the statement against Complete CALM's patterns, the exact
-   count, and the machine-checked sufficiency.
+   count, and the machine-checked sufficiency. The count is a transversal number (Berge); transversals of process sets are standard in
+   coteries and quorum systems — see [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a and §8.11 for what is prior art and what is claimed.

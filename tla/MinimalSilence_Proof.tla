@@ -156,8 +156,8 @@ BY DEF Hits
 (* Hardness. For any graph (edge set Edges over N) the "alarm" specification*)
 (* -- alarm iff both ends of some edge press; commit "no alarm" -- has      *)
 (* Inv = UpClose(Edges). Hitting it = vertex cover. So the least amount of *)
-(* coordination is NP-hard to compute in general (paper: MINIMAL_SILENCE  *)
-(* §8). Here: the reduction is exact.                                       *)
+(* coordination is NP-hard to compute: Vertex Cover is NP-complete (Karp *)
+(* 1972); MINIMAL_SILENCE §8.3. Here: the reduction is exact.             *)
 (***************************************************************************)
 UpClose(E) == {T \in SUBSET N : \E e \in E : e \subseteq T}
 

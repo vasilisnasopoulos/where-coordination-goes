@@ -33,7 +33,7 @@ author's own leaderless engine.
   decided both PRESENT and ABSENT.
 - **Any specification, one commitment** (`MinimalSilence_Proof.tla`, 112/112): safe ⇔ the silence commitments hit every open
   coalition that could invalidate the outcome ⇔ they hit every minimal one — the least number is the hitting number; a mechanism
-  that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (vertex-cover reduction).
+  that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
 - **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 52/52): any properly coordinated variant (Def. 11) must forbid

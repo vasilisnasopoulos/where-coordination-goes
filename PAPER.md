@@ -10,8 +10,9 @@ the three patterns of non-monotonicity that the same paper identifies in classic
 and **unique-choice** commitment. For each we show where the unavoidable coordination can be *placed in time* — before the decision
 or after it — and what it is paid in: refusals, or latency to finality. Once membership is fixed, the only non-monotone fact any of
 the three requires is a decision about **silence**: that a participant who stopped talking will add nothing more to a period. For
-**any** specification, one commitment at a time, the least coordination is exactly the hitting number of such silence commitments,
-and no other move of a mechanism is coordination ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small
+**any** specification, one commitment at a time, the least coordination is exactly the hitting number (Berge's transversal number) of such silence
+commitments, and no other move of a mechanism is coordination — the question named in Complete CALM's conclusion; the set-theoretic core
+is classical (§5) ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small
 models make the claims precise; both are checked with TLC and their safety invariants are proved with TLAPS for any number of
 participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
 
@@ -112,6 +113,8 @@ The models here describe *where* coordination sits.
 - V. Chvátal, *A Greedy Heuristic for the Set-Covering Problem*, Math. Oper. Res. 4(3), 1979.
 - H. Garcia-Molina, D. Barbará, *How to Assign Votes in a Distributed System*, J. ACM 32(4), 1985.
 - T. Ibaraki, T. Kameda, *A Theory of Coteries: Mutual Exclusion in Distributed Systems*, IEEE TPDS 4(7), 1993.
+- C. Power, P. Koutris, J. M. Hellerstein, *The Free Termination Property of Queries Over Time*, ICDT 2025.
+- H. Attiya, C. Enea, E. Román-Calvo, *Arbitration-Free Consistency*, arXiv 2510.21304, 2025.
 - J. Edmonds, D. R. Fulkerson, *Bottleneck Extrema*, J. Combin. Theory 8, 1970.
 - M. L. Fredman, L. Khachiyan, *On the Complexity of Dualization of Monotone Disjunctive Normal Forms*, J. Algorithms 21(3), 1996.
 - M. Naor, A. Wool, *The Load, Capacity, and Availability of Quorum Systems*, SIAM J. Comput. 27(2), 1998.

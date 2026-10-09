@@ -2,7 +2,7 @@
 
 Draft, 7 October 2026 · Vasilis Nasopoulos. Generalises [SILENCE.md](SILENCE.md) (which proves the same for the Seal
 specification) to any specification. Framework and terms: Hellerstein, *Complete CALM*, arXiv 2602.09435 — a specification
-Spec = (E, Obs, ⪯); an outcome o ∈ Obs(H) is *refinable* at H' ⊒ H if some o' ∈ Obs(H') has o ⪯ o'. Paper proofs; not machine-checked.
+Spec = (E, Obs, ⪯); an outcome o ∈ Obs(H) is *refinable* at H' ⊒ H if some o' ∈ Obs(H') has o ⪯ o'. Paper proofs; the parts marked *checked* are machine-checked (TLAPS).
 
 ## 0. Setting
 - Membership N is **fixed and known** (Complete CALM, Remark 3 — the one non-monotone act, taken once, outside this note).
@@ -91,8 +91,9 @@ suffice**.
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
    **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C and the chain: TLAPS 52/52; B under assumptions B1–B3); §8.13 maps known mechanisms;
    §8.14 states what is outside. The remaining gap is assumption B3, stated explicitly.
-6. **Prior art** — searched 7/10/2026; below. Nothing found that states the least coordination of a commitment as a hitting number of
-   silences in the CALM / monotonicity framework. Absence of a hit is not proof of absence.
+6. **Prior art** — searched 7/10 and 9/10/2026; §7–§7a and §8.11. The mathematics (transversals, their hardness, their duality) and the
+   use of transversals in distributed systems (coteries, quorums) are prior art. What may be new is only the statement in the §7
+   verdict. Absence of a hit is not proof of absence.
 
 ## 7. Prior art (searched 7/10/2026) — what is close, and how this differs
 
@@ -108,6 +109,8 @@ suffice**.
 | **Peleg & Wool** (1995), **Naor & Wool**, SIAM J. Comput. 1998; **Malkhi & Reiter**, Distrib. Comput. 1998 | quorum fault tolerance / vulnerability = **size of the smallest transversal** (failures that block every quorum); load via LP duality; Byzantine quorums | the **same number** (min transversal) in distributed systems, for **availability** of a designed family; here it measures **safety coordination** of a commitment. Hence: transversals in distributed systems are **not** new |
 | **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
 | **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
+| **Power, Koutris & Hellerstein**, "The Free Termination Property of Queries Over Time", ICDT 2025 | when a node can terminate unilaterally without coordination, although more input may arrive — the completeness side of CALM | closest in the CALM line to **closure** (§0): a participant's own promise that nothing more comes. Not a count, and not about deciding *for* an open participant |
+| **Attiya, Enea & Román-Calvo**, "Arbitration-Free Consistency", arXiv 2510.21304 (2025) | a storage specification admits an available implementation iff it needs no total arbitration order | detects one pattern (total-order), yes/no; this note gives a count per commitment |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
 | **Garcia-Molina & Salem**, Sagas (1987); **Helland & Campbell**, "Building on Quicksand" / apologies (CIDR 2009) | compensating actions instead of prevention | move (3) of §8.9b; claimed only: it is either unsafe (relies on a free participant) or a change of specification |
 
@@ -131,6 +134,9 @@ synchronous), CHT 1996 (information about failures). Absence of a hit is not pro
 | blocker / transversal duality; positive Boolean dual f^d (§8.11) | **Edmonds & Fulkerson** 1970; Berge; **Ibaraki & Kameda** 1993 |
 | listing all minimal transversals (monotone dualization) | **Fredman & Khachiyan** 1996 |
 | transversals / blocking sets in distributed systems | coteries and quorum systems, §7 table (Garcia-Molina & Barbara 1985; Ibaraki & Kameda 1993; Peleg & Wool; Naor & Wool; Malkhi & Reiter) |
+
+**The question itself is Hellerstein's:** Complete CALM's conclusion names it — "Complexity theory invites quantitative questions:
+given a non-monotone specification, how much coordination does it require?" This note is one answer to it.
 
 **Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
 (coteries, quorum fault tolerance). What may be new, and only as stated: in the Complete CALM framework, asynchronous, for **any**
