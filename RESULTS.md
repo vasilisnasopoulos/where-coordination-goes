@@ -30,5 +30,6 @@ only through the specification.
 - The **safety** of both placements is proved, not sampled.
 - The **liveness** claim (no silence ⇒ no vote) is model-checked for three participants only.
 - The **conjecture** in PAPER.md §3 is proved **per commitment**, for any specification: the core in `MinimalSilence_Proof` and
-  `ThreeMoves_Proof` above, the rest on paper in MINIMAL_SILENCE.md. Still open: commitments of one scope taken at different times;
+  `ThreeMoves_Proof` above, and in Complete CALM's own terms in `CoordinatedVariant_Proof` (under assumption B3); the rest on paper
+  in MINIMAL_SILENCE.md. Still open: commitments of one scope taken at different times;
   necessity of Ω for liveness; lying participants (mechanised).

@@ -11,9 +11,12 @@ author's own leaderless engine.
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
-  **hitting number** of silence commitments; every mechanism has three moves and only removal (silence) is coordination; hardness,
-  rounds, liveness, membership, counterexamples; prior art (Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems) and how this differs;
-  the mathematical tools (Berge, Karp, Johnson/Lovász/Chvátal) are not ours.
+  **hitting number** (Berge's transversal number) of silence commitments; only silence is coordination — grounded in Complete CALM's
+  own Defs. 5 and 11 (§8.12); known mechanisms move by move (§8.13); hardness, rounds, liveness, membership, counterexamples; limits
+  (§8.14). Prior art and how this differs (§7): Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems.
+  **Not ours (§7a, §8.11):** the mathematics (Berge; Karp; Johnson/Lovász/Chvátal; Fredman & Khachiyan) and its set-theoretic core,
+  which is the classical blocker duality also used for coteries (Edmonds & Fulkerson; Ibaraki & Kameda). What is claimed is the
+  modelling: deriving that hypergraph from a CALM specification, and that silence is the only coordination that contributes.
 
 ## Models
 
@@ -33,6 +36,11 @@ author's own leaderless engine.
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (vertex-cover reduction).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
+- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 52/52): any properly coordinated variant (Def. 11) must forbid
+  every future that breaks the committed outcome (*Lemma A*); with invocations controlled by the environment (Def. 5) it does so only
+  by silencing someone in every coalition that could break it (*Lemma B*); and in the run where every open participant acts it
+  silences at least τ (*Lemma C*), even if it chooses whom to silence late. Lemma B rests on one stated assumption, **B3**: an outcome
+  changes only through invocations that took effect. All assumptions hold together in a TLC model (`tla/cv/`).
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
 A lying closure, a newcomer in an already-committed scope, and "commit and hope" break the result — exactly at the stated boundaries.
@@ -45,8 +53,10 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
 ### What is not claimed
 - The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
   when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
-  version with lying participants. The weight of the three-move result is on its modelling assumptions (free participants; protocol
-  actions change outcomes only through the specification), stated in the file.
+  version with lying participants. "Only silence coordinates" is proved from Complete CALM's Defs. 5 and 11 under one stated
+  assumption (B3, above); it is not proved without it.
+- Outside the claim: real time (leases, timeouts), probabilistic safety, changing membership, lying participants (paper only), liveness.
+- The mathematics is prior art (see Notes above).
 - The mechanisms are prior art (escrow 1986, demarcation 1992, Calvin 2012, Mencius 2008). See PAPER.md §5.
 
 ## Re-running
@@ -62,11 +72,14 @@ tlapm --toolbox 0 0 tla/CalmEscrow_Proof.tla
 tlapm --toolbox 0 0 tla/CalmSeal_Proof.tla
 tlapm --toolbox 0 0 tla/MinimalSilence_Proof.tla
 tlapm --toolbox 0 0 tla/ThreeMoves_Proof.tla
+tlapm --toolbox 0 0 tla/CoordinatedVariant_Proof.tla
 
 # counterexamples: see the table in tla/counter/RESULTS.md (each .cfg sets the variant)
 java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counter/CE1_Liar.tla
 # non-vacuity of ThreeMoves (needs TLAPS.tla on the library path)
 cd tla/counter/tm && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config TM_Check.cfg TM_Check.tla
+# non-vacuity of CoordinatedVariant_Proof (tau = 1, first-come-wins)
+cd tla/cv && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_CV.cfg MC_CV.tla
 ```
 
 ## Results of the runs in this repository
