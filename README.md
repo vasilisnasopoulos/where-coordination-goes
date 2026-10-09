@@ -13,7 +13,6 @@ author's own leaderless engine.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
   **hitting number** of silence commitments; every mechanism has three moves and only removal (silence) is coordination; hardness,
   rounds, liveness, membership, counterexamples; prior art (Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990) and how this differs.
-- [experiments/README.md](experiments/README.md) — a reproducible workload and network simulator for testing the hitting-number prediction.
 
 ## Models
 
