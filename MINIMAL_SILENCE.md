@@ -1,4 +1,7 @@
-# Silence: the only coordination, and exactly how much of it — for any specification, one commitment at a time
+# The Silence Theorem — coordination in Complete CALM is a transversal of silences
+
+*Silence is the only coordination, and τ (a transversal number) is exactly how much of it — for any specification, one commitment
+at a time.*
 
 Draft, 7 October 2026 · Vasilis Nasopoulos. Generalises [SILENCE.md](SILENCE.md) (which proves the same for the Seal
 specification) to any specification. Framework and terms: Hellerstein, *Complete CALM*, arXiv 2602.09435 — a specification

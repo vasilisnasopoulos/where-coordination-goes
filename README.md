@@ -8,6 +8,11 @@ question its conclusion leaves open — **how much, and when** — for the three
 bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked proofs, and measurements made with **Vortex**, the
 author's own leaderless engine.
 
+**The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* For any specification, one commitment at a
+time: the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
+is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number). Stated and
+proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's own definitions in §8.12.
+
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
