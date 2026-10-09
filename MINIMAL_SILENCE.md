@@ -263,11 +263,11 @@ invocation is excluded before that participant has closed.
 | 2PC | all vote, then commit/abort | after "prepared", a participant's later abort is excluded; coordinator decides for a silent one | one per participant not yet voted |
 | Escrow / demarcation | each spends only its own share | none for local spends (F_open = ∅); reclaiming a silent holder's share | 0 / 1 (§5) |
 | Mencius / owned slots | owner fills its own slots | a silent owner's slots revoked (no-op) | one per silent owner |
-| Seal per period (Vortex) | close a period | every open participant's late records excluded | number open (fast seal: only holes) |
+| Seal per period | close a period | every open participant's late records excluded | number open |
 | CRDT, monotone queries | merge | none | 0 — not coordination (Complete CALM) |
 | Sagas / apologies | act, compensate later | **none** if the apology is admissible (the spec changed); unsafe if it relies on a participant who may decline (§8.9b) | 0 or unsafe |
 | Speculation + rollback | expose, roll back on conflict | exposed outcome is not committed until the rollback window closes; closing it silences late conflicting invocations | as the closing mechanism |
-| Admission control at ingress (e.g. nonce owner → 421) | reject at the door | rejection of a non-owner = closure by design: the invocation never had effect | 0 at commit; the cost moved into the spec |
+| Admission control at ingress (e.g. each key owned by one participant) | reject at the door | rejection of a non-owner = closure by design: the invocation never had effect | 0 at commit; the cost moved into the spec |
 
 **8.14 Outside the claim — stated plainly.** The result does **not** cover: (i) **real time** — leases, timeouts, deadlines decide
 silence by a clock; Complete CALM has no time, and neither does this note; (ii) **probabilistic** correctness (o is safe with probability
