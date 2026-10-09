@@ -24,7 +24,8 @@ A **closure** is the same statement made by i itself; it is a fact in H and stay
 
 **Invalidating coalitions.** o is **invalidated by S** if some admissible S-extension H' of H leaves o not refinable. S is **minimal**
 if no proper subset invalidates o. F(o, H) = the minimal invalidating coalitions; F_open(o, H) = those made only of open participants.
-τ(F) = the **hitting number**: the size of a smallest set meeting every member of F (τ(∅) = 0).
+τ(F) = the **hitting number**: the size of a smallest set meeting every member of F (τ(∅) = 0). This is the classical
+**transversal number** of the hypergraph F (Berge, *Graphes et hypergraphes*, 1970); τ and the term are his, not ours (§7a).
 
 **Fact 1 (upward closure).** If S invalidates o, every S' ⊇ S does (the extra members simply do not act). Hence a set R invalidates
 o iff R ⊇ S for some S ∈ F(o, H).
@@ -101,7 +102,8 @@ suffice**.
 | **Ameloot, Ketsman, Neven, Zinn**, TODS 40(4), 2016 (PODS 2014); policy-aware transducers (Zinn, Green, Ludäscher, ICDT 2012) | knowing *who may still contribute* turns some non-monotone queries coordination-free | the open set C(H) plays that role; their results are qualitative (free or not), not a count |
 | **Mencius** (OSDI 2008) | a silent owner's slots are revoked by agreement | one instance of a silence commitment (Seal) |
 | **Ju, "When Coordination Is Avoidable"**, arXiv 2602.18673 (2026) | classifies organisational tasks as monotone or not; "coordination tax" = share of spending that is avoidable | qualitative per task; no minimum count |
-| Quorum-system literature | quorums must intersect | used, not claimed |
+| ⚠️ **Garcia-Molina & Barbara**, "How to assign votes in a distributed system", JACM 1985; **Ibaraki & Kameda**, "A Theory of Coteries", IEEE TPDS 4(7), 1993 | coteries = hypergraphs of process sets; a family is a coterie ⇔ its positive (monotone) Boolean function is dual-minor; non-dominated ⇔ self-dual; ND coteries decompose into 3-majorities | **same mathematical language** (monotone Boolean functions, duality, hypergraph transversals) in distributed systems, 1985–93. Their question is the *structure* of quorum families an engineer designs; ours is the *least coordination* of a commitment, with the family derived from the specification. The relation of F_open / D to coterie duality must be stated explicitly — open (§6). Read via Feng Xiao, PhD thesis, SFU 1998 (restates I–K); original not read in full |
+| **Peleg & Wool** (1995), **Naor & Wool**, SIAM J. Comput. 1998; **Malkhi & Reiter**, Distrib. Comput. 1998 | quorum fault tolerance / vulnerability = **size of the smallest transversal** (failures that block every quorum); load via LP duality; Byzantine quorums | the **same number** (min transversal) in distributed systems, for **availability** of a designed family; here it measures **safety coordination** of a commitment. Hence: transversals in distributed systems are **not** new |
 | **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
 | **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
@@ -112,10 +114,26 @@ knowledge/inhibition, I-confluence. No work found stating (a) coordination of a 
 exact count as a hitting number and (c) the three-move exhaustiveness. Closest: Taylor 1990 (inhibition), Goren & Moses (silence,
 synchronous), CHT 1996 (information about failures). Absence of a hit is not proof of absence.
 
-**Verdict.** The result appears new as stated (least coordination per commitment = hitting number of silence commitments, in the
-Complete CALM framework, asynchronous). It is **not** new that silence/absence carries the essential information (Goren & Moses;
-Chandra, Hadzilacos & Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say
-both.
+**Third search (9/10/2026).** Both earlier searches used the word "hitting set"; the distributed-systems literature says
+*transversal*, *blocking set*, *coterie*. Under those words the quorum/coterie line above (1985–98) was found — missed on 7/10.
+
+### 7a. Mathematical tools — not ours (added 9/10/2026)
+
+| tool used here | source |
+|---|---|
+| hypergraph, transversal, transversal number τ | **Berge**, *Graphes et hypergraphes*, Dunod 1970 (Engl. 1973) |
+| vertex cover (τ of a graph) | **Kőnig** 1931; **Gallai** 1959 |
+| Vertex Cover / Hitting Set NP-complete (used in §8.3) | **Karp**, "Reducibility Among Combinatorial Problems", 1972 |
+| greedy ln n approximation (§8.3) | **Johnson** 1974; **Lovász** 1975; **Chvátal** 1979 |
+| ln n essentially optimal | **Feige** 1998; **Dinur & Steurer** 2014 |
+| transversals / blocking sets in distributed systems | coteries and quorum systems, §7 table (Garcia-Molina & Barbara 1985; Ibaraki & Kameda 1993; Peleg & Wool; Naor & Wool; Malkhi & Reiter) |
+
+**Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
+(coteries, quorum fault tolerance). What may be new, and only as stated: in the Complete CALM framework, asynchronous, for **any**
+specification, the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
+commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
+written down. It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
+Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say all of this.
 
 ## 8. Beyond the count — what else follows (7 October 2026)
 
@@ -131,9 +149,10 @@ of several outcomes = hitting their union (`RunUnion`), so the least total per s
 scopes. Open: when commitments in one scope may be taken at different times (H differs per outcome), the families change in between.
 
 **8.3 Hardness (reduction checked).** For any graph G, the alarm specification "alarm iff both ends of some edge press; commit *no alarm*"
-has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). Hence: *computing the least
+has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). The reduction is ours; the
+hardness is inherited: Vertex Cover is NP-complete (Karp 1972). Hence: *computing the least
 coordination of a commitment is NP-hard* (decision version NP-complete when F_open is given explicitly; greedy gives a ln n
-approximation; polynomial when all minimal coalitions are singletons — the Seal case, τ = number open). *Paper:* deciding τ = 0 is
+approximation (Johnson 1974, Lovász 1975, Chvátal 1979); polynomial when all minimal coalitions are singletons — the Seal case, τ = number open). *Paper:* deciding τ = 0 is
 deciding whether the commitment is monotone, undecidable in general (Complete CALM §3.6); so τ is **uncomputable** in general.
 
 **8.4 Rounds (paper).** τ counts decisions, not rounds. All τ commitments of one scope fit in **one** agreement instance (a vector

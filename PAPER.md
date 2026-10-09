@@ -85,6 +85,11 @@ The models here describe *where* coordination sits.
 ## 5. What this is not
 - Not new mechanisms. Escrow (O'Neil 1986; Barbará & Garcia-Molina 1992; bounded counters, Balegas et al. 2015), batched ordering
   (Calvin, 2012), owned positions and revoking a silent owner's slots (Mencius, 2008) are all prior art.
+- Not new mathematics. The hitting number is the transversal number of a hypergraph (Berge, 1970); its hardness is Karp's (1972)
+  and its greedy approximation is Johnson's, Lovász's and Chvátal's. Transversals are standard in distributed systems through coteries
+  and quorum systems (Garcia-Molina & Barbará 1985; Ibaraki & Kameda 1993; Naor & Wool 1998; Malkhi & Reiter 1998), where the smallest
+  transversal measures fault tolerance of a designed quorum family. What is stated here is narrower: the least coordination of one
+  commitment of any specification, in the Complete CALM framework. See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a.
 - Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
   total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
   measurements are examples.
@@ -98,6 +103,13 @@ The models here describe *where* coordination sits.
 - G. Goren, Y. Moses, *Silence*, J. ACM 67(1), 2020; R. Nataf, G. Goren, Y. Moses, *Null Messages, Information and Coordination*, DISC 2023.
 - K. E. Taylor, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell CS Technical Report 90-1139, 1990.
 - P. O'Neil, *The Escrow Transactional Method*, ACM TODS 11(4), 1986.
+- C. Berge, *Graphes et hypergraphes*, Dunod, 1970.
+- R. M. Karp, *Reducibility Among Combinatorial Problems*, in Complexity of Computer Computations, 1972.
+- V. Chvátal, *A Greedy Heuristic for the Set-Covering Problem*, Math. Oper. Res. 4(3), 1979.
+- H. Garcia-Molina, D. Barbará, *How to Assign Votes in a Distributed System*, J. ACM 32(4), 1985.
+- T. Ibaraki, T. Kameda, *A Theory of Coteries: Mutual Exclusion in Distributed Systems*, IEEE TPDS 4(7), 1993.
+- M. Naor, A. Wool, *The Load, Capacity, and Availability of Quorum Systems*, SIAM J. Comput. 27(2), 1998.
+- D. Malkhi, M. Reiter, *Byzantine Quorum Systems*, Distributed Computing 11(4), 1998.
 - D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, VLDB J. 3, 1994.
 - V. Balegas et al., *Extending Eventually Consistent Cloud Databases for Enforcing Numeric Invariants*, SRDS 2015.
 - Y. Mao, F. Junqueira, K. Marzullo, *Mencius*, OSDI 2008.

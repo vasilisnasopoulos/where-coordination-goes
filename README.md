@@ -12,7 +12,8 @@ author's own leaderless engine.
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
   **hitting number** of silence commitments; every mechanism has three moves and only removal (silence) is coordination; hardness,
-  rounds, liveness, membership, counterexamples; prior art (Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990) and how this differs.
+  rounds, liveness, membership, counterexamples; prior art (Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems) and how this differs;
+  the mathematical tools (Berge, Karp, Johnson/Lovász/Chvátal) are not ours.
 
 ## Models
 
