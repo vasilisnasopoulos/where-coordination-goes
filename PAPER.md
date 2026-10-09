@@ -89,7 +89,10 @@ The models here describe *where* coordination sits.
   and its greedy approximation is Johnson's, Lovász's and Chvátal's. Transversals are standard in distributed systems through coteries
   and quorum systems (Garcia-Molina & Barbará 1985; Ibaraki & Kameda 1993; Naor & Wool 1998; Malkhi & Reiter 1998), where the smallest
   transversal measures fault tolerance of a designed quorum family. What is stated here is narrower: the least coordination of one
-  commitment of any specification, in the Complete CALM framework. See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a.
+  commitment of any specification, in the Complete CALM framework. Its set-theoretic core (safe ⇔ transversal) is the classical
+  blocker duality also used for coteries (Edmonds & Fulkerson 1970; Ibaraki & Kameda 1993); what is ours is the modelling that
+  derives the hypergraph from a specification and shows that silence is the only coordination that contributes.
+  See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a, §8.11.
 - Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
   total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
   measurements are examples.
@@ -108,6 +111,8 @@ The models here describe *where* coordination sits.
 - V. Chvátal, *A Greedy Heuristic for the Set-Covering Problem*, Math. Oper. Res. 4(3), 1979.
 - H. Garcia-Molina, D. Barbará, *How to Assign Votes in a Distributed System*, J. ACM 32(4), 1985.
 - T. Ibaraki, T. Kameda, *A Theory of Coteries: Mutual Exclusion in Distributed Systems*, IEEE TPDS 4(7), 1993.
+- J. Edmonds, D. R. Fulkerson, *Bottleneck Extrema*, J. Combin. Theory 8, 1970.
+- M. L. Fredman, L. Khachiyan, *On the Complexity of Dualization of Monotone Disjunctive Normal Forms*, J. Algorithms 21(3), 1996.
 - M. Naor, A. Wool, *The Load, Capacity, and Availability of Quorum Systems*, SIAM J. Comput. 27(2), 1998.
 - D. Malkhi, M. Reiter, *Byzantine Quorum Systems*, Distributed Computing 11(4), 1998.
 - D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, VLDB J. 3, 1994.

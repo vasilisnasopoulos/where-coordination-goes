@@ -126,6 +126,8 @@ synchronous), CHT 1996 (information about failures). Absence of a hit is not pro
 | Vertex Cover / Hitting Set NP-complete (used in §8.3) | **Karp**, "Reducibility Among Combinatorial Problems", 1972 |
 | greedy ln n approximation (§8.3) | **Johnson** 1974; **Lovász** 1975; **Chvátal** 1979 |
 | ln n essentially optimal | **Feige** 1998; **Dinur & Steurer** 2014 |
+| blocker / transversal duality; positive Boolean dual f^d (§8.11) | **Edmonds & Fulkerson** 1970; Berge; **Ibaraki & Kameda** 1993 |
+| listing all minimal transversals (monotone dualization) | **Fredman & Khachiyan** 1996 |
 | transversals / blocking sets in distributed systems | coteries and quorum systems, §7 table (Garcia-Molina & Barbara 1985; Ibaraki & Kameda 1993; Peleg & Wool; Naor & Wool; Malkhi & Reiter) |
 
 **Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
@@ -199,6 +201,23 @@ exists at the level of specifications is a different question, not answered here
 **8.10 Counterexamples (TLC, [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)).** A lying closure, a newcomer in a committed scope, and "commit and hope" each
 break the result — exactly the boundaries of §0. A mechanism that forces another participant to compensate instead of silencing breaks
 safety when that participant crashes; made deterministic, it removes the coalition and τ = 0. Theorem 2(b) survives both.
+
+**8.11 Relation to coterie duality — the core is classical (9/10/2026, paper).** Let g(X) = 1 iff coalition X invalidates o. By
+Fact 1, g is a positive (monotone) Boolean function whose minimal true sets are F(o, H). Its dual is g^d(D) = ¬g(N \ D). Then
+D is safe ⇔ the free set N \ D invalidates nothing ⇔ g(N \ D) = 0 ⇔ **g^d(D) = 1**. So the safe silence sets are exactly the true sets
+of the dual, the minimal ones are the minimal transversals (the *blocker*) of F, and τ is the size of a shortest prime implicant
+of g^d. This is the classical transversal / blocker duality (Berge; Edmonds & Fulkerson 1970), the same duality f ↦ f^d that
+Ibaraki & Kameda (1993) use for coteries: there, *coterie* ⇔ f ≤ f^d and *non-dominated* ⇔ f = f^d. Read here: if every two
+invalidating coalitions intersect (g ≤ g^d), each coalition is itself a safe D; if g = g^d (e.g. majority), the coalitions that can
+break o and the sets that must be silenced are the same family. Checks: Seal, g = i₁ ∨ … ∨ i_k, g^d = i₁ ∧ … ∧ i_k, τ = k; alarm,
+g = i ∧ j, g^d = i ∨ j, τ = 1 (§5). Listing **all** minimal safe D is monotone dualization (hypergraph transversal enumeration),
+solvable in quasi-polynomial time (Fredman & Khachiyan 1996).
+
+**Consequence for novelty.** The set-theoretic core of Theorem 3 (safe ⇔ D is a transversal), and most of what
+`MinimalSilence_Proof.tla` checks, is this classical duality. Our contribution, if any, is the modelling around it: (i) that a
+Complete CALM specification yields such a monotone g at each commitment (origins of invocations + Fact 1), and (ii) that silence
+is the only coordination that contributes (Theorem 2, three moves) — the step §6.5 names as the weak point. In I–K the engineer
+chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
 
 **Still open after §8:** necessity of Ω (8.5) · different commitment times inside a scope (8.2) · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
