@@ -56,11 +56,13 @@ multiplicatively; begin with small participant and trial counts.
 
 - `summary.csv`: one row per family, protocol, trial, and parameter setting.
   It reports unsafe decisions and failed finalizations separately from mean
-  commitments, rounds, messages, latency, throughput, and escrow refusals.
+  commitments, rounds, messages, latency, throughput, and escrow refusals;
+  configuration columns make parameter sweeps distinguishable.
 - `traces.jsonl`: one record per decision, including the open participants,
-  minimal invalidating coalitions, exact minimum and selected commitments,
-  safety/finalization, and per-decision network cost. The `seed` field allows
-  each case to be regenerated.
+  escrow demands and capacity, minimal invalidating coalitions, exact minimum
+  and selected commitments, safety/finalization, and per-decision network cost.
+  The case seed and generation/network parameters allow each case to be
+  regenerated.
 
 Expected invariant: `minimum` is safe and uses exactly the calculated hitting
 number; `undercommit` is unsafe whenever the minimum is positive; extra

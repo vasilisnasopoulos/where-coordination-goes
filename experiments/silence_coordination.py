@@ -263,6 +263,7 @@ def run_policy(
                 "messages": messages,
                 "latency_ms": round(completed_at - arrival * 1000, 3),
                 "completion_ms": round(completed_at, 3),
+                "selected_nodes": [node for node in range(n) if selected & (1 << node)],
                 **escrow_metrics,
             }
         )
@@ -337,14 +338,6 @@ def main() -> None:
     trace_path = args.output / "traces.jsonl"
     summary_path = args.output / "summary.csv"
     summary_rows: list[dict[str, Any]] = []
-    trace_fields = [
-        "seed", "family", "participants", "trial", "protocol", "arrival_rate",
-        "overlap", "loss_rate", "partition_duration_ms", "decision", "open_nodes",
-        "minimal_invalidating_coalitions", "minimum_commitments", "commitments",
-        "safe", "finalized", "rounds", "messages", "arrival_ms", "completion_ms",
-        "latency_ms", "approved_units", "avoidable_refusals", "total_refusals",
-    ]
-
     with trace_path.open("w", encoding="utf-8") as trace_file:
         for n, family, arrival_rate, overlap, loss_rate, partition_duration in itertools.product(
             participants_values, families, arrival_rates, overlaps, loss_rates, partition_durations
@@ -391,9 +384,17 @@ def main() -> None:
                             "trial": trial,
                             "protocol": protocol,
                             "arrival_rate": arrival_rate,
+                            "open_fraction": args.open_fraction,
                             "overlap": overlap,
+                            "coalition_size": args.coalition_size,
+                            "edge_count": args.edge_count,
                             "loss_rate": loss_rate,
                             "partition_duration_ms": partition_duration,
+                            "latency_ms_config": args.latency_ms,
+                            "jitter_ms": args.jitter_ms,
+                            "timeout_ms": args.timeout_ms,
+                            "partition_fraction": args.partition_fraction,
+                            "max_rounds": args.max_rounds,
                             **metrics,
                         }
                     )
@@ -402,15 +403,22 @@ def main() -> None:
                             json.dumps(
                                 {
                                     "seed": case_seed,
+                                    "base_seed": args.seed,
                                     "family": family,
                                     "participants": n,
                                     "trial": trial,
                                     "protocol": protocol,
                                     "arrival_rate": arrival_rate,
+                                    "open_fraction": args.open_fraction,
                                     "overlap": overlap,
+                                    "coalition_size": args.coalition_size,
+                                    "edge_count": args.edge_count,
                                     "loss_rate": loss_rate,
                                     "partition_duration_ms": partition_duration,
+                                    "network": network,
                                     "open_nodes": case["open_nodes"],
+                                    "demands": case["demands"],
+                                    "capacity": case["capacity"],
                                     "minimal_invalidating_coalitions": [
                                         [node for node in range(n) if edge & (1 << node)]
                                         for edge in case["edges"]
