@@ -11,8 +11,10 @@
 (* still silences a hitting set of F_open in the run where every open          *)
 (* participant acts, so it pays at least tau in the worst case.                *)
 (*                                                                             *)
-(* Lemma B: Lemma A's "forbid" is Lemma C's "silence". Proved under two       *)
-(* named assumptions (AssmB), which are the remaining modelling content:       *)
+(* Lemma B: Lemma A's "forbid" is Lemma C's "silence".                         *)
+(* OnlySilence needs only B1 and B2: coordination = choosing who counts.       *)
+(* B3 is needed only for the exact count (Lemma B, Chain); without it, if       *)
+(* attempts alone break o, no variant exists (NoVariantIfAttemptsBreak).        *)
 (*   B1 (Def. 5) the environment may make any set A of open participants act, *)
 (*      and the implementation chooses only which of them get an effective     *)
 (*      response, Eff[A] \subseteq A; the run reaches history HistOf[A][Eff[A]]. *)
@@ -103,20 +105,49 @@ CONSTANTS H0, O0, HistOf
 ASSUME AssmB ==
   /\ H0 \in Hist /\ O0 \in ObsP[H0]
   /\ HistOf \in [SUBSET Open -> [SUBSET Open -> Hist]]
-  /\ \A A, R \in SUBSET Open : R \in Inv => Invalidates(H0, O0, HistOf[A][R])     \* B3
   /\ \A A \in SUBSET Open : ObsP[HistOf[A][Eff[A]]] # {}                          \* B2
 
-THEOREM LemmaB == ProperVariant => Correct
-<1> SUFFICES ASSUME ProperVariant, NEW A \in SUBSET Open, Eff[A] \in Inv PROVE FALSE
+\* B3 is no longer assumed: it is a property a specification may or may not have.
+B3 == \A A, R \in SUBSET Open : R \in Inv => Invalidates(H0, O0, HistOf[A][R])
+
+\* Without B3. The implementation's only lever is which invocations take effect
+\* (B1 = Def. 5). Any realizable properly coordinated variant uses it so that the
+\* run it produces never invalidates o. So coordination IS choosing whose
+\* invocations do not count -- silence -- for every specification.
+THEOREM OnlySilence ==
+  ProperVariant => \A A \in SUBSET Open : ~Invalidates(H0, O0, HistOf[A][Eff[A]])
+<1> SUFFICES ASSUME ProperVariant, NEW A \in SUBSET Open,
+                    Invalidates(H0, O0, HistOf[A][Eff[A]])
+             PROVE FALSE
+  OBVIOUS
+<1>1. Eff[A] \in SUBSET Open  BY AssmC
+<1>2. HistOf[A][Eff[A]] \in Hist  BY <1>1, AssmB
+<1>3. ObsP[HistOf[A][Eff[A]]] = {}  BY <1>2, LemmaA, AssmB
+<1> QED BY <1>3, AssmB
+
+\* Without B3, the other side. If the mere attempt of A breaks o, whatever is
+\* silenced, then no realizable properly coordinated variant exists at all:
+\* such a commitment cannot be saved by any coordination.
+THEOREM NoVariantIfAttemptsBreak ==
+  \A A \in SUBSET Open :
+    (\A R \in SUBSET A : Invalidates(H0, O0, HistOf[A][R])) => ~ProperVariant
+<1> SUFFICES ASSUME NEW A \in SUBSET Open,
+                    \A R \in SUBSET A : Invalidates(H0, O0, HistOf[A][R]),
+                    ProperVariant
+             PROVE FALSE
+  OBVIOUS
+<1>1. Eff[A] \in SUBSET A  BY AssmC
+<1> QED BY <1>1, OnlySilence
+
+\* With B3: what is silenced meets every invalidating coalition (Lemma B) ...
+THEOREM LemmaB == ProperVariant /\ B3 => Correct
+<1> SUFFICES ASSUME ProperVariant, B3, NEW A \in SUBSET Open, Eff[A] \in Inv PROVE FALSE
   BY DEF Correct
 <1>1. Eff[A] \in SUBSET Open  BY AssmC
-<1>2. Invalidates(H0, O0, HistOf[A][Eff[A]])  BY <1>1, AssmB
-<1>3. HistOf[A][Eff[A]] \in Hist  BY <1>1, AssmB
-<1>4. ObsP[HistOf[A][Eff[A]]] = {}  BY <1>2, <1>3, LemmaA, AssmB
-<1> QED BY <1>4, AssmB
+<1>2. Invalidates(H0, O0, HistOf[A][Eff[A]])  BY <1>1 DEF B3
+<1> QED BY <1>2, OnlySilence
 
-\* The whole chain: any properly coordinated variant (Def. 11) silences, in the
-\* run where every open participant acts, at least tau participants.
-THEOREM Chain == \A t \in Nat : ProperVariant /\ IsTau(t) => t <= Cardinality(SilencedAll)
+\* ... so in the run where every open participant acts it silences at least tau.
+THEOREM Chain == \A t \in Nat : ProperVariant /\ B3 /\ IsTau(t) => t <= Cardinality(SilencedAll)
   BY LemmaB, LemmaC
 =============================================================================

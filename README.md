@@ -41,11 +41,12 @@ proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
-- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 52/52): any properly coordinated variant (Def. 11) must forbid
-  every future that breaks the committed outcome (*Lemma A*); with invocations controlled by the environment (Def. 5) it does so only
-  by silencing someone in every coalition that could break it (*Lemma B*); and in the run where every open participant acts it
-  silences at least τ (*Lemma C*), even if it chooses whom to silence late. Lemma B rests on one stated assumption, **B3**: an outcome
-  changes only through invocations that took effect. All assumptions hold together in a TLC model (`tla/cv/`).
+- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 62/62): any properly coordinated variant (Def. 11) must forbid
+  every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), **for every
+  specification** it does so only by choosing whose invocations do not count (*OnlySilence*); if mere attempts break the outcome, no
+  variant exists. For specifications where an outcome changes only through invocations that took effect (property **B3**), what it
+  silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
+  Chain*), even if it chooses whom to silence late. TLC model of all assumptions in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
 A lying closure, a newcomer in an already-committed scope, and "commit and hope" break the result — exactly at the stated boundaries.
@@ -58,8 +59,8 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
 ### What is not claimed
 - The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
   when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
-  version with lying participants. "Only silence coordinates" is proved from Complete CALM's Defs. 5 and 11 under one stated
-  assumption (B3, above); it is not proved without it.
+  version with lying participants. "Only silence coordinates" is proved from Complete CALM's Defs. 5 and 11 for every
+  specification; the exact count τ needs property B3 of the specification (above).
 - Outside the claim: real time (leases, timeouts), probabilistic safety, changing membership, lying participants (paper only), liveness.
 - The mathematics is prior art (see Notes above).
 - The mechanisms are prior art (escrow 1986, demarcation 1992, Calvin 2012, Mencius 2008). See PAPER.md §5.

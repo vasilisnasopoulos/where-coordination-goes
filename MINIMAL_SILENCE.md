@@ -92,8 +92,8 @@ suffice**.
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
-   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C and the chain: TLAPS 52/52; B under assumptions B1–B3); §8.13 maps known mechanisms;
-   §8.14 states what is outside. The remaining gap is assumption B3, stated explicitly.
+   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence: TLAPS 62/62; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
+   §8.14 states what is outside. Only silence coordinates for every specification; the exact count τ needs property B3.
 6. **Prior art** — searched 7/10 and 9/10/2026; §7–§7a and §8.11. The mathematics (transversals, their hardness, their duality) and the
    use of transversals in distributed systems (coteries, quorums) are prior art. What may be new is only the statement in the §7
    verdict. Absence of a hit is not proof of absence.
@@ -230,7 +230,7 @@ Complete CALM specification yields such a monotone g at each commitment (origins
 is the only coordination that contributes (Theorem 2, three moves) — the step §6.5 names as the weak point. In I–K the engineer
 chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
 
-**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 52/52, with Lemma B under the named assumptions B1–B3).** The modelling step of §6.5 / §8.9b ("every mechanism
+**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 62/62; only the exact count needs assumption B3).** The modelling step of §6.5 / §8.9b ("every mechanism
 is captured by three moves, with free participants") is replaced here by two definitions of Complete CALM itself.
 *Def. 5:* the environment controls invocations (E_inv) and deliveries; an implementation controls only responses, internal events
 and sends. *Def. 11:* a properly coordinated variant Spec' = (E, Obs', ⪯) has Obs'(H) ⊆ Obs(H) and is monotone over its admitted
@@ -239,21 +239,26 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
 - **Lemma A (any coordinated variant must forbid every invalidating extension).** Let Spec' be a properly coordinated variant of Spec,
   o ∈ Obs'(H), S ∈ F_open(o, H), and H' an admissible S-extension with no refinement of o in Obs(H'). Then Obs'(H') = ∅.
   *Proof.* If Obs'(H') ≠ ∅, monotonicity of Spec' (Def. 11(2)) gives o' ∈ Obs'(H') ⊆ Obs(H') with o ⪯ o' — contradiction. ∎
-- **Lemma B (forbidding = withholding someone's effect; checked under B1–B3).** H' differs from H by invocations of S
-  (environment-controlled, Def. 5) and by the implementation's own events. Stated as three assumptions in
-  [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla) (`AssmB`): **B1** the environment may make any set A of open
-  participants act; the implementation only chooses which of them get an effective response, Eff[A] ⊆ A (Def. 5); **B2** the variant
-  admits some outcome on every run the environment can produce (it is realizable); **B3** if the *effective* set invalidates o, the
-  run is an invalidating future (Def. 6) — outcomes are exposed only through responses. Then `LemmaB`: every properly coordinated
-  variant keeps what takes effect outside Inv, i.e. silences someone in every coalition; and `Chain`: it silences ≥ τ in the run where
-  all open participants act. "Free participants" is B1 = Def. 5, not our assumption. Non-vacuous: TLC finds a model of all
-  assumptions with τ = 1 (alarm, first-come-wins), and a mechanism that silences nobody violates B2 (`tla/cv/`).
+- **Lemma B (forbidding = withholding someone's effect).** H' differs from H by invocations of S (environment-controlled, Def. 5)
+  and by the implementation's own events. In [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla): **B1** the
+  environment may make any set A of open participants act; the implementation only chooses which of them take effect, Eff[A] ⊆ A
+  (this is Def. 5); **B2** the variant admits some outcome on every run the environment can produce (it is realizable).
+  - `OnlySilence` — **from B1 and B2 alone, for every specification:** any realizable properly coordinated variant chooses, in every
+    run, whose invocations do not count, so that the run never breaks o. Coordination *is* choosing whom to silence.
+  - `NoVariantIfAttemptsBreak` — if the mere attempt of some set A breaks o whatever is silenced, no realizable properly coordinated
+    variant exists at all: no coordination can save that commitment.
+  - **B3** (an outcome changes only through invocations that took effect) is now a *property of the specification*, not an
+    assumption of the theorem. With it, `LemmaB`: what is silenced meets every invalidating coalition; and `Chain`: in the run where all
+    open participants act, at least τ are silenced. Non-vacuous: TLC finds a model of B1–B3 with τ = 1 (alarm, first-come-wins), and a
+    mechanism that silences nobody violates B2 (`tla/cv/`).
 - **Lemma C (adaptive mechanisms pay τ in the worst case).** A mechanism need not fix D at H; it may decide whom to silence as invocations
   arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
   silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
 
-What remains a modelling step: **B3** — that a run's effect on o is determined by which invocations got effective responses. It is
-the faithful reading of Def. 5 (the implementation acts only through responses), but it is an assumption, stated, not derived.
+What remains: *only silence coordinates* holds for every specification (B1 = Def. 5, B2 = realizability). The **exact count τ**
+holds for specifications with property B3; for one where a refused invocation still changes the outcome (e.g. the outcome reports
+how many were refused), the count is the least number of invocations that must be kept from counting — still silence, but not
+necessarily τ(F_open).
 
 **8.13 Known mechanisms, move by move (9/10/2026; a reading, not a per-mechanism proof).** Where each one silences. "Silence" = the effect of an open participant's future
 invocation is excluded before that participant has closed.
