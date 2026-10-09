@@ -89,6 +89,8 @@ suffice**.
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
+   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C and the chain: TLAPS 52/52; B under assumptions B1–B3); §8.13 maps known mechanisms;
+   §8.14 states what is outside. The remaining gap is assumption B3, stated explicitly.
 6. **Prior art** — searched 7/10/2026; below. Nothing found that states the least coordination of a commitment as a hitting number of
    silences in the CALM / monotonicity framework. Absence of a hit is not proof of absence.
 
@@ -218,6 +220,55 @@ solvable in quasi-polynomial time (Fredman & Khachiyan 1996).
 Complete CALM specification yields such a monotone g at each commitment (origins of invocations + Fact 1), and (ii) that silence
 is the only coordination that contributes (Theorem 2, three moves) — the step §6.5 names as the weak point. In I–K the engineer
 chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
+
+**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 52/52, with Lemma B under the named assumptions B1–B3).** The modelling step of §6.5 / §8.9b ("every mechanism
+is captured by three moves, with free participants") is replaced here by two definitions of Complete CALM itself.
+*Def. 5:* the environment controls invocations (E_inv) and deliveries; an implementation controls only responses, internal events
+and sends. *Def. 11:* a properly coordinated variant Spec' = (E, Obs', ⪯) has Obs'(H) ⊆ Obs(H) and is monotone over its admitted
+histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = ∅ (forbidding H).
+
+- **Lemma A (any coordinated variant must forbid every invalidating extension).** Let Spec' be a properly coordinated variant of Spec,
+  o ∈ Obs'(H), S ∈ F_open(o, H), and H' an admissible S-extension with no refinement of o in Obs(H'). Then Obs'(H') = ∅.
+  *Proof.* If Obs'(H') ≠ ∅, monotonicity of Spec' (Def. 11(2)) gives o' ∈ Obs'(H') ⊆ Obs(H') with o ⪯ o' — contradiction. ∎
+- **Lemma B (forbidding = withholding someone's effect; checked under B1–B3).** H' differs from H by invocations of S
+  (environment-controlled, Def. 5) and by the implementation's own events. Stated as three assumptions in
+  [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla) (`AssmB`): **B1** the environment may make any set A of open
+  participants act; the implementation only chooses which of them get an effective response, Eff[A] ⊆ A (Def. 5); **B2** the variant
+  admits some outcome on every run the environment can produce (it is realizable); **B3** if the *effective* set invalidates o, the
+  run is an invalidating future (Def. 6) — outcomes are exposed only through responses. Then `LemmaB`: every properly coordinated
+  variant keeps what takes effect outside Inv, i.e. silences someone in every coalition; and `Chain`: it silences ≥ τ in the run where
+  all open participants act. "Free participants" is B1 = Def. 5, not our assumption. Non-vacuous: TLC finds a model of all
+  assumptions with τ = 1 (alarm, first-come-wins), and a mechanism that silences nobody violates B2 (`tla/cv/`).
+- **Lemma C (adaptive mechanisms pay τ in the worst case).** A mechanism need not fix D at H; it may decide whom to silence as invocations
+  arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
+  silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
+
+What remains a modelling step: **B3** — that a run's effect on o is determined by which invocations got effective responses. It is
+the faithful reading of Def. 5 (the implementation acts only through responses), but it is an assumption, stated, not derived.
+
+**8.13 Known mechanisms, move by move (9/10/2026; a reading, not a per-mechanism proof).** Where each one silences. "Silence" = the effect of an open participant's future
+invocation is excluded before that participant has closed.
+
+| mechanism | what it does | where the silence is | τ it pays |
+|---|---|---|---|
+| Lock / mutex (and 2PL) | holder proceeds; others wait | every other requester's acquire is held back until release | one per waiting conflicting participant |
+| Lease | holder acts until expiry | others silenced until expiry; holder silenced *after* expiry, decided by a clock | as lock; **real time — outside §0** |
+| Paxos / Raft (one slot) | a value is chosen by a quorum | proposers whose value is not chosen; acceptors that promised refuse lower ballots | one agreement instance per slot (§8.4) |
+| 2PC | all vote, then commit/abort | after "prepared", a participant's later abort is excluded; coordinator decides for a silent one | one per participant not yet voted |
+| Escrow / demarcation | each spends only its own share | none for local spends (F_open = ∅); reclaiming a silent holder's share | 0 / 1 (§5) |
+| Mencius / owned slots | owner fills its own slots | a silent owner's slots revoked (no-op) | one per silent owner |
+| Seal per period (Vortex) | close a period | every open participant's late records excluded | number open (fast seal: only holes) |
+| CRDT, monotone queries | merge | none | 0 — not coordination (Complete CALM) |
+| Sagas / apologies | act, compensate later | **none** if the apology is admissible (the spec changed); unsafe if it relies on a participant who may decline (§8.9b) | 0 or unsafe |
+| Speculation + rollback | expose, roll back on conflict | exposed outcome is not committed until the rollback window closes; closing it silences late conflicting invocations | as the closing mechanism |
+| Admission control at ingress (e.g. nonce owner → 421) | reject at the door | rejection of a non-owner = closure by design: the invocation never had effect | 0 at commit; the cost moved into the spec |
+
+**8.14 Outside the claim — stated plainly.** The result does **not** cover: (i) **real time** — leases, timeouts, deadlines decide
+silence by a clock; Complete CALM has no time, and neither does this note; (ii) **probabilistic** correctness (o is safe with probability
+p) — Def. 7 is all-or-nothing; (iii) **changing the specification** — weakening Obs (accepting apologies, reordering) is not
+coordination; it removes coalitions and lowers τ, possibly to 0; (iv) **changing membership** (§8.7) and **lying participants** (§8.8);
+(v) **liveness** (§8.5). Within these limits, Lemmas A–C say: every properly coordinated variant silences, and pays at least τ in the
+worst case.
 
 **Still open after §8:** necessity of Ω (8.5) · different commitment times inside a scope (8.2) · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
