@@ -66,7 +66,7 @@ For the specifications of §2 this is proved — definition, necessity, nothing 
 [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md): the least coordination is the hitting number of the coalitions of open participants that
 could invalidate the outcome (TLAPS 112/112 for the core), and any mechanism contributes to correctness only through silence
 commitments (TLAPS 36/36; **update 9 October 2026:** derived from Complete CALM's Defs. 5 and 11 for every specification, TLAPS
-62/62; the exact count needs one property of the specification, §8.12); TLC counterexamples break it exactly at the stated limits. What remains open is listed there.
+121/121, both bounds; the exact count needs one property of the specification, §8.12); TLC counterexamples break it exactly at the stated limits. What remains open is listed there.
 
 This is close in spirit to Mencius (Mao, Junqueira, Marzullo, OSDI 2008), where a silent server's slots are revoked by agreement; we
 state it against the patterns of Complete CALM and measure it.

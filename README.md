@@ -41,12 +41,14 @@ proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
-- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 62/62): any properly coordinated variant (Def. 11) must forbid
+- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 121/121): any properly coordinated variant (Def. 11) must forbid
   every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), **for every
   specification** it does so only by choosing whose invocations do not count (*OnlySilence*); if mere attempts break the outcome, no
   variant exists. For specifications where an outcome changes only through invocations that took effect (property **B3**), what it
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
-  Chain*), even if it chooses whom to silence late. TLC model of all assumptions in `tla/cv/`.
+  Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
+  commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms.**
+  TLC models in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
 A lying closure, a newcomer in an already-committed scope, and "commit and hope" break the result — exactly at the stated boundaries.
@@ -86,6 +88,7 @@ java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counte
 cd tla/counter/tm && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config TM_Check.cfg TM_Check.tla
 # non-vacuity of CoordinatedVariant_Proof (tau = 1, first-come-wins)
 cd tla/cv && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_CV.cfg MC_CV.tla
+cd tla/cv && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_Suff.cfg MC_Suff.tla
 ```
 
 ## Results of the runs in this repository

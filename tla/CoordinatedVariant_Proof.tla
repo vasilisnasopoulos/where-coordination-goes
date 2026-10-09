@@ -150,4 +150,104 @@ THEOREM LemmaB == ProperVariant /\ B3 => Correct
 \* ... so in the run where every open participant acts it silences at least tau.
 THEOREM Chain == \A t \in Nat : ProperVariant /\ B3 /\ IsTau(t) => t <= Cardinality(SilencedAll)
   BY LemmaB, LemmaC
+\* ---------------- Sufficiency in the same terms: tau silences are enough ----------------
+\* The converse direction, per commitment. Silence a minimum transversal D of F_open:
+\* the mechanism lets everyone take effect except D (Eff_D[A] = A \ D) and the
+\* variant admits, on each run it produces, exactly the outcomes that refine O0.
+\* This is a properly coordinated variant at the commitment (Def. 11 for the pairs
+\* that start at H0), it is realizable on every run, and it silences exactly D.
+
+\* Def. 11 restricted to the commitment O0 at H0 (the per-commitment form used throughout)
+ProperAt(X) ==
+  /\ \A h \in Hist : X[h] \subseteq Obs[h]
+  /\ \A h \in Hist : (<<H0, h>> \in Fut /\ X[h] # {}) => \E o2 \in X[h] : <<O0, o2>> \in Leq
+
+\* B3, converse half: if what took effect does NOT invalidate, O0 still has a refinement there
+B3conv == \A A, R \in SUBSET Open :
+            R \notin Inv => \E o2 \in Obs[HistOf[A][R]] : <<O0, o2>> \in Leq
+
+RunsFromH0 == \A A, R \in SUBSET Open : <<H0, HistOf[A][R]>> \in Fut
+
+SilenceVariant(D) ==
+  [h \in Hist |->
+     IF h = H0 THEN {O0}
+     ELSE IF \E A \in SUBSET Open : h = HistOf[A][A \ D]
+          THEN {o2 \in Obs[h] : <<O0, o2>> \in Leq}
+          ELSE {}]
+
+THEOREM Sufficiency ==
+  \A D \in SUBSET Open :
+    ( Hits(D, FOpen) /\ B3conv /\ RunsFromH0 /\ O0 \in Obs[H0] /\ <<O0, O0>> \in Leq )
+    => /\ ProperAt(SilenceVariant(D))
+       /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+       /\ Open \ (Open \ D) = D
+<1> SUFFICES ASSUME NEW D \in SUBSET Open, Hits(D, FOpen), B3conv, RunsFromH0,
+                    O0 \in Obs[H0], <<O0, O0>> \in Leq
+             PROVE  /\ ProperAt(SilenceVariant(D))
+                    /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+                    /\ Open \ (Open \ D) = D
+  OBVIOUS
+<1> DEFINE X == SilenceVariant(D)
+<1>1. \A A \in SUBSET Open : (A \ D) \notin Inv
+  <2> SUFFICES ASSUME NEW A \in SUBSET Open, (A \ D) \in Inv PROVE FALSE
+    OBVIOUS
+  <2>1. (A \ D) \in FOpen  BY DEF FOpen
+  <2> QED BY <2>1 DEF Hits
+<1>2. \A A \in SUBSET Open : X[HistOf[A][A \ D]] # {}
+  <2> SUFFICES ASSUME NEW A \in SUBSET Open PROVE X[HistOf[A][A \ D]] # {}
+    OBVIOUS
+  <2> DEFINE h == HistOf[A][A \ D]
+  <2>0. (A \ D) \in SUBSET Open  OBVIOUS
+  <2>1. h \in Hist  BY <2>0, AssmB
+  <2>2. PICK o2 \in Obs[h] : <<O0, o2>> \in Leq  BY <1>1, <2>0 DEF B3conv
+  <2>3. CASE h = H0
+    <3>1. X[h] = {O0}  BY <2>1, <2>3 DEF SilenceVariant
+    <3> QED BY <3>1
+  <2>4. CASE h # H0
+    <3>1. \E B \in SUBSET Open : h = HistOf[B][B \ D]  OBVIOUS
+    <3>2. X[h] = {o3 \in Obs[h] : <<O0, o3>> \in Leq}  BY <2>1, <2>4, <3>1 DEF SilenceVariant
+    <3> QED BY <2>2, <3>2
+  <2> QED BY <2>3, <2>4
+<1>3. ProperAt(X)
+  <2>1. \A h \in Hist : X[h] \subseteq Obs[h]
+    BY DEF SilenceVariant
+  <2>2. \A h \in Hist : (<<H0, h>> \in Fut /\ X[h] # {}) => \E o2 \in X[h] : <<O0, o2>> \in Leq
+    <3> SUFFICES ASSUME NEW h \in Hist, X[h] # {} PROVE \E o2 \in X[h] : <<O0, o2>> \in Leq
+      OBVIOUS
+    <3>1. CASE h = H0  BY <3>1 DEF SilenceVariant
+    <3>2. CASE h # H0
+      <4>1. \E A \in SUBSET Open : h = HistOf[A][A \ D]  BY <3>2 DEF SilenceVariant
+      <4>2. X[h] = {o2 \in Obs[h] : <<O0, o2>> \in Leq}  BY <3>2, <4>1 DEF SilenceVariant
+      <4> QED BY <4>2
+    <3> QED BY <3>1, <3>2
+  <2> QED BY <2>1, <2>2 DEF ProperAt
+<1>4. Open \ (Open \ D) = D  OBVIOUS
+<1> QED BY <1>2, <1>3, <1>4
+
+\* Together: at the commitment, in Complete CALM's terms and for specifications with
+\* property B3 (both halves), the least coordination is exactly tau silences.
+THEOREM Exactly ==
+  \A D \in SUBSET Open : \A t \in Nat :
+    ( IsTau(t) /\ Hits(D, FOpen) /\ Cardinality(D) = t
+      /\ B3conv /\ RunsFromH0 /\ O0 \in Obs[H0] /\ <<O0, O0>> \in Leq )
+    => \* tau silences suffice, with a variant that silences exactly D ...
+       /\ ProperAt(SilenceVariant(D))
+       /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+       /\ Cardinality(Open \ (Open \ D)) = t
+       \* ... and no properly coordinated variant silences fewer (Chain)
+       /\ (ProperVariant /\ B3) => t <= Cardinality(SilencedAll)
+<1> SUFFICES ASSUME NEW D \in SUBSET Open, NEW t \in Nat, IsTau(t), Hits(D, FOpen),
+                    Cardinality(D) = t, B3conv, RunsFromH0, O0 \in Obs[H0], <<O0, O0>> \in Leq
+             PROVE  /\ ProperAt(SilenceVariant(D))
+                    /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+                    /\ Cardinality(Open \ (Open \ D)) = t
+                    /\ (ProperVariant /\ B3) => t <= Cardinality(SilencedAll)
+  OBVIOUS
+<1>1. /\ ProperAt(SilenceVariant(D))
+      /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+      /\ Open \ (Open \ D) = D
+  BY Sufficiency
+<1>2. (ProperVariant /\ B3) => t <= Cardinality(SilencedAll)  BY Chain
+<1> QED BY <1>1, <1>2
+
 =============================================================================

@@ -92,7 +92,7 @@ suffice**.
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
-   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence: TLAPS 62/62; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
+   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
    §8.14 states what is outside. Only silence coordinates for every specification; the exact count τ needs property B3.
 6. **Prior art** — searched 7/10 and 9/10/2026; §7–§7a and §8.11. The mathematics (transversals, their hardness, their duality) and the
    use of transversals in distributed systems (coteries, quorums) are prior art. What may be new is only the statement in the §7
@@ -230,7 +230,7 @@ Complete CALM specification yields such a monotone g at each commitment (origins
 is the only coordination that contributes (Theorem 2, three moves) — the step §6.5 names as the weak point. In I–K the engineer
 chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
 
-**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 62/62; only the exact count needs assumption B3).** The modelling step of §6.5 / §8.9b ("every mechanism
+**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 121/121; only the exact count needs property B3).** The modelling step of §6.5 / §8.9b ("every mechanism
 is captured by three moves, with free participants") is replaced here by two definitions of Complete CALM itself.
 *Def. 5:* the environment controls invocations (E_inv) and deliveries; an implementation controls only responses, internal events
 and sends. *Def. 11:* a properly coordinated variant Spec' = (E, Obs', ⪯) has Obs'(H) ⊆ Obs(H) and is monotone over its admitted
@@ -251,6 +251,12 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
     assumption of the theorem. With it, `LemmaB`: what is silenced meets every invalidating coalition; and `Chain`: in the run where all
     open participants act, at least τ are silenced. Non-vacuous: TLC finds a model of B1–B3 with τ = 1 (alarm, first-come-wins), and a
     mechanism that silences nobody violates B2 (`tla/cv/`).
+- **Sufficiency, in the same terms (`Sufficiency`, `Exactly`).** Silence a minimum transversal D of F_open: let everyone take effect
+  except D, and admit on each run exactly the outcomes that refine o. This is a properly coordinated variant at the commitment
+  (Def. 11 for the pairs that start at H, the per-commitment form used throughout), it is realizable on every run, and it silences
+  exactly D, i.e. τ participants — for specifications where an outcome is broken exactly when what took effect is an invalidating
+  coalition (B3, both halves). With Lemma C: **in Complete CALM's terms, the least coordination of a commitment is exactly τ
+  silences.** TLC: the τ = 1 silence variant is proper and realizable; silencing nobody is not (`tla/cv/tlc_suff.out`).
 - **Lemma C (adaptive mechanisms pay τ in the worst case).** A mechanism need not fix D at H; it may decide whom to silence as invocations
   arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
   silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
