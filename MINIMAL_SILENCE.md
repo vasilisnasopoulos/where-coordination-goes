@@ -10,6 +10,7 @@ Spec = (E, Obs, ⪯); an outcome o ∈ Obs(H) is *refinable* at H' ⊒ H if some
 ## 0. Setting
 - Membership N is **fixed and known** (Complete CALM, Remark 3 — the one non-monotone act, taken once, outside this note).
 - Every **invocation** in E has an origin participant orig(e) ∈ N. Receipts and protocol messages are not choices of anyone.
+  This is Complete CALM's own *process assignment* π (§5, used for Complete CAP), restricted to invocations.
 - A participant may **close** a scope (a period, a key, an object): a promise in its own history that it will issue no further
   invocation in that scope. Let C(H) be the participants closed at H (for the scope of the outcome at hand). The others are **open**.
 - For S ⊆ N, an **S-extension** of H is any H' ⊒ H in which every invocation added in H' \ H has its origin in S.
@@ -112,6 +113,7 @@ suffice**.
 | **Peleg & Wool** (1995), **Naor & Wool**, SIAM J. Comput. 1998; **Malkhi & Reiter**, Distrib. Comput. 1998 | quorum fault tolerance / vulnerability = **size of the smallest transversal** (failures that block every quorum); load via LP duality; Byzantine quorums | the **same number** (min transversal) in distributed systems, for **availability** of a designed family; here it measures **safety coordination** of a commitment. Hence: transversals in distributed systems are **not** new |
 | **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
 | **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
+| ⚠️ **Hellerstein, Complete CALM §5 — Complete CAP** (Defs. 12–13: process assignment π, partition-constrained futures, distributed-monotone) | attributes events to processes and asks whether an outcome survives every future in which the process set is cut into **two** sides that keep acting | **the closest step in the same paper.** The S-extensions of §0 generalise his partition-constrained futures from a bipartition to **any** coalition S, and the question from yes/no (does the outcome survive a cut?) to **how many** participants must be silenced (τ). The bridge to transversals is built on his process assignment |
 | **Power, Koutris & Hellerstein**, "The Free Termination Property of Queries Over Time", ICDT 2025 | when a node can terminate unilaterally without coordination, although more input may arrive — the completeness side of CALM | closest in the CALM line to **closure** (§0): a participant's own promise that nothing more comes. Not a count, and not about deciding *for* an open participant |
 | **Attiya, Enea & Román-Calvo**, "Arbitration-Free Consistency", arXiv 2510.21304 (2025) | a storage specification admits an available implementation iff it needs no total arbitration order | detects one pattern (total-order), yes/no; this note gives a count per commitment |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
@@ -142,7 +144,8 @@ synchronous), CHT 1996 (information about failures). Absence of a hit is not pro
 given a non-monotone specification, how much coordination does it require?" This note is one answer to it.
 
 **Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
-(coteries, quorum fault tolerance). What may be new, and only as stated: in the Complete CALM framework, asynchronous, for **any**
+(coteries, quorum fault tolerance). What may be new, and only as stated — building on Complete CALM's process assignment and partition-constrained futures (§5,
+Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for **any**
 specification, the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
 commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
 written down. It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
