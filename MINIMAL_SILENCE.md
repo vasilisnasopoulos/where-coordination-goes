@@ -168,6 +168,11 @@ coordination of a commitment is NP-hard* (decision version NP-complete when F_op
 approximation (Johnson 1974, Lovász 1975, Chvátal 1979); polynomial when all minimal coalitions are singletons — the Seal case, τ = number open). *Paper:* deciding τ = 0 is
 deciding whether the commitment is monotone, undecidable in general (Complete CALM §3.6); so τ is **uncomputable** in general.
 
+**8.3b Quick lower bound (Berge).** If ν coalitions in F_open are pairwise disjoint, any transversal needs a distinct member of
+each, so τ ≥ ν (matching number ≤ transversal number; Berge, *Graphes et hypergraphes*; for graphs, Kőnig 1931). In practice: finding
+ν disjoint coalitions that can break a commitment shows that at least ν silences are needed, without computing τ — and a system that
+pays fewer is unsafe.
+
 **8.4 Rounds (paper).** τ counts decisions, not rounds. All τ commitments of one scope fit in **one** agreement instance (a vector
 PRESENT/ABSENT per member of D). So: τ = 0 ⇒ no round; τ ≥ 1 ⇒ the cost of one agreement instance, **independent of τ**. Messages scale
 with τ only through the vector size.
