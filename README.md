@@ -92,6 +92,8 @@ cd tla/counter/tm && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp 
 # non-vacuity of CoordinatedVariant_Proof (tau = 1, first-come-wins)
 cd tla/cv && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_CV.cfg MC_CV.tla
 cd tla/cv && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_Suff.cfg MC_Suff.tla
+# membership; each MC_* has a *_mut twin that must fail
+cd tla/mb && java -DTLA-Library=<repo>/tla:<tlapm>/lib/tlapm/stdlib -cp tla2tools.jar tlc2.TLC -config MC_Membership.cfg MC_Membership.tla
 ```
 
 ## Results of the runs in this repository

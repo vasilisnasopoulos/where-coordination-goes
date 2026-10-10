@@ -1,9 +1,9 @@
 TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
 Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
 (Use the -nowarning option to disable this warning.)
-Running breadth-first search Model-Checking with fp 107 and seed -5651464844186039802 with 1 worker on 10 cores with 4096MB heap and 64MB offheap memory [pid: 63306] (Mac OS X 26.6.2 aarch64, Azul Systems, Inc. 21.0.6 x86_64, MSBDiskFPSet, DiskStateQueue).
-Parsing file tla/cv/MC_Suff.tla
-Parsing file tla/CoordinatedVariant_Proof.tla (copied next to MC_Suff)
+Running breadth-first search Model-Checking with fp 120 and seed -5010053733518553718 with 1 worker on 10 cores with 4096MB heap and 64MB offheap memory [pid: 65506] (Mac OS X 26.6.2 aarch64, Azul Systems, Inc. 21.0.6 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file tla/cv/MC_Suff_mut.tla
+Parsing file tla/cv/CoordinatedVariant_Proof.tla
 Parsing file tla/cv/Defs.tla
 Parsing file <tlaps-stdlib>/FiniteSets.tla
 Parsing file <tlaps-stdlib>/FiniteSetTheorems.tla
@@ -27,14 +27,7 @@ Semantic processing of module FiniteSetTheorems
 Semantic processing of module TLAPS
 Semantic processing of module CoordinatedVariant_Proof
 Semantic processing of module Defs
-Semantic processing of module MC_Suff
-Starting... (2026-10-09 20:55:23)
-Computing initial states...
-Finished computing initial states: 0 distinct states generated at 2026-10-09 20:55:23.
-Model checking completed. No error has been found.
-  Estimates of the probability that TLC did not check all reachable states
-  because two distinct states had the same fingerprint:
-  calculated (optimistic):  val = 0.0
-0 states generated, 0 distinct states found, 0 states left on queue.
-The depth of the complete state graph search is 1.
-Finished in 00s at (2026-10-09 20:55:23)
+Semantic processing of module MC_Suff_mut
+Starting... (2026-10-10 18:16:08)
+Error: The invariant of UpperBoundModel is equal to FALSE
+Finished in 00s at (2026-10-10 18:16:08)

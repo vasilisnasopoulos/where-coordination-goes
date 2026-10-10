@@ -1,5 +1,5 @@
----- MODULE MC_Suff ----
-(* Non-vacuity of Sufficiency: silencing D = {2} (tau = 1) is a proper     *)
+---- MODULE MC_Suff_mut ----
+(* Mutant of MC_Suff: silences nobody; the invariant must be violated.     *)
 (* variant at the commitment and realizable on every run. Mutant:           *)
 (* MC_Suff_mut silences nobody and must violate the invariant.              *)
 EXTENDS CoordinatedVariant_Proof, Defs
@@ -7,7 +7,7 @@ VARIABLE x
 Init == x = 0
 Next == x' = x
 Spec == Init /\ [][Next]_x
-Silenced == {2}
+Silenced == {}
 UpperBoundModel ==
   /\ IsTau(1) /\ Hits(Silenced, FOpen) /\ Cardinality(Silenced) = 1
   /\ B3conv /\ RunsFromH0 /\ O0 \in Obs[H0] /\ <<O0, O0>> \in Leq

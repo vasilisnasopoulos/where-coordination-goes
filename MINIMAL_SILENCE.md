@@ -264,13 +264,13 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
   - **B3** (an outcome changes only through invocations that took effect) is now a *property of the specification*, not an
     assumption of the theorem. With it, `LemmaB`: what is silenced meets every invalidating coalition; and `Chain`: in the run where all
     open participants act, at least τ are silenced. Non-vacuous: TLC finds a model of B1–B3 with τ = 1 (alarm, first-come-wins), and a
-    mechanism that silences nobody violates B2 (`tla/cv/`).
+    mechanism that silences nobody violates B2 (`tla/cv/`, with mutants).
 - **Sufficiency, in the same terms (`Sufficiency`, `Exactly`).** Silence a minimum transversal D of F_open: let everyone take effect
   except D, and admit on each run exactly the outcomes that refine o. This is a properly coordinated variant at the commitment
   (Def. 11 for the pairs that start at H, the per-commitment form used throughout), it is realizable on every run, and it silences
   exactly D, i.e. τ participants — for specifications where an outcome is broken exactly when what took effect is an invalidating
   coalition (B3, both halves). With Lemma C: **in Complete CALM's terms, the least coordination of a commitment is exactly τ
-  silences.** TLC: the τ = 1 silence variant is proper and realizable; silencing nobody is not (`tla/cv/tlc_suff.out`).
+  silences.** TLC: the τ = 1 silence variant is proper and realizable; silencing nobody is not (`tla/cv/tlc_MC_Suff.out`, mutant `tlc_MC_Suff_mut.out`).
 - **Lemma C (adaptive mechanisms pay τ in the worst case).** A mechanism need not fix D at H; it may decide whom to silence as invocations
   arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
   silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
