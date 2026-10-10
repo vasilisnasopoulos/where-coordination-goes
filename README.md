@@ -65,7 +65,8 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
   when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
   version with lying participants. "Only silence coordinates" is proved from Complete CALM's Defs. 5 and 11 for every
   specification; the exact count τ needs property B3 of the specification (above).
-- Outside the claim: real time (leases, timeouts), probabilistic safety, changing membership, lying participants (paper only), liveness.
+- Outside the claim: real time (leases, timeouts), probabilistic safety, how a member joins or leaves (the count is in §8.7, in the model
+  of §0), lying participants (paper only), liveness.
 - The mathematics is prior art (see Notes above).
 - The mechanisms are prior art (escrow 1986, demarcation 1992, Calvin 2012, Mencius 2008). See PAPER.md §5.
 

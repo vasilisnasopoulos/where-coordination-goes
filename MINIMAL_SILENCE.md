@@ -87,7 +87,7 @@ suffice**.
 2. **Liveness.** That commitments get taken needs a partial-synchrony / failure-detector assumption (FLP). §8.5: Ω suffices; whether it
    is necessary — open.
 3. **Suspected ≠ silent.** In practice the commitment is about a participant not yet heard from; it may be merely slow (§8.6).
-4. **Outside the setting:** changing membership (§8.7), lying participants (§8.8, paper only), real-time deadlines; counterexamples
+4. **Outside the setting:** the admission mechanism itself (how a member joins or leaves; the count is in §8.7), lying participants (§8.8, paper only), real-time deadlines; counterexamples
    at these boundaries in §8.10.
 5. **Partly machine-checked.** [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (TLAPS, 112/112, 7/10) proves the set-theoretic core, see §8: safe ⇔ D hits every
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
@@ -300,7 +300,7 @@ invocation is excluded before that participant has closed.
 **8.14 Outside the claim — stated plainly.** The result does **not** cover: (i) **real time** — leases, timeouts, deadlines decide
 silence by a clock; Complete CALM has no time, and neither does this note; (ii) **probabilistic** correctness (o is safe with probability
 p) — Def. 7 is all-or-nothing; (iii) **changing the specification** — weakening Obs (accepting apologies, reordering) is not
-coordination; it removes coalitions and lowers τ, possibly to 0; (iv) **changing membership** (§8.7) and **lying participants** (§8.8);
+coordination; it removes coalitions and lowers τ, possibly to 0; (iv) **how** membership changes (the counting is in §8.7, in the model of §0) and **lying participants** (§8.8);
 (v) **liveness** (§8.5). Within these limits, Lemmas A–C say: every properly coordinated variant silences, and pays at least τ in the
 worst case.
 
