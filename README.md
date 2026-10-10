@@ -41,6 +41,8 @@ proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
+- **Changing membership** (`Membership_Proof.tla`, 161/161, in the model of §0): a newcomer that counts only in later scopes leaves
+  every earlier commitment's τ unchanged; a participant leaving changes τ by at most one.
 - **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 121/121): any properly coordinated variant (Def. 11) must forbid
   every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), **for every
   specification** it does so only by choosing whose invocations do not count (*OnlySilence*); if mere attempts break the outcome, no
@@ -81,6 +83,7 @@ tlapm --toolbox 0 0 tla/CalmSeal_Proof.tla
 tlapm --toolbox 0 0 tla/MinimalSilence_Proof.tla
 tlapm --toolbox 0 0 tla/ThreeMoves_Proof.tla
 tlapm --toolbox 0 0 tla/CoordinatedVariant_Proof.tla
+tlapm --toolbox 0 0 tla/Membership_Proof.tla
 
 # counterexamples: see the table in tla/counter/RESULTS.md (each .cfg sets the variant)
 java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counter/CE1_Liar.tla

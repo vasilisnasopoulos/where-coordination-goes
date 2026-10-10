@@ -189,10 +189,16 @@ commitment); conjectured, not proved.
 (i) one commitment that was not needed and (ii) the late invocations of that participant falling out of that scope. With an eventually
 perfect detector (◇P) false suspicions are finite per participant, so the excess over τ is finite per run.
 
-**8.7 Changing membership (paper).** Removing i = one commitment that i is silent in every later scope (one agreement, Complete CALM
+**8.7 Changing membership (checked, [`tla/Membership_Proof.tla`](tla/Membership_Proof.tla), TLAPS 161/161; TLC model in `tla/mb/`).** Removing i = one commitment that i is silent in every later scope (one agreement, Complete CALM
 Remark 3). Adding j is safe if j's invocations count only in scopes opened after its admission — j is *closed by construction* for the
 earlier ones, so F_open of every earlier outcome is unchanged. Theorems 1–3 then hold per membership epoch; each change costs one
 agreement.
+Checked: after a join, D is safe iff D \ {j} was safe before — silencing the newcomer never helps an earlier commitment — and τ of
+every earlier commitment is unchanged (`JoinSafe`, `JoinKeepsTau`). After i leaves, D is safe iff D ∪ {i} was, and
+τ_without_i ≤ τ_with_i ≤ τ_without_i + 1 (`LeaveSafe`, `LeaveTau`): a removal saves at most one silence, at the price of the one
+agreement that removes i. TLC: τ = 2 kept by a join, dropped to 1 by a leave (the bound is tight). How a system admits or removes a
+member is not modelled. *Scope:* this is in the model of §0, not in Complete CALM's own definitions. It carries over to them through `Exactly` (§8.12)
+for specifications with property B3 — on paper: that a join or a leave preserves B3 is not machine-checked.
 
 **8.8 A lying closure (paper, partial).** If a participant closes and then issues an invocation, replicas that treat the closure as a fact
 must reject the later invocation — detectable equivocation.
