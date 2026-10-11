@@ -112,8 +112,9 @@ B3 == \A A, R \in SUBSET Open : R \in Inv => Invalidates(H0, O0, HistOf[A][R])
 
 \* Without B3. The implementation's only lever is which invocations take effect
 \* (B1 = Def. 5). Any realizable properly coordinated variant uses it so that the
-\* run it produces never invalidates o. So coordination IS choosing whose
-\* invocations do not count -- silence -- for every specification.
+\* run it produces never invalidates o. That the lever is "whose invocations
+\* count" is how B1 models Def. 5; this theorem does not exclude Eff[A] = A.
+\* That someone is silenced in every open invalidating coalition needs B3 (LemmaB).
 THEOREM OnlySilence ==
   ProperVariant => \A A \in SUBSET Open : ~Invalidates(H0, O0, HistOf[A][Eff[A]])
 <1> SUFFICES ASSUME ProperVariant, NEW A \in SUBSET Open,

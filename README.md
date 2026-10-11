@@ -8,9 +8,9 @@ question its conclusion leaves open — **how much, and when** — for the three
 bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked proofs, and measurements made with **Vortex**, the
 author's own leaderless engine.
 
-**The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* For any specification, one commitment at a
-time: the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
-is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number). Stated and
+**The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* One commitment at a time, for specifications
+where an outcome changes only through invocations that take effect (B3, §8.12): the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
+is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number), in the worst case. Stated and
 proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's own definitions in §8.12.
 
 ## Notes
@@ -63,8 +63,8 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
 ### What is not claimed
 - The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
   when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
-  version with lying participants. "Only silence coordinates" is proved from Complete CALM's Defs. 5 and 11 for every
-  specification; the exact count τ needs property B3 of the specification (above).
+  version with lying participants. From Complete CALM's Defs. 5 and 11, for every specification: a coordinated variant never lets
+  the run break the commitment. That this means silencing someone, and the exact count τ (worst case), need property B3 (above).
 - Outside the claim: real time (leases, timeouts), probabilistic safety, how a member joins or leaves (the count is in §8.7, in the model
   of §0), lying participants (paper only), liveness.
 - The mathematics is prior art (see Notes above).

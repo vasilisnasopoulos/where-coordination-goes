@@ -1,7 +1,8 @@
 # The Silence Theorem — coordination in Complete CALM is a transversal of silences
 
-*Silence is the only coordination, and τ (a transversal number) is exactly how much of it — for any specification, one commitment
-at a time.*
+*Silence is the only coordination, and τ (a transversal number) is exactly how much of it in the worst case — one commitment at a
+time, for specifications where an outcome changes only through invocations that take effect (property B3, §8.12), with the
+implementation's lever modelled as "which invocations take effect" (§6.5).*
 
 Draft, 7 October 2026 · Vasilis Nasopoulos. Generalises [SILENCE.md](SILENCE.md) (which proves the same for the Seal
 specification) to any specification. Framework and terms: Hellerstein, *Complete CALM*, arXiv 2602.09435 — a specification
@@ -94,7 +95,9 @@ suffice**.
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
    **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
-   §8.14 states what is outside. Only silence coordinates for every specification; the exact count τ needs property B3.
+   §8.14 states what is outside. For every specification, a coordinated variant keeps the realised run from breaking o; that this
+   means silencing someone needs B3, and so does the exact count τ. The reduction of Def. 5 to "which invocations take effect"
+   remains a modelling step.
 6. **Prior art** — searched 7/10 and 9/10/2026; §7–§7a and §8.11. The mathematics (transversals, their hardness, their duality) and the
    use of transversals in distributed systems (coteries, quorums) are prior art. What may be new is only the statement in the §7
    verdict. Absence of a hit is not proof of absence.
@@ -257,8 +260,10 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
   and by the implementation's own events. In [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla): **B1** the
   environment may make any set A of open participants act; the implementation only chooses which of them take effect, Eff[A] ⊆ A
   (this is Def. 5); **B2** the variant admits some outcome on every run the environment can produce (it is realizable).
-  - `OnlySilence` — **from B1 and B2 alone, for every specification:** any realizable properly coordinated variant chooses, in every
-    run, whose invocations do not count, so that the run never breaks o. Coordination *is* choosing whom to silence.
+  - `OnlySilence` — **from B1 and B2 alone, for every specification:** in every run, what a realizable properly coordinated variant
+    lets take effect never breaks o. Its only lever is whose invocations count — but that is how B1 models Def. 5, not a consequence
+    of it, and the theorem does not exclude silencing nobody (Eff[A] = A). That someone in every open invalidating coalition is
+    silenced needs B3 (`LemmaB`).
   - `NoVariantIfAttemptsBreak` — if the mere attempt of some set A breaks o whatever is silenced, no realizable properly coordinated
     variant exists at all: no coordination can save that commitment.
   - **B3** (an outcome changes only through invocations that took effect) is now a *property of the specification*, not an
@@ -275,8 +280,9 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
   arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
   silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
 
-What remains: *only silence coordinates* holds for every specification (B1 = Def. 5, B2 = realizability). The **exact count τ**
-holds for specifications with property B3; for one where a refused invocation still changes the outcome (e.g. the outcome reports
+What remains: for every specification (B1, B2) the realised run never breaks o; *only silence coordinates*, in the sense that
+someone in every open invalidating coalition is silenced, and the **exact count τ** (worst case: the run where every open
+participant acts) hold for specifications with property B3; for one where a refused invocation still changes the outcome (e.g. the outcome reports
 how many were refused), the count is the least number of invocations that must be kept from counting — still silence, but not
 necessarily τ(F_open).
 
