@@ -118,6 +118,7 @@ suffice**.
 | **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
 | ⚠️ **Hellerstein, Complete CALM §5 — Complete CAP** (Defs. 12–13: process assignment π, partition-constrained futures, distributed-monotone) | attributes events to processes and asks whether an outcome survives every future in which the process set is cut into **two** sides that keep acting | **the closest step in the same paper.** The S-extensions of §0 generalise his partition-constrained futures from a bipartition to **any** coalition S, and the question from yes/no (does the outcome survive a cut?) to **how many** participants must be silenced (τ). The bridge to transversals is built on his process assignment |
 | **Power, Koutris & Hellerstein**, "The Free Termination Property of Queries Over Time", ICDT 2025 | when a node can terminate unilaterally without coordination, although more input may arrive — the completeness side of CALM | closest in the CALM line to **closure** (§0): a participant's own promise that nothing more comes. Not a count, and not about deciding *for* an open participant |
+| ⚠️ **Houshmand & Lesani, Hamsaz**, PACMPL 3 (POPL 2019), art. 74 | from a sequential spec + invariant, a conflict graph over **methods** (pairwise); synchronise only a **minimum vertex cover** of it (or one total-order broadcast per maximal clique); well-coordination is a **sufficient** condition | **the same shape** — least coordination as a cover of a conflict graph — six years earlier. Differences: vertices are participants here, not methods; edges are coalitions of any size (hypergraph), not pairs; a **lower bound** is proved here (Thm 1(b), Lemma C), not only sufficiency. §8.3's vertex-cover reduction must cite it. |
 | **Attiya, Enea & Román-Calvo**, "Arbitration-Free Consistency", arXiv 2510.21304 (2025) | a storage specification admits an available implementation iff it needs no total arbitration order | detects one pattern (total-order), yes/no; this note gives a count per commitment |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
 | **Garcia-Molina & Salem**, Sagas (1987); **Helland & Campbell**, "Building on Quicksand" / apologies (CIDR 2009) | compensating actions instead of prevention | move (3) of §8.9b; claimed only: it is either unsafe (relies on a free participant) or a change of specification |
@@ -151,7 +152,7 @@ given a non-monotone specification, how much coordination does it require?" This
 Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for **any**
 specification, the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
 commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
-written down. It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
+written down. Nor is minimising coordination as a cover of a conflict graph (Hamsaz, POPL 2019). It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
 Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say all of this.
 
 ## 8. Beyond the count — what else follows (7 October 2026)
@@ -168,7 +169,7 @@ of several outcomes = hitting their union (`RunUnion`), so the least total per s
 scopes. Open: when commitments in one scope may be taken at different times (H differs per outcome), the families change in between.
 
 **8.3 Hardness (reduction checked).** For any graph G, the alarm specification "alarm iff both ends of some edge press; commit *no alarm*"
-has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). The reduction is ours; the
+has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). The reduction is ours; minimising synchronisation by a minimum vertex cover of a conflict graph is Hamsaz's (Houshmand & Lesani, POPL 2019, over methods); the
 hardness is inherited: Vertex Cover is NP-complete (Karp 1972). Hence: *computing the least
 coordination of a commitment is NP-hard* (decision version NP-complete when F_open is given explicitly; greedy gives a ln n
 approximation (Johnson 1974, Lovász 1975, Chvátal 1979); polynomial when all minimal coalitions are singletons — the Seal case, τ = number open). *Paper:* deciding τ = 0 is

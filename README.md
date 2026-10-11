@@ -19,7 +19,7 @@ proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's
   **hitting number** (Berge's transversal number) of silence commitments; only silence is coordination — grounded in Complete CALM's
   own Defs. 5 and 11 (§8.12); known mechanisms move by move (§8.13); hardness, rounds, liveness, membership, counterexamples; limits
   (§8.14). Prior art and how this differs (§7): Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems.
-  **Not ours (§7a, §8.11):** the mathematics (Berge; Karp; Johnson/Lovász/Chvátal; Fredman & Khachiyan) and its set-theoretic core,
+  **Not ours (§7a, §8.11):** minimising coordination as a cover of a conflict graph (Houshmand & Lesani, Hamsaz, POPL 2019); the mathematics (Berge; Karp; Johnson/Lovász/Chvátal; Fredman & Khachiyan) and its set-theoretic core,
   which is the classical blocker duality also used for coteries (Edmonds & Fulkerson; Ibaraki & Kameda). What is claimed is the
   modelling: deriving that hypergraph from a CALM specification, and that silence is the only coordination that contributes.
 
