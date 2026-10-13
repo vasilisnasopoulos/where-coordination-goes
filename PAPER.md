@@ -62,7 +62,7 @@ these patterns requires is the number of such decisions it must take, and its pl
 about silence.
 
 For the specifications of §2 this is proved — definition, necessity, nothing else, sufficiency, and the exact count — in
-[SILENCE.md](SILENCE.md). **Update (7 October 2026):** for every specification, per commitment, it is proved in
+[SILENCE.md](SILENCE.md). **Update (7 October 2026):** per commitment, for every specification with property B3 (a refused invocation leaves no trace, MINIMAL_SILENCE §8.12), it is proved in
 [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md): the least coordination is the hitting number of the coalitions of open participants that
 could invalidate the outcome (TLAPS 112/112 for the core), and any mechanism contributes to correctness only through silence
 commitments (TLAPS 36/36; **update 9 October 2026:** derived from Complete CALM's Defs. 5 and 11, TLAPS
@@ -91,7 +91,7 @@ The models here describe *where* coordination sits.
   and its greedy approximation is Johnson's, Lovász's and Chvátal's. Transversals are standard in distributed systems through coteries
   and quorum systems (Garcia-Molina & Barbará 1985; Ibaraki & Kameda 1993; Naor & Wool 1998; Malkhi & Reiter 1998), where the smallest
   transversal measures fault tolerance of a designed quorum family. What is stated here is narrower: the least coordination of one
-  commitment of any specification, in the Complete CALM framework. Its set-theoretic core (safe ⇔ transversal) is the classical
+  commitment of any specification with property B3, in the Complete CALM framework. Its set-theoretic core (safe ⇔ transversal) is the classical
   blocker duality also used for coteries (Edmonds & Fulkerson 1970; Ibaraki & Kameda 1993); what is ours is the modelling that
   derives the hypergraph from a specification and shows that silence is the only coordination that contributes.
   See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a, §8.11.

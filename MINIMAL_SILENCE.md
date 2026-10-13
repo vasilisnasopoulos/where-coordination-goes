@@ -149,8 +149,8 @@ given a non-monotone specification, how much coordination does it require?" This
 
 **Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
 (coteries, quorum fault tolerance). What may be new, and only as stated — building on Complete CALM's process assignment and partition-constrained futures (§5,
-Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for **any**
-specification, the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
+Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for any
+specification with property B3 (§8.12), the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
 commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
 written down. Nor is minimising coordination as a cover of a conflict graph (Hamsaz, POPL 2019). It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
 Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say all of this.

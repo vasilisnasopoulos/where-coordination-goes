@@ -15,7 +15,7 @@ proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's
 
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
-- [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — for **any** specification, one commitment at a time: the least coordination is the
+- [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — one commitment at a time, for specifications where a refused invocation leaves no trace (**B3**, §8.12): the least coordination is the
   **hitting number** (Berge's transversal number) of silence commitments; only silence is coordination — grounded in Complete CALM's
   own Defs. 5 and 11 (§8.12); known mechanisms move by move (§8.13); hardness, rounds, liveness, membership, counterexamples; limits
   (§8.14). Prior art and how this differs (§7): Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems.
