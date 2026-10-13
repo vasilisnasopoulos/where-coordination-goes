@@ -15,7 +15,8 @@
 (* OnlySilence needs only B1 and B2: coordination = choosing who counts.       *)
 (* B3 is needed only for the exact count (Lemma B, Chain); without it, if       *)
 (* attempts alone break o, no variant exists (NoVariantIfAttemptsBreak).        *)
-(*   B1 (Def. 5) the environment may make any set A of open participants act, *)
+(*   B1 (Def. 5, accept/refuse) the environment may make any set A of open  *)
+(*      participants act,                                                     *)
 (*      and the implementation chooses only which of them get an effective     *)
 (*      response, Eff[A] \subseteq A; the run reaches history HistOf[A][Eff[A]]. *)
 (*   B2 (realizable) the variant admits some outcome on every run the          *)
@@ -111,7 +112,7 @@ ASSUME AssmB ==
 B3 == \A A, R \in SUBSET Open : R \in Inv => Invalidates(H0, O0, HistOf[A][R])
 
 \* Without B3. The implementation's only lever is which invocations take effect
-\* (B1 = Def. 5). Any realizable properly coordinated variant uses it so that the
+\* (B1 = Def. 5 when a response is only accept/refuse). Any realizable properly coordinated variant uses it so that the
 \* run it produces never invalidates o. That the lever is "whose invocations
 \* count" is how B1 models Def. 5; this theorem does not exclude Eff[A] = A.
 \* That someone is silenced in every open invalidating coalition needs B3 (LemmaB).

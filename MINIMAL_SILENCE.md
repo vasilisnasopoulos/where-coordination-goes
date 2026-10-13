@@ -97,7 +97,9 @@ suffice**.
    **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
    §8.14 states what is outside. For every specification, a coordinated variant keeps the realised run from breaking o; that this
    means silencing someone needs B3, and so does the exact count τ. The reduction of Def. 5 to "which invocations take effect"
-   remains a modelling step.
+   remains a modelling step, and a real restriction: it holds for implementations that accept or refuse, not for ones that assign
+   values (seats, identifiers, positions) — the renaming problem (Attiya, Bar-Noy, Dolev, Peleg & Reischuk, J.ACM 1990) — where
+   coordination without silence exists (§8.12, B1).
 6. **Prior art** — searched 7/10 and 9/10/2026; §7–§7a and §8.11. The mathematics (transversals, their hardness, their duality) and the
    use of transversals in distributed systems (coteries, quorums) are prior art. What may be new is only the statement in the §7
    verdict. Absence of a hit is not proof of absence.
@@ -260,7 +262,9 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
 - **Lemma B (forbidding = withholding someone's effect).** H' differs from H by invocations of S (environment-controlled, Def. 5)
   and by the implementation's own events. In [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla): **B1** the
   environment may make any set A of open participants act; the implementation only chooses which of them take effect, Eff[A] ⊆ A
-  (this is Def. 5); **B2** the variant admits some outcome on every run the environment can produce (it is realizable).
+  (B1 models Def. 5 for implementations whose only choice per invocation is accept or refuse; it is narrower than Def. 5: a response
+  that carries a value the implementation picks is a lever B1 does not have — e.g. two bookings, alone each gets seat a, together
+  one gets a and the other b: coordination, and no one is silenced); **B2** the variant admits some outcome on every run the environment can produce (it is realizable).
   - `OnlySilence` — **from B1 and B2 alone, for every specification:** in every run, what a realizable properly coordinated variant
     lets take effect never breaks o. Its only lever is whose invocations count — but that is how B1 models Def. 5, not a consequence
     of it, and the theorem does not exclude silencing nobody (Eff[A] = A). That someone in every open invalidating coalition is
