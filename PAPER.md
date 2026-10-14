@@ -96,6 +96,8 @@ The models here describe *where* coordination sits.
   derives the hypergraph from a specification and shows that, for implementations that accept or refuse, silence is the only
   coordination that contributes.
   See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a, §8.11.
+- Read as CAP (Complete CAP, §5 of Complete CALM): a refusal is lost availability (Brewer 2012), waiting is latency (PACELC; Golab
+  2018). The count of refusals — τ, and which participants — is what is stated here; time is measured elsewhere (CAL, Lee et al. 2021).
 - Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
   total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
   measurements are examples.

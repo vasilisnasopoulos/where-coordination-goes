@@ -13,6 +13,14 @@ and specifications where an outcome changes only through invocations that take e
 is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number), in the worst case. Stated and
 proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's own definitions in §8.12.
 
+**Read as CAP.** CALM (Hellerstein 2010; proved by Ameloot, Neven & Van den Bussche, PODS 2011 / J.ACM 2013; Hellerstein & Alvaro,
+*Keeping CALM*, CACM 2020, whose Observation 1 reads coordination-freeness as availability under partition) and Complete CALM say
+*whether* a specification needs coordination; Complete CAP (§5) says that then a partition costs availability. Refusing an invocation is that loss of availability (Brewer 2012: "limit some operations, thereby reducing availability");
+delaying a commitment is the latency side (PACELC; Golab 2018; r + w ≥ d, Lipton–Sandberg, Attiya–Welch). What this note adds is the
+count: for implementations that accept or refuse, the least number of participants that must be refused to keep one commitment
+consistent is exactly τ, and which ones. Other quantifications of CAP measure time (CAL, Lee et al. 2021) or compute availability per
+workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
+
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — one commitment at a time, for specifications where a refused invocation leaves no trace (**B3**, §8.12): the least coordination is the

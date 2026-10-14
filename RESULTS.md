@@ -1,4 +1,4 @@
-# Results of the checks in this repository (6–7 October 2026)
+# Results of the checks in this repository (6–14 October 2026)
 
 Tools: TLC (tla2tools, Java 26) · TLAPS 1.5.0 (tlapm). TLAPS exits 0 even when obligations fail, so the verdict is the last line.
 
