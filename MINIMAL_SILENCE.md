@@ -36,6 +36,13 @@ if no proper subset invalidates o. F(o, H) = the minimal invalidating coalitions
 **Fact 1 (upward closure).** If S invalidates o, every S' ⊇ S does (the extra members simply do not act). Hence a set R invalidates
 o iff R ⊇ S for some S ∈ F(o, H).
 
+> **Scope of Theorems 1–3.** Read §2–4 under two conditions, made precise in §8.12. **B1** (the mechanism): the environment
+> decides who acts; the implementation only accepts or refuses each invocation — it does not pick values for responses (when it
+> does, coordination without silence exists: renaming, §7). **B3** (the specification): an outcome changes only through invocations
+> that take effect — a refusal leaves no trace. Without B3 the exact count need not be τ (§8.12, last paragraph). What holds for *every*
+> specification, from B1 and B2 alone, is only that the realised run never breaks o (`OnlySilence`, §8.12). Throughout: one
+> commitment at a time, membership fixed and known (§0).
+
 ## 2. Theorem 1 — silence is necessary
 
 **(a) A silence commitment is non-monotone.** Take a silence commitment about i at H that removes the effect of an invocation e of i
@@ -72,7 +79,18 @@ member of D is exactly the mechanism proved safe in [`tla/CalmSeal_Proof.tla`](t
 suffice**.
 
 > **Exact:** the least coordination needed to commit o at H is **τ(F_open(o, H)) silence commitments** — no fewer is possible, no more
-> is necessary, and no other kind of coordination contributes.
+> is necessary, and no other kind of coordination contributes — under B1 and B3 (scope above), in the worst case (every open
+> participant acts; §8.12, Lemma C).
+
+**What the count measures, and what it leaves out.**
+
+| measures | does not measure |
+|---|---|
+| how many participants must be refused (silenced) to keep one commitment consistent | rounds: τ ≥ 1 costs one agreement instance, independent of τ (§8.4) |
+| the worst case over runs (adaptive mechanisms may pay less in a lucky run) | messages, bytes, or time — the latency axis of CAL / PACELC (§7) |
+| per commitment, for a fixed and known membership | liveness: Theorem 3 is safety only (§8.5) |
+| | the cost of a membership change (paid once per epoch, §8.7) |
+| | implementations whose responses carry values they choose (renaming, §7) |
 
 ## 5. Checks against known cases
 | specification | F_open | τ | agrees with |
