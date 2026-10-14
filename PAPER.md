@@ -82,6 +82,9 @@ All measurements were made with **Vortex**, my own leaderless replicated ledger:
 | bounded-cardinality, coordination before (escrow), network cut 2+2 across three continents | both halves kept selling (~9 in 10 purchases); 0 double spends; 0 balances below zero; refusals 14 % during the cut, 0 % outside it |
 | unique-choice under a cut / a device switched off | exactly one holder at any time; 0 diverging decisions |
 
+The total-order row was measured on 2 October 2026. A later version of the engine, in production on the same three continents and measured
+on 10 October 2026, has a median time to finality of 0.11–0.20 s (p99 ≤ 0.50 s).
+
 Raw data and scripts that recompute the bounded-cardinality and normal-operation numbers: https://github.com/vasilisnasopoulos/vortex-festival-demo.
 The models here describe *where* coordination sits.
 
