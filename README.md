@@ -8,20 +8,22 @@ question its conclusion leaves open — **how much, and when** — for the three
 bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked proofs, and measurements made with **Vortex**, the
 author's own leaderless engine.
 
-**The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* One commitment at a time, for specifications
-where an outcome changes only through invocations that take effect (B3, §8.12): the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
+**The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* One commitment at a time, for implementations that accept or refuse
+and specifications where an outcome changes only through invocations that take effect (B3, §8.12): the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
 is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number), in the worst case. Stated and
 proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's own definitions in §8.12.
 
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
 - [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — one commitment at a time, for specifications where a refused invocation leaves no trace (**B3**, §8.12): the least coordination is the
-  **hitting number** (Berge's transversal number) of silence commitments; only silence is coordination — grounded in Complete CALM's
+  **hitting number** (Berge's transversal number) of silence commitments; for implementations that accept or refuse, only silence is coordination (a response carrying a value the
+  implementation picks — renaming — is another lever, §8.12) — grounded in Complete CALM's
   own Defs. 5 and 11 (§8.12); known mechanisms move by move (§8.13); hardness, rounds, liveness, membership, counterexamples; limits
   (§8.14). Prior art and how this differs (§7): Goren & Moses; Chandra, Hadzilacos & Toueg; Taylor 1990; coteries and quorum systems.
   **Not ours (§7a, §8.11):** minimising coordination as a cover of a conflict graph (Houshmand & Lesani, Hamsaz, POPL 2019); the mathematics (Berge; Karp; Johnson/Lovász/Chvátal; Fredman & Khachiyan) and its set-theoretic core,
   which is the classical blocker duality also used for coteries (Edmonds & Fulkerson; Ibaraki & Kameda). What is claimed is the
-  modelling: deriving that hypergraph from a CALM specification, and that silence is the only coordination that contributes.
+  modelling: deriving that hypergraph from a CALM specification, and that, for implementations that accept or refuse, silence is the
+  only coordination that contributes.
 
 ## Models
 
@@ -64,7 +66,8 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
 - The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
   when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
   version with lying participants. From Complete CALM's Defs. 5 and 11, for every specification: a coordinated variant never lets
-  the run break the commitment. That this means silencing someone, and the exact count τ (worst case), need property B3 (above).
+  the run break the commitment. That this means silencing someone, and the exact count τ (worst case), need property B3 (above) and an implementation
+  that accepts or refuses: with value-carrying responses (renaming) coordination without silence exists.
 - Outside the claim: real time (leases, timeouts), probabilistic safety, how a member joins or leaves (the count is in §8.7, in the model
   of §0), lying participants (paper only), liveness.
 - The mathematics is prior art (see Notes above).

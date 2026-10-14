@@ -93,7 +93,8 @@ The models here describe *where* coordination sits.
   transversal measures fault tolerance of a designed quorum family. What is stated here is narrower: the least coordination of one
   commitment of any specification with property B3, in the Complete CALM framework. Its set-theoretic core (safe ⇔ transversal) is the classical
   blocker duality also used for coteries (Edmonds & Fulkerson 1970; Ibaraki & Kameda 1993); what is ours is the modelling that
-  derives the hypergraph from a specification and shows that silence is the only coordination that contributes.
+  derives the hypergraph from a specification and shows that, for implementations that accept or refuse, silence is the only
+  coordination that contributes.
   See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a, §8.11.
 - Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
   total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
