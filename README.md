@@ -1,5 +1,8 @@
 # Where coordination goes
 
+**Where CALM says coordination is needed, a commitment needs exactly τ silences in the worst case — and we say which — for systems
+that accept or refuse.**
+
 Companion material for **[PAPER.md](PAPER.md)** — *placing coordination before or after the decision, for the three non-monotone
 patterns of Complete CALM*.
 
