@@ -49,7 +49,7 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
 - **Seal** (`CalmSeal_Proof.tla`): every participant that finalises a period holds the same content (*Agreement*), hence the same
   order and the same unique winner (*UniqueChoice*); a vote-free finalisation never coexists with an ABSENT decision; nobody is
   decided both PRESENT and ABSENT.
-- **Any specification, one commitment** (`MinimalSilence_Proof.tla`, 112/112): safe ⇔ the silence commitments hit every open
+- **Any specification, one commitment** (`MinimalSilence_Proof.tla`, 112/112; lever: which invocations take effect): safe ⇔ the silence commitments hit every open
   coalition that could invalidate the outcome ⇔ they hit every minimal one — the least number is the hitting number; a mechanism
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
@@ -57,8 +57,9 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
 - **Changing membership** (`Membership_Proof.tla`, 161/161, in the model of §0): a newcomer that counts only in later scopes leaves
   every earlier commitment's τ unchanged; a participant leaving changes τ by at most one.
 - **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 121/121): any properly coordinated variant (Def. 11) must forbid
-  every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), **for every
-  specification** it does so only by choosing whose invocations do not count (*OnlySilence*); if mere attempts break the outcome, no
+  every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), an implementation that
+  accepts or refuses does so only by choosing whose invocations do not count (*OnlySilence*; a response carrying a value the
+  implementation picks — renaming — is another lever); if mere attempts break the outcome, no
   variant exists. For specifications where an outcome changes only through invocations that took effect (property **B3**), what it
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the

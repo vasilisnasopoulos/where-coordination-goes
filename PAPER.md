@@ -10,8 +10,9 @@ the three patterns of non-monotonicity that the same paper identifies in classic
 and **unique-choice** commitment. For each we show where the unavoidable coordination can be *placed in time* — before the decision
 or after it — and what it is paid in: refusals, or latency to finality. Once membership is fixed, the only non-monotone fact any of
 the three requires is a decision about **silence**: that a participant who stopped talking will add nothing more to a period. For
-**any** specification, one commitment at a time, the least coordination is exactly the hitting number (Berge's transversal number) of such silence
-commitments, and no other move of a mechanism is coordination — the question named in Complete CALM's conclusion; the set-theoretic core
+implementations that accept or refuse, and specifications in which a refused invocation leaves no trace, one commitment at a time,
+the least coordination is exactly the hitting number (Berge's transversal number) of such silence commitments in the worst case, and
+no other move of such a mechanism is coordination — the question named in Complete CALM's conclusion; the set-theoretic core
 is classical (§5) ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small
 models make the claims precise; both are checked with TLC and their safety invariants are proved with TLAPS for any number of
 participants. The measurements come from **Vortex**, the author's own leaderless engine, running on three continents.
@@ -62,7 +63,7 @@ these patterns requires is the number of such decisions it must take, and its pl
 about silence.
 
 For the specifications of §2 this is proved — definition, necessity, nothing else, sufficiency, and the exact count — in
-[SILENCE.md](SILENCE.md). **Update (7 October 2026):** per commitment, for every specification with property B3 (a refused invocation leaves no trace, MINIMAL_SILENCE §8.12), it is proved in
+[SILENCE.md](SILENCE.md). **Update (7 October 2026):** per commitment, for every specification with property B3 (a refused invocation leaves no trace, MINIMAL_SILENCE §8.12) and implementations that accept or refuse, it is proved in
 [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md): the least coordination is the hitting number of the coalitions of open participants that
 could invalidate the outcome (TLAPS 112/112 for the core), and any mechanism contributes to correctness only through silence
 commitments (TLAPS 36/36; **update 9 October 2026:** derived from Complete CALM's Defs. 5 and 11, TLAPS
@@ -127,3 +128,15 @@ The models here describe *where* coordination sits.
 - Y. Mao, F. Junqueira, K. Marzullo, *Mencius*, OSDI 2008.
 - A. Thomson et al., *Calvin*, SIGMOD 2012.
 - P. Bailis et al., *Coordination Avoidance in Database Systems*, PVLDB 8(3), 2014.
+- M. J. Ameloot, F. Neven, J. Van den Bussche, *Relational Transducers for Declarative Networking*, J. ACM 60(2), 2013 (PODS 2011).
+- E. Brewer, *CAP Twelve Years Later: How the "Rules" Have Changed*, IEEE Computer 45(2), 2012.
+- D. Abadi, *Consistency Tradeoffs in Modern Distributed Database System Design*, IEEE Computer 45(2), 2012 (PACELC).
+- W. Golab, *Proving PACELC*, ACM SIGACT News 49(1), 2018.
+- M. Kleppmann, *A Critique of the CAP Theorem*, arXiv 1509.05393, 2015.
+- E. A. Lee, S. Bateni, S. Lin, M. Lohstroh, C. Menard, *Quantifying and Generalizing the CAP Theorem*, arXiv 2109.07771, 2021.
+- H. Yu, A. Vahdat, *The Costs and Limits of Availability for Replicated Services*, SOSP 2001; *Design and Evaluation of a Continuous Consistency Model for Replicated Services*, OSDI 2000.
+- A. Fox, E. Brewer, *Harvest, Yield, and Scalable Tolerant Systems*, HotOS 1999.
+- H. Attiya, A. Bar-Noy, D. Dolev, D. Peleg, R. Reischuk, *Renaming in an Asynchronous Environment*, J. ACM 37(3), 1990.
+- P. Alvaro, N. Conway, J. M. Hellerstein, D. Maier, *Blazes: Coordination Analysis for Distributed Programs*, arXiv 1309.3324, 2013.
+- L. Kuper, A. Turon, N. R. Krishnaswami, R. R. Newton, *Freeze After Writing: Quasi-Deterministic Parallel Programming with LVars*, POPL 2014.
+- S. Laddad, C. Power, M. Milano, A. Cheung, N. Crooks, J. M. Hellerstein, *Keep CALM and CRDT On*, PVLDB 16(4), 2022.
