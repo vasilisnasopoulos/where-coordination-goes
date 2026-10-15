@@ -1,4 +1,5 @@
-"""MINIMAL_SILENCE §8.17, item 2: per-commitment (ProperAt) vs global Def. 11 (ProperVariant).
+"""Variants silence a FIXED set D (history-dependent silencing is not searched).
+MINIMAL_SILENCE §8.17, item 2: per-commitment (ProperAt) vs global Def. 11 (ProperVariant).
 Histories = sets R of participants whose invocations took effect after H0 = {} (R1 ⊑ R2 iff R1 ⊆ R2).
 Spec: Obs[R] ⊆ Out (nonempty), refinement Leq a partial order on Out; commitment O0 = 0 ∈ Obs[{}].
 B3: "O0 has no refinement at R" is upward closed in R; Inv = those R; tau = transversal number of the minimal ones.
@@ -50,7 +51,7 @@ def analyse(N, Obs, L):
     g = min((len(D) for D in subsets(N) if global_ok(D, N, Obs, L)), default=None)
     return tau, g
 def run(n, n_out, samples, seed):
-    rnd = random.Random(seed); N = frozenset(range(n)); H = subsets(N); seen = sep = none = 0; ex = None
+    rnd = random.Random(seed); N = frozenset(range(n)); H = subsets(N); seen = sep = none = sep1 = seen1 = 0; ex = None
     for _ in range(samples):
         pairs = [(a, b) for a in range(n_out) for b in range(n_out) if a != b and rnd.random() < 0.3]
         L = leq_closure(n_out, pairs)
@@ -60,11 +61,12 @@ def run(n, n_out, samples, seed):
         r = analyse(N, Obs, L)
         if r is None: continue
         seen += 1; tau, g = r
+        seen1 += tau >= 1
         if g is None: none += 1
         elif g != tau:
-            sep += 1
+            sep += 1; sep1 += tau >= 1
             if ex is None: ex = (tau, g, sorted((sorted(R), sorted(Obs[R])) for R in H), sorted(L))
-    print(f"n={n} outcomes={n_out}: B3 specifications sampled={seen}, global > tau: {sep}, no global variant at all: {none}")
+    print(f"n={n} outcomes={n_out}: B3 specifications sampled={seen} (tau>=1: {seen1}), global > tau: {sep} (with tau>=1: {sep1}), no global variant at all: {none}")
     if ex: print("  example (tau, global, Obs, Leq):", ex)
     return sep
 if __name__ == "__main__":

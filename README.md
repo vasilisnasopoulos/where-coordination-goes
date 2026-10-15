@@ -1,7 +1,7 @@
 # Where coordination goes
 
 **Where CALM says coordination is needed, a commitment needs exactly τ silences in the worst case — and we say which — for systems
-that accept or refuse.**
+that accept or refuse, per commitment (under Hellerstein's global definition, τ is a lower bound).**
 
 Companion material for **[PAPER.md](PAPER.md)** — *placing coordination before or after the decision, for the three non-monotone
 patterns of Complete CALM*.
@@ -63,11 +63,13 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   variant exists. For specifications where whether the commitment breaks depends only on, and grows with, the set of participants whose invocations took effect (property **B3**), what it
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
-  commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms** —
-  both bounds against the same per-commitment form of Def. 11 (*ChainAt, ExactlyAt*). Over time-ordered executions, with any order,
-  deferral or policy: *LowerBound, UpperBound* ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), 45/45). Under his global Def. 11 the
-  lower bound holds (*GlobalImpliesAt*) but the minimum can exceed τ, because every exposed outcome is itself a commitment (§8.17). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)) and proved for Seal, unique choice, total order
-  and unit budgets for any number of participants ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), 41/41).
+  commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences** — both bounds
+  against the same **per-commitment** form of Def. 11 (*ChainAt, ExactlyAt*), which is our weakening of his definition. Under his global
+  Def. 11 τ is a lower bound (*GlobalImpliesAt*) and the minimum can be larger, because the variant must also repair the specification's
+  other non-monotone points (§8.17). The same per-run lemma restated in a state machine: *LowerBound, UpperBound*
+  ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), 45/45) — order cannot matter there by construction (§8.17). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)) and proved, in the worst case (the environment chooses
+  harmful events), for Seal, order-given abstractions of unique choice and total order, and unit budgets, for any number of participants
+  ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), 41/41; §8.16 for what this does not cover).
   TLC models in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)

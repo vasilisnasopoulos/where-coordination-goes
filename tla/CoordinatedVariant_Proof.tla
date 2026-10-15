@@ -333,8 +333,9 @@ THEOREM PerRunLowerBound ==
 \* ---------------- Global Def. 11 (15/10/2026, MINIMAL_SILENCE §8.17) ----------------
 \* A globally properly coordinated variant (Def. 11 over all pairs) is in particular one
 \* at the commitment, so the lower bound holds for it too (and Chain states it directly).
-\* The upper bound does NOT carry over: b3/global.py finds specifications with B3 where
-\* every global variant silences more than tau (other admitted outcomes become commitments).
+\* The upper bound does NOT carry over: checks/global.py finds specifications with B3 where
+\* every global variant with a fixed silenced set silences more than tau (the variant must also
+\* repair the specification's other non-monotone points; MINIMAL_SILENCE §8.17).
 THEOREM GlobalImpliesAt == ProperVariant => ProperAt(ObsP)
 <1> SUFFICES ASSUME ProperVariant PROVE ProperAt(ObsP)  OBVIOUS
 <1>1. \A h \in Hist : ObsP[h] \subseteq Obs[h]  BY DEF ProperVariant

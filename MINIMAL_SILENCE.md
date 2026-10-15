@@ -146,6 +146,7 @@ suffice**.
 | **Attiya, Guerraoui, Hendler, Kuznetsov, Michael, Vechev**, *Laws of Order*, POPL 2011 | in shared memory, every strongly non-commutative method must use a fence (RAW) or an atomic read-modify-write (AWAR) | a **lower bound on synchronisation**, existence only, shared memory; here a count per commitment in message passing. Read: introduction and definitions |
 | **Mazières**, Stellar Consensus Protocol, 2015 | *v-blocking sets*: sets that intersect every slice of a node — transversals used for safety and liveness in federated agreement | transversals again, for a designed slice system; not a count derived from a specification. Added after review 15/10, not read in full |
 | **Halpern & Moses**, J. ACM 37(3), 1990 | common knowledge cannot be attained asynchronously | background for §8.9 (silence observed vs decided); Hellerstein's *Determinations* (2026) re-derives it as a depth threshold |
+| **Whittaker & Hellerstein**, *Interactive Checks for Coordination Avoidance*, PVLDB 12(1), 2018; **Balegas et al.**, IPA, PVLDB 2018; **Houshmand, Saberlatibari & Lesani**, Hamband, PLDI 2022; **Chu et al.**, protocol rewrites in Hydro, SIGMOD 2024 | which operations or protocol steps need coordination, decided or rewritten automatically | qualitative or sufficiency, per operation; no per-commitment lower bound. Added after review 15/10, not read in full |
 | **Attiya, Enea & Román-Calvo**, "Arbitration-Free Consistency", arXiv 2510.21304 (2025) | a storage specification admits an available implementation iff it needs no total arbitration order | detects one pattern (total-order), yes/no; this note gives a count per commitment |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
 | **Brewer**, *CAP Twelve Years Later: How the "Rules" Have Changed*, IEEE Computer 45(2), 2012 | in partition mode, *limit some operations, thereby reducing availability* (ATM: withdraw at most k), or record intent and execute after recovery; which operations depends on the invariants | refusing = losing availability, delaying = acting later — said here, qualitatively; no count of who must be refused — that count (τ) is this note |
@@ -318,8 +319,8 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
   except D, and admit on each run exactly the outcomes that refine o. This is a properly coordinated variant at the commitment
   (Def. 11 for the pairs that start at H, the per-commitment form used throughout), it is realizable on every run, and it silences
   exactly D, i.e. τ participants — for specifications where an outcome is broken exactly when what took effect is an invalidating
-  coalition (B3, both halves). With Lemma C: **in Complete CALM's terms, the least coordination of a commitment is exactly τ
-  silences.** TLC: the τ = 1 silence variant is proper and realizable; silencing nobody is not (`tla/cv/tlc_MC_Suff.out`, mutant `tlc_MC_Suff_mut.out`).
+  coalition (B3, both halves). With Lemma C: **in Complete CALM's terms, per commitment (`ProperAt`, our weakening of Def. 11), the
+  least coordination of a commitment is exactly τ silences**; under the global Def. 11, τ is a lower bound (§8.17). TLC: the τ = 1 silence variant is proper and realizable; silencing nobody is not (`tla/cv/tlc_MC_Suff.out`, mutant `tlc_MC_Suff_mut.out`).
 - **Lemma C (adaptive mechanisms pay τ in the worst case).** A mechanism need not fix D at H; it may decide whom to silence as invocations
   arrive (first-come-wins). In the run where **every** open participant acts, every S ∈ F_open is present, so by Lemma A–B the set
   silenced in that run meets every S: it has size ≥ τ. Adaptive mechanisms can pay less in a lucky run, never less than τ in the worst.
@@ -387,17 +388,22 @@ later. For commitments o₁, o₂ in one scope:
   only (a refusal leaves no trace); within that class B3 ⇔ monotone. Seal, escrow reclaim, "alarm iff both", majority: B3 holds.
   **For the patterns, for any number of participants** ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), TLAPS 41/41): when the
   outcome depends only on the events that counted and adding counted events never repairs o (`UpClosed`), breaking grows with the
-  set of participants that took effect and `Broken(E) ⇔ E ∈ Inv` — B3 and B3conv (`MonoBroken`, `B3Holds`). Instances proved upward
+  set of participants that took effect and `Broken(E) ⇔ E ∈ Inv` (`MonoBroken`, `B3Holds`). ⚠️ Here `Broken(E)` is **existential**:
+  *some* choice of events by E breaks o — the worst case, with the environment choosing the harmful events. That is B3/B3conv of
+  `CoordinatedVariant_Proof` when the run's history is the worst one for E; for a run in which a participant submits a harmless event it
+  is not (independent review 15/10: in *before w*, a participant may submit an event after w; it takes effect and o does not break). Instances proved upward
   closed: Seal (any new event in a closed period), *before w* (an event ordered before w — unique choice with w the winner, total order
   with w the last event of the committed prefix), and *more than k* (a budget of k units, unit purchases). These are our formalisations
-  of the Appendix F patterns, not his text; budgets with weighted purchases are not covered here. The referee's counterexample is not
+  of the Appendix F patterns, not his text, and *before w* uses an order on events given in advance (a timestamp-like order); in an
+  asynchronous system the order is what coordination produces, so for unique choice and total order this is an abstraction; budgets with weighted purchases are not covered here. The referee's counterexample is not
   upward closed ({press_i} breaks o, {press_i, press_j} does not), so `B3Holds` does not apply to it.
 - **One notion of variant for both bounds.** The lower bound `Chain` assumed Def. 11 over all pairs of histories (`ProperVariant`), the
   upper bound `Sufficiency` only over pairs that start at the commitment (`ProperAt`). `LemmaAAt`, `LemmaBAt`, `ChainAt`, `ExactlyAt`
   prove the lower bound under `ProperAt` too, so "exactly τ" now holds for one, per-commitment notion (the weaker one, so the lower
   bound is the stronger statement). Under the global Def. 11 the lower bound holds and the minimum can be larger (§8.17).
-- **Time, deferral, arrival order** (the step from a run to E is a paper argument; `PerRunLowerBound` is the set lemma it rests on).
-  The model chose Eff[A] knowing the whole set A. In any run where every open participant acts (B1 lets the environment produce it),
+- **Time, deferral, arrival order — worst case only** (the step from a run to E is a paper argument; `PerRunLowerBound` is the set
+  lemma it rests on). The model chose Eff[A] knowing the whole set A. In the run where every open participant acts **with the events
+  that break o** (B1 lets the environment produce it; this is the worst case — with harmless events fewer may suffice),
   whatever set E took effect — chosen in any order, after any deferral, with any partial knowledge; a deferral that
   never ends is a refusal — correctness says o is not broken; by B3 (its "depends only on E" half: the same E breaks o or not, whatever the order) E is not
   an invalidating coalition; then Open \ E hits F_open (`PerRunLowerBound`), so at least τ are silenced. The upper bound is already
@@ -407,24 +413,30 @@ later. For commitments o₁, o₂ in one scope:
 - TLAPS for `CoordinatedVariant_Proof.tla` after these additions: **All 173 obligations proved** (183 with §8.17).
 
 **8.17 Executions in time, and the global Def. 11 (15/10/2026).**
-- **Over executions** ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), TLAPS 45/45). An asynchronous run: the environment makes open
+- **The per-run lemma in a state machine** ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), TLAPS 45/45). An asynchronous run: the environment makes open
   participants act one at a time in any order; the mechanism answers each pending invocation with accept or refuse whenever it likes,
   or never (deferral), under any policy — the next-state relation is fully nondeterministic. With B3 (breaking = the accepted set is in
   Inv, proved for the patterns in §8.16): `LowerBound` — in every behaviour that never breaks o, every state where all open participants
   have acted has at least τ refused or still pending; `UpperBound` — the policy "refuse D, accept everyone else" never breaks o when D
-  hits F_open, and `PolicySilencesOnlyD` — it refuses nobody outside D. So the bounds of §8.12 hold over time-ordered executions, with
-  deferral counted as silence, not only over sets. TLC ([`tla/temporal/`](tla/temporal/)): three participants, "alarm iff 0 and 1"
+  hits F_open, and `PolicySilencesOnlyD` — it refuses nobody outside D. *What this does and does not add* (independent review 15/10):
+  because breaking depends only on the current accepted set and each participant invokes once with a harmful event, order cannot
+  matter by construction; `LowerBound` is the per-state lemma `Core` (= `PerRunLowerBound`) holding in every reachable state, and the
+  mechanism may know everything. The policy has no fairness: a run that accepts nobody also satisfies it, so `PolicySilencesOnlyD` says
+  only that refusals stay inside D, not that everyone else is accepted. If ∅ ∈ Inv (o breaks with nobody acting) there is no τ and the
+  theorems hold vacuously. TLC ([`tla/temporal/`](tla/temporal/)): three participants, "alarm iff 0 and 1"
   (τ = 1), any mechanism and the policy D = {0}: no error; the mutant policy that refuses nobody violates safety.
 - **Global Def. 11 — the lower bound carries over, the upper bound does not.** `GlobalImpliesAt` (`CoordinatedVariant_Proof.tla`,
   183/183): a variant that is properly coordinated over all pairs of histories is one at the commitment, so at least τ (and `Chain`
   states it directly). But [`checks/global.py`](checks/global.py) ([`checks/global.out`](checks/global.out)) finds specifications with B3
-  where **every** globally proper variant silences **more** than τ (892 of 10,164 sampled on 2 participants; 299 of 677 and 109 of 263
-  on 3). Smallest: τ = 0 for the commitment, yet a variant that admits outcome 1 after participant a acts must, if b then acts, offer
-  only outcome 0, which does not refine 1 — so b must be silenced. The reason: under the global definition **every outcome the variant
-  exposes is itself a commitment**, and those later commitments have their own coalitions. The global cost is therefore the cost of a
-  sequence of commitments — §8.15 (between the largest τ and the sum; online hitting set when the later ones are not known in advance) —
-  not the τ of one. *Statement, precisely:* τ is the least coordination of one commitment, a lower bound under the global definition too,
-  and attained there when the variant exposes no other outcome that later invocations can contradict.
+  where every globally proper variant **that silences a fixed set D** silences more than τ (892 of 10,164 sampled on 2 participants; 299
+  of 677 and 109 of 263 on 3). Almost all have τ = 0 (the commitment itself is never at risk): with τ ≥ 1 the gap appears in 0 of 4,747,
+  1 of 223 and 4 of 85. Smallest: τ = 0, Obs({}) = {0,2}, Obs({a}) = {1}, Obs({b}) = {2}, Obs({a,b}) = {0}, with 0 ⪯ 1, 0 ⪯ 2, 2 ⪯ 1: after a acts
+  the only outcome is 1, after both only 0, and 1 has no refinement 0 — so someone must be silenced. The reason: the global Def. 11 makes
+  the variant **repair the specification's non-monotonicity everywhere it can reach**, also where o is not involved. That cost belongs
+  to the specification's other non-monotone points, not to o. *Conjecture (not proved):* the global minimum is the cost of all those points
+  together, i.e. a sequence of commitments as in §8.15. History-dependent silencing is not searched. *Statement, precisely:* τ is the least
+  coordination of one commitment under the per-commitment form (our weakening of Def. 11); under Hellerstein's global Def. 11 it is a lower
+  bound, attained when the specification has no other non-monotone point the variant can reach.
 
-**Still open after §8:** the global minimum as a closed formula (8.17: it is the cost of the sequence of exposed commitments) · necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
+**Still open after §8:** the global minimum (8.17, conjectured: the cost of all reachable non-monotone points) · B3 for runs with harmless events, and for orders not given in advance (8.16) · necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
