@@ -1,0 +1,62 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 5 and seed -98578694754424860 with 1 worker on 10 cores with 4096MB heap and 64MB offheap memory [pid: 41182] (Mac OS X 26.6.2 aarch64, Azul Systems, Inc. 21.0.6 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/vasilisnasopouloss/Desktop/dse/formal/calm_placement/b3/MC_Temporal.tla
+Parsing file /Users/vasilisnasopouloss/Desktop/dse/formal/calm_placement/b3/Temporal_Proof.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/FiniteSets.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/FiniteSetTheorems.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/TLAPS.tla
+Parsing file /private/var/folders/t1/9sl1h5lx3kg46mwktm893pzc0000gn/T/Integers.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/Functions.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/WellFoundedInduction.tla
+Parsing file /private/var/folders/t1/9sl1h5lx3kg46mwktm893pzc0000gn/T/Naturals.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/Folds.tla
+Parsing file /Users/vasilisnasopouloss/tools/tlapm/lib/tlapm/stdlib/NaturalsInduction.tla
+Parsing file /private/var/folders/t1/9sl1h5lx3kg46mwktm893pzc0000gn/T/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module Integers
+Semantic processing of module Folds
+Semantic processing of module Functions
+Semantic processing of module NaturalsInduction
+Semantic processing of module WellFoundedInduction
+Semantic processing of module FiniteSetTheorems
+Semantic processing of module TLAPS
+Semantic processing of module Temporal_Proof
+Semantic processing of module MC_Temporal
+Starting... (2026-10-15 18:32:30)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-15 18:32:30.
+Error: Invariant SafeAny is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ ref = {}
+/\ acted = {}
+/\ acc = {}
+
+State 2: <Act line 35, col 14 to line 35, col 84 of module Temporal_Proof>
+/\ ref = {}
+/\ acted = {0}
+/\ acc = {}
+
+State 3: <PolicyNext line 81, col 45 to line 81, col 67 of module Temporal_Proof>
+/\ ref = {}
+/\ acted = {0}
+/\ acc = {0}
+
+State 4: <Act line 35, col 14 to line 35, col 84 of module Temporal_Proof>
+/\ ref = {}
+/\ acted = {0, 1}
+/\ acc = {0}
+
+State 5: <PolicyNext line 81, col 45 to line 81, col 67 of module Temporal_Proof>
+/\ ref = {}
+/\ acted = {0, 1}
+/\ acc = {0, 1}
+
+29 states generated, 18 distinct states found, 6 states left on queue.
+The depth of the complete state graph search is 5.
+The average outdegree of the complete state graph is 2 (minimum is 0, the maximum 3 and the 95th percentile is 3).
+Finished in 00s at (2026-10-15 18:32:30)

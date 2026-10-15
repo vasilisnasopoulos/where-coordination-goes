@@ -56,7 +56,7 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
 - **Changing membership** (`Membership_Proof.tla`, 161/161, in the model of §0): a newcomer that counts only in later scopes leaves
   every earlier commitment's τ unchanged; a participant leaving changes τ by at most one.
-- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 173/173): any properly coordinated variant (Def. 11) must forbid
+- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 183/183): any properly coordinated variant (Def. 11) must forbid
   every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), an implementation that
   accepts or refuses does so only by choosing whose invocations do not count (*OnlySilence*; a response carrying a value the
   implementation picks — renaming — is another lever); if mere attempts break the outcome, no
@@ -64,8 +64,9 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
   commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms** —
-  both bounds against the same per-commitment form of Def. 11 (*ChainAt, ExactlyAt*), which is weaker than his global Def. 11; the
-  global case is open. Arrival order and deferral: a paper argument resting on the set lemma *PerRunLowerBound* (§8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)) and proved for Seal, unique choice, total order
+  both bounds against the same per-commitment form of Def. 11 (*ChainAt, ExactlyAt*). Over time-ordered executions, with any order,
+  deferral or policy: *LowerBound, UpperBound* ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), 45/45). Under his global Def. 11 the
+  lower bound holds (*GlobalImpliesAt*) but the minimum can exceed τ, because every exposed outcome is itself a commitment (§8.17). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)) and proved for Seal, unique choice, total order
   and unit budgets for any number of participants ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), 41/41).
   TLC models in `tla/cv/`.
 
@@ -104,6 +105,7 @@ tlapm --toolbox 0 0 tla/ThreeMoves_Proof.tla
 tlapm --toolbox 0 0 tla/CoordinatedVariant_Proof.tla
 tlapm --toolbox 0 0 tla/Membership_Proof.tla
 tlapm --toolbox 0 0 tla/B3Patterns_Proof.tla
+tlapm --toolbox 0 0 tla/Temporal_Proof.tla
 
 # counterexamples: see the table in tla/counter/RESULTS.md (each .cfg sets the variant)
 java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counter/CE1_Liar.tla

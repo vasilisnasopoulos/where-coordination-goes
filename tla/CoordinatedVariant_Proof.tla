@@ -329,4 +329,21 @@ THEOREM PerRunLowerBound ==
 <1>2. (Open \ E) \in SUBSET Open  OBVIOUS
 <1> QED BY <1>1, <1>2 DEF IsTau
 
+
+\* ---------------- Global Def. 11 (15/10/2026, MINIMAL_SILENCE §8.17) ----------------
+\* A globally properly coordinated variant (Def. 11 over all pairs) is in particular one
+\* at the commitment, so the lower bound holds for it too (and Chain states it directly).
+\* The upper bound does NOT carry over: b3/global.py finds specifications with B3 where
+\* every global variant silences more than tau (other admitted outcomes become commitments).
+THEOREM GlobalImpliesAt == ProperVariant => ProperAt(ObsP)
+<1> SUFFICES ASSUME ProperVariant PROVE ProperAt(ObsP)  OBVIOUS
+<1>1. \A h \in Hist : ObsP[h] \subseteq Obs[h]  BY DEF ProperVariant
+<1>2. \A h \in Hist : (<<H0, h>> \in Fut /\ ObsP[h] # {}) => \E o2 \in ObsP[h] : <<O0, o2>> \in Leq
+  <2> SUFFICES ASSUME NEW h \in Hist, <<H0, h>> \in Fut, ObsP[h] # {}
+               PROVE \E o2 \in ObsP[h] : <<O0, o2>> \in Leq
+    OBVIOUS
+  <2>1. H0 \in Hist /\ O0 \in ObsP[H0]  BY AssmB
+  <2> QED BY <2>1 DEF ProperVariant
+<1> QED BY <1>1, <1>2 DEF ProperAt
+
 =========================================================================

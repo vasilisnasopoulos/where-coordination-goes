@@ -1,0 +1,6 @@
+n=2 outcomes=3: B3 specifications sampled=10164, global > tau: 892, no global variant at all: 0
+  example (tau, global, Obs, Leq): (0, 1, [([], [0, 2]), ([0], [1]), ([0, 1], [0]), ([1], [2])], [(0, 0), (0, 1), (0, 2), (1, 1), (2, 1), (2, 2)])
+n=3 outcomes=3: B3 specifications sampled=677, global > tau: 299, no global variant at all: 0
+  example (tau, global, Obs, Leq): (0, 1, [([], [0, 2]), ([0], [0]), ([0, 1], [0]), ([0, 1, 2], [0]), ([0, 2], [1, 2]), ([1], [1]), ([1, 2], [0, 1, 2]), ([2], [0])], [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1), (2, 2)])
+n=3 outcomes=4: B3 specifications sampled=263, global > tau: 109, no global variant at all: 0
+  example (tau, global, Obs, Leq): (0, 1, [([], [0]), ([0], [0, 2, 3]), ([0, 1], [2]), ([0, 1, 2], [3]), ([0, 2], [0, 1, 2, 3]), ([1], [0, 3]), ([1, 2], [0, 2, 3]), ([2], [0, 3])], [(0, 0), (0, 1), (0, 2), (0, 3), (1, 1), (2, 2), (3, 3)])

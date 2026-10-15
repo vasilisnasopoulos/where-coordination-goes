@@ -115,7 +115,7 @@ suffice**.
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
-   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121 on 9/10; 173/173 with the additions of 15/10, §8.16; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
+   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121 on 9/10; 183/183 with the additions of 15/10, §8.16–8.17; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
    §8.14 states what is outside. For every specification, a coordinated variant keeps the realised run from breaking o; that this
    means silencing someone needs B3, and so does the exact count τ. The reduction of Def. 5 to "which invocations take effect"
    remains a modelling step, and a real restriction: it holds for implementations that accept or refuse, not for ones that assign
@@ -198,7 +198,7 @@ Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker
 
 ## 8. Beyond the count — what else follows (7 October 2026)
 
-Machine-checked parts are in [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (112/112), [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla) (173/173), [`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla) (36/36) and [`tla/Membership_Proof.tla`](tla/Membership_Proof.tla) (161/161); the rest are paper proofs, marked. The machine-checked parts are short set-theoretic lemmas; the substance is the modelling (B1, B3, the per-commitment form of Def. 11).
+Machine-checked parts are in [`tla/MinimalSilence_Proof.tla`](tla/MinimalSilence_Proof.tla) (112/112), [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla) (183/183), [`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla) (45/45), [`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla) (41/41), [`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla) (36/36) and [`tla/Membership_Proof.tla`](tla/Membership_Proof.tla) (161/161); the rest are paper proofs, marked. The machine-checked parts are short set-theoretic lemmas; the substance is the modelling (B1, B3, the per-commitment form of Def. 11).
 
 **8.1 Every mechanism silences someone (Theorem 2(b), checked).** Model a mechanism as *any* rule Eff that, in the extension where
 coalition S acts, lets only Eff[S] ⊆ S take effect. If it keeps o correct in every extension, then for every S ∈ F_open, S \ Eff[S] ≠ ∅
@@ -289,7 +289,7 @@ Complete CALM specification yields such a monotone g at each commitment (origins
 is the only coordination that contributes (Theorem 2, three moves) — the step §6 item 5 names as the weak point. In I–K the engineer
 chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
 
-**8.12 Closing §6 item 5 from Complete CALM's own definitions (9/10/2026; Lemmas A–C, OnlySilence, Sufficiency checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 121/121 then, 173/173 with §8.16; only the exact count needs property B3).** The modelling step of §6 item 5 / §8.9b ("every mechanism
+**8.12 Closing §6 item 5 from Complete CALM's own definitions (9/10/2026; Lemmas A–C, OnlySilence, Sufficiency checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 121/121 then, 183/183 with §8.16–8.17; only the exact count needs property B3).** The modelling step of §6 item 5 / §8.9b ("every mechanism
 is captured by three moves, with free participants") is replaced here by two definitions of Complete CALM itself.
 *Def. 5:* the environment controls invocations (E_inv) and deliveries; an implementation controls only responses, internal events
 and sends. *Def. 11:* a properly coordinated variant Spec' = (E, Obs', ⪯) has Obs'(H) ⊆ Obs(H) and is monotone over its admitted
@@ -395,7 +395,7 @@ later. For commitments o₁, o₂ in one scope:
 - **One notion of variant for both bounds.** The lower bound `Chain` assumed Def. 11 over all pairs of histories (`ProperVariant`), the
   upper bound `Sufficiency` only over pairs that start at the commitment (`ProperAt`). `LemmaAAt`, `LemmaBAt`, `ChainAt`, `ExactlyAt`
   prove the lower bound under `ProperAt` too, so "exactly τ" now holds for one, per-commitment notion (the weaker one, so the lower
-  bound is the stronger statement). Whether the minimum differs under the global Def. 11 is open.
+  bound is the stronger statement). Under the global Def. 11 the lower bound holds and the minimum can be larger (§8.17).
 - **Time, deferral, arrival order** (the step from a run to E is a paper argument; `PerRunLowerBound` is the set lemma it rests on).
   The model chose Eff[A] knowing the whole set A. In any run where every open participant acts (B1 lets the environment produce it),
   whatever set E took effect — chosen in any order, after any deferral, with any partial knowledge; a deferral that
@@ -404,7 +404,27 @@ later. For commitments o₁, o₂ in one scope:
   online: the τ-variant refuses a fixed D and accepts everyone else, a rule needing no knowledge of who else will act.
 - **What `MinimalSilence_Proof` checks** is the statement for any upward-closed family of coalitions; how that family arises from a
   specification is this note's modelling (§1, §8.12), not part of that module.
-- TLAPS for `CoordinatedVariant_Proof.tla` after these additions: **All 173 obligations proved**.
+- TLAPS for `CoordinatedVariant_Proof.tla` after these additions: **All 173 obligations proved** (183 with §8.17).
 
-**Still open after §8:** whether the minimum differs under the global Def. 11 (8.16) · necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
+**8.17 Executions in time, and the global Def. 11 (15/10/2026).**
+- **Over executions** ([`tla/Temporal_Proof.tla`](tla/Temporal_Proof.tla), TLAPS 45/45). An asynchronous run: the environment makes open
+  participants act one at a time in any order; the mechanism answers each pending invocation with accept or refuse whenever it likes,
+  or never (deferral), under any policy — the next-state relation is fully nondeterministic. With B3 (breaking = the accepted set is in
+  Inv, proved for the patterns in §8.16): `LowerBound` — in every behaviour that never breaks o, every state where all open participants
+  have acted has at least τ refused or still pending; `UpperBound` — the policy "refuse D, accept everyone else" never breaks o when D
+  hits F_open, and `PolicySilencesOnlyD` — it refuses nobody outside D. So the bounds of §8.12 hold over time-ordered executions, with
+  deferral counted as silence, not only over sets. TLC ([`tla/temporal/`](tla/temporal/)): three participants, "alarm iff 0 and 1"
+  (τ = 1), any mechanism and the policy D = {0}: no error; the mutant policy that refuses nobody violates safety.
+- **Global Def. 11 — the lower bound carries over, the upper bound does not.** `GlobalImpliesAt` (`CoordinatedVariant_Proof.tla`,
+  183/183): a variant that is properly coordinated over all pairs of histories is one at the commitment, so at least τ (and `Chain`
+  states it directly). But [`checks/global.py`](checks/global.py) ([`checks/global.out`](checks/global.out)) finds specifications with B3
+  where **every** globally proper variant silences **more** than τ (892 of 10,164 sampled on 2 participants; 299 of 677 and 109 of 263
+  on 3). Smallest: τ = 0 for the commitment, yet a variant that admits outcome 1 after participant a acts must, if b then acts, offer
+  only outcome 0, which does not refine 1 — so b must be silenced. The reason: under the global definition **every outcome the variant
+  exposes is itself a commitment**, and those later commitments have their own coalitions. The global cost is therefore the cost of a
+  sequence of commitments — §8.15 (between the largest τ and the sum; online hitting set when the later ones are not known in advance) —
+  not the τ of one. *Statement, precisely:* τ is the least coordination of one commitment, a lower bound under the global definition too,
+  and attained there when the variant exposes no other outcome that later invocations can contradict.
+
+**Still open after §8:** the global minimum as a closed formula (8.17: it is the cost of the sequence of exposed commitments) · necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
