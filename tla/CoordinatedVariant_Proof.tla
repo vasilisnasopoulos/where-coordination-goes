@@ -252,4 +252,79 @@ THEOREM Exactly ==
 <1>2. (ProperVariant /\ B3) => t <= Cardinality(SilencedAll)  BY Chain
 <1> QED BY <1>1, <1>2
 
-=============================================================================
+\* ---------------- Both bounds against ONE notion of variant (15/10/2026) ----------------
+\* Referee: Chain used the full ProperVariant (all pairs of histories), Sufficiency only
+\* ProperAt (pairs that start at H0). The lower bound needs only ProperAt, so both bounds
+\* hold for the same, per-commitment notion. ProperAt is weaker than ProperVariant, so
+\* ChainAt is the stronger lower bound.
+THEOREM LemmaAAt ==
+  ProperAt(ObsP) => \A h \in Hist : Invalidates(H0, O0, h) => ObsP[h] = {}
+<1> SUFFICES ASSUME ProperAt(ObsP), NEW h \in Hist, Invalidates(H0, O0, h), ObsP[h] # {}
+             PROVE FALSE
+  OBVIOUS
+<1>1. <<H0, h>> \in Fut  BY DEF Invalidates
+<1>2. PICK o2 \in ObsP[h] : <<O0, o2>> \in Leq  BY <1>1 DEF ProperAt
+<1>3. o2 \in Obs[h]  BY <1>2 DEF ProperAt
+<1> QED BY <1>2, <1>3 DEF Invalidates
+
+THEOREM LemmaBAt == ProperAt(ObsP) /\ B3 => Correct
+<1> SUFFICES ASSUME ProperAt(ObsP), B3, NEW A \in SUBSET Open, Eff[A] \in Inv PROVE FALSE
+  BY DEF Correct
+<1>1. Eff[A] \in SUBSET Open  BY AssmC
+<1>2. Invalidates(H0, O0, HistOf[A][Eff[A]])  BY <1>1 DEF B3
+<1>3. HistOf[A][Eff[A]] \in Hist  BY <1>1, AssmB
+<1>4. ObsP[HistOf[A][Eff[A]]] = {}  BY <1>2, <1>3, LemmaAAt
+<1> QED BY <1>4, AssmB
+
+THEOREM ChainAt == \A t \in Nat : ProperAt(ObsP) /\ B3 /\ IsTau(t) => t <= Cardinality(SilencedAll)
+  BY LemmaBAt, LemmaC
+
+\* Exactly, with both bounds against ProperAt.
+THEOREM ExactlyAt ==
+  \A D \in SUBSET Open : \A t \in Nat :
+    ( IsTau(t) /\ Hits(D, FOpen) /\ Cardinality(D) = t
+      /\ B3conv /\ RunsFromH0 /\ O0 \in Obs[H0] /\ <<O0, O0>> \in Leq )
+    => /\ ProperAt(SilenceVariant(D))
+       /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+       /\ Cardinality(Open \ (Open \ D)) = t
+       /\ (ProperAt(ObsP) /\ B3) => t <= Cardinality(SilencedAll)
+<1> SUFFICES ASSUME NEW D \in SUBSET Open, NEW t \in Nat, IsTau(t), Hits(D, FOpen),
+                    Cardinality(D) = t, B3conv, RunsFromH0, O0 \in Obs[H0], <<O0, O0>> \in Leq
+             PROVE  /\ ProperAt(SilenceVariant(D))
+                    /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+                    /\ Cardinality(Open \ (Open \ D)) = t
+                    /\ (ProperAt(ObsP) /\ B3) => t <= Cardinality(SilencedAll)
+  OBVIOUS
+<1>1. /\ ProperAt(SilenceVariant(D))
+      /\ \A A \in SUBSET Open : SilenceVariant(D)[HistOf[A][A \ D]] # {}
+      /\ Open \ (Open \ D) = D
+  BY Sufficiency
+<1>2. (ProperAt(ObsP) /\ B3) => t <= Cardinality(SilencedAll)  BY ChainAt
+<1> QED BY <1>1, <1>2
+
+
+\* ---------------- Time and deferral: the lower bound per run (15/10/2026) ----------------
+\* Referee: Eff[A] is chosen knowing the whole set A; an asynchronous implementation answers
+\* before it knows who else will act, may defer, and may depend on arrival order. Whatever it
+\* does, a run ends with some set E of open participants whose invocations took effect (a
+\* deferral that never ends is a refusal). If that run is the one where every open participant
+\* acts, and E does not invalidate o (correctness + B3), then the silenced set Open \ E hits
+\* every open invalidating coalition, hence has at least tau members. No assumption on how E
+\* was chosen: arrival order, deferral and partial knowledge are all covered.
+THEOREM PerRunLowerBound ==
+  \A E \in SUBSET Open : \A t \in Nat :
+    (E \notin Inv /\ IsTau(t)) => t <= Cardinality(Open \ E)
+<1> SUFFICES ASSUME NEW E \in SUBSET Open, NEW t \in Nat, E \notin Inv, IsTau(t)
+             PROVE t <= Cardinality(Open \ E)
+  OBVIOUS
+<1>1. Hits(Open \ E, FOpen)
+  <2> SUFFICES ASSUME NEW S \in FOpen, S \cap (Open \ E) = {} PROVE FALSE
+    BY DEF Hits
+  <2>1. S \subseteq Open /\ S \in Inv  BY DEF FOpen
+  <2>2. S \subseteq E  BY <2>1
+  <2>3. E \in SUBSET N /\ S \in SUBSET N  BY <2>1, AssmC
+  <2> QED BY <2>1, <2>2, <2>3, AssmC
+<1>2. (Open \ E) \in SUBSET Open  OBVIOUS
+<1> QED BY <1>1, <1>2 DEF IsTau
+
+=========================================================================

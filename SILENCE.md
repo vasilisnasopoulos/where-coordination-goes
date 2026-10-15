@@ -96,7 +96,7 @@ i's silence. The minimum is the open question:
 
 The lower half follows the argument of Theorem 1. **Update:** [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) corrects the wording — the
 least amount is not the *number* of such participants but the **hitting number** of the coalitions that could change the outcome — and
-proves it, per commitment, for any specification with property B3 (a refused invocation leaves no trace, MINIMAL_SILENCE §8.12) (core machine-checked: `tla/MinimalSilence_Proof.tla`, `tla/ThreeMoves_Proof.tla`).
+proves it, per commitment, for any specification with property B3 (breaking is monotone in who took effect, MINIMAL_SILENCE §8.12) (core machine-checked: `tla/MinimalSilence_Proof.tla`, `tla/ThreeMoves_Proof.tla`).
 
 ## 7. What this does NOT prove — said plainly
 

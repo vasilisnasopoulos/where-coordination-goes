@@ -12,7 +12,7 @@ bounded-cardinality, unique-choice), with two small TLA+ models, machine-checked
 author's own leaderless engine.
 
 **The Silence Theorem** — *coordination in Complete CALM is a transversal of silences.* One commitment at a time, for implementations that accept or refuse
-and specifications where an outcome changes only through invocations that take effect (B3, §8.12): the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
+and specifications where whether the commitment breaks depends only on, and grows with, the set of participants whose invocations took effect (B3, §8.12): the only coordination is deciding that some open participant's future action will not count (a *silence*), and the least amount
 is τ, the size of the smallest set that meets every group able to break the commitment (Berge's transversal number), in the worst case. Stated and
 proved in [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); derived from Complete CALM's own definitions in §8.12.
 
@@ -26,7 +26,7 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
 
 ## Notes
 - [SILENCE.md](SILENCE.md) — silence defined; necessary, nothing else, sufficient, exact count, for the specifications of the paper.
-- [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — one commitment at a time, for specifications where a refused invocation leaves no trace (**B3**, §8.12): the least coordination is the
+- [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) — one commitment at a time, for specifications where breaking is monotone in who took effect (**B3**, §8.12): the least coordination is the
   **hitting number** (Berge's transversal number) of silence commitments; for implementations that accept or refuse, only silence is coordination (a response carrying a value the
   implementation picks — renaming — is another lever, §8.12) — grounded in Complete CALM's
   own Defs. 5 and 11 (§8.12); known mechanisms move by move (§8.13); hardness, rounds, liveness, membership, counterexamples; limits
@@ -56,14 +56,16 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   the reported outcome; with free participants (may decline or crash), only removal saves. Assumptions shown satisfiable by TLC.
 - **Changing membership** (`Membership_Proof.tla`, 161/161, in the model of §0): a newcomer that counts only in later scopes leaves
   every earlier commitment's τ unchanged; a participant leaving changes τ by at most one.
-- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 121/121): any properly coordinated variant (Def. 11) must forbid
+- **In Complete CALM's own terms** (`CoordinatedVariant_Proof.tla`, 173/173): any properly coordinated variant (Def. 11) must forbid
   every future that breaks the committed outcome (*Lemma A*); since invocations belong to the environment (Def. 5), an implementation that
   accepts or refuses does so only by choosing whose invocations do not count (*OnlySilence*; a response carrying a value the
   implementation picks — renaming — is another lever); if mere attempts break the outcome, no
-  variant exists. For specifications where an outcome changes only through invocations that took effect (property **B3**), what it
+  variant exists. For specifications where whether the commitment breaks depends only on, and grows with, the set of participants whose invocations took effect (property **B3**), what it
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
-  commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms.**
+  commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms** —
+  both bounds against the same per-commitment form of Def. 11, and the lower bound holds per run whatever the order of arrivals or
+  deferrals (*ChainAt, ExactlyAt, PerRunLowerBound*, §8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)).
   TLC models in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)

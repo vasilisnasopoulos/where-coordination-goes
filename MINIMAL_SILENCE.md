@@ -1,8 +1,8 @@
 # The Silence Theorem — coordination in Complete CALM is a transversal of silences
 
 *Silence is the only coordination, and τ (a transversal number) is exactly how much of it in the worst case — one commitment at a
-time, for specifications where an outcome changes only through invocations that take effect (property B3, §8.12), with the
-implementation's lever modelled as "which invocations take effect" (§6.5). Read as CAP: a silence is a refusal, i.e. lost
+time, for specifications where whether the commitment breaks depends only on, and grows with, the set of participants whose invocations took effect (property B3, §8.12), with the
+implementation's lever modelled as "which invocations take effect" (§6 item 5). Read as CAP: a silence is a refusal, i.e. lost
 availability; τ is the least number of participants that must be refused to keep one commitment consistent (README; prior art §7).*
 
 Draft, 7 October 2026 · Vasilis Nasopoulos. Generalises [SILENCE.md](SILENCE.md) (which proves the same for the Seal
@@ -39,7 +39,8 @@ o iff R ⊇ S for some S ∈ F(o, H).
 > **Scope of Theorems 1–3.** Read §2–4 under two conditions, made precise in §8.12. **B1** (the mechanism): the environment
 > decides who acts; the implementation only accepts or refuses each invocation — it does not pick values for responses (when it
 > does, coordination without silence exists: renaming, §7). **B3** (the specification): an outcome changes only through invocations
-> that take effect — a refusal leaves no trace. Without B3 the exact count need not be τ (§8.12, last paragraph). What holds for *every*
+> that take effect (a refusal leaves no trace, and more participants taking effect can only break more). B3 is exactly what the proof uses (§8.16);
+> "a refusal leaves no trace" alone is not enough (§8.16, counterexample). Without B3 the exact count need not be τ. What holds for *every*
 > specification, from B1 and B2 alone, is only that the realised run never breaks o (`OnlySilence`, §8.12). Throughout: one
 > commitment at a time, membership fixed and known (§0).
 
@@ -75,7 +76,8 @@ S ∈ F_open(o, H). Hence **|D| ≥ τ(F_open(o, H))**.
 **Upper bound.** Let D meet every S ∈ F_open(o, H), and let the commitments about D be agreed by all replicas. After them, only
 R = N \ (C ∪ D) can act effectively. If some admissible extension invalidated o it would be an R-extension, so R would contain some
 S ∈ F(o, H) (Fact 1), all open — but then S ∩ D = ∅, a contradiction. So o is safe. Agreement on one PRESENT/ABSENT commitment per
-member of D is exactly the mechanism proved safe in [`tla/CalmSeal_Proof.tla`](tla/CalmSeal_Proof.tla) (TLAPS, 330/330). Hence **τ(F_open(o, H)) commitments
+member of D is an agreement of the kind proved safe in [`tla/CalmSeal_Proof.tla`](tla/CalmSeal_Proof.tla) (TLAPS, 330/330) for the Seal case, where every
+coalition is a single participant; for a general D the upper bound in Complete CALM's terms is `Sufficiency` (§8.12). Hence **τ(F_open(o, H)) commitments
 suffice**.
 
 > **Exact:** the least coordination needed to commit o at H is **τ(F_open(o, H)) silence commitments** — no fewer is possible, no more
@@ -113,7 +115,7 @@ suffice**.
    open invalidating coalition ⇔ D hits every minimal one — so the least |D| is the hitting number; and Theorem 2(b) for any
    mechanism made of the three moves of §8.9b ([`tla/ThreeMoves_Proof.tla`](tla/ThreeMoves_Proof.tla), 36/36). What stays a modelling
    step: that every mechanism is captured by those moves, with free participants. A reviewer will test that first.
-   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 121/121; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
+   **Update 9/10:** §8.12 derives this from Complete CALM's Defs. 5 and 11 (Lemmas A–C, OnlySilence, Sufficiency: TLAPS 173/173; the exact count needs property B3 of the specification); §8.13 maps known mechanisms;
    §8.14 states what is outside. For every specification, a coordinated variant keeps the realised run from breaking o; that this
    means silencing someone needs B3, and so does the exact count τ. The reduction of Def. 5 to "which invocations take effect"
    remains a modelling step, and a real restriction: it holds for implementations that accept or refuse, not for ones that assign
@@ -137,9 +139,12 @@ suffice**.
 | **Peleg & Wool** (1995), **Naor & Wool**, SIAM J. Comput. 1998; **Malkhi & Reiter**, Distrib. Comput. 1998 | quorum fault tolerance / vulnerability = **size of the smallest transversal** (failures that block every quorum); load via LP duality; Byzantine quorums | the **same number** (min transversal) in distributed systems, for **availability** of a designed family; here it measures **safety coordination** of a commitment. Hence: transversals in distributed systems are **not** new |
 | **Pease, Shostak & Lamport** 1980, *interactive consistency* (agree on a vector, missing entries = null); Klianev, arXiv 2601.16460 (2026) | agreement on the vector of who contributed what | §8.4's "all τ commitments in one agreement instance" is this; not claimed. (Klianev's claim to escape FLP is not relied on) |
 | **Taylor**, *Knowledge and Inhibition in Asynchronous Distributed Systems*, Cornell TR 90-1139, 1990 | inhibiting (delaying) actions is closely related to achieving concurrent common knowledge | closest in spirit to "coordination = making actions not count"; qualitative, no count, no mechanism trichotomy |
-| ⚠️ **Hellerstein, Complete CALM §5 — Complete CAP** (Defs. 12–13: process assignment π, partition-constrained futures, distributed-monotone) | attributes events to processes and asks whether an outcome survives every future in which the process set is cut into **two** sides that keep acting | **the closest step in the same paper.** The S-extensions of §0 generalise his partition-constrained futures from a bipartition to **any** coalition S, and the question from yes/no (does the outcome survive a cut?) to **how many** participants must be silenced (τ). The bridge to transversals is built on his process assignment |
+| ⚠️ **Hellerstein, Complete CALM §5 — Complete CAP** (Defs. 12–13: process assignment π, partition-constrained futures, distributed-monotone) | attributes events to processes and asks whether an outcome survives every future in which the process set is cut into **two** sides that keep acting | **the closest step in the same paper.** The S-extensions of §0 restrict **who invokes**; his partition-constrained futures restrict **which messages cross a cut** — related, but not shown to be a generalisation (referee 15/10). The question moves from yes/no to **how many** participants must be silenced (τ). The bridge to transversals is built on his process assignment |
 | **Power, Koutris & Hellerstein**, "The Free Termination Property of Queries Over Time", ICDT 2025 | when a node can terminate unilaterally without coordination, although more input may arrive — the completeness side of CALM | closest in the CALM line to **closure** (§0): a participant's own promise that nothing more comes. Not a count, and not about deciding *for* an open participant |
 | ⚠️ **Houshmand & Lesani, Hamsaz**, PACMPL 3 (POPL 2019), art. 74 | from a sequential spec + invariant, a conflict graph over **methods** (pairwise); synchronise only a **minimum vertex cover** of it (or one total-order broadcast per maximal clique); well-coordination is a **sufficient** condition | **the same shape** — least coordination as a cover of a conflict graph — six years earlier. Differences: vertices are participants here, not methods; edges are coalitions of any size (hypergraph), not pairs; a **lower bound** is proved here (Thm 1(b), Lemma C), not only sufficiency. §8.3's vertex-cover reduction must cite it. |
+| **Gotsman, Yang, Ferreira, Najafzadeh, Shapiro**, CISE, POPL 2016; **Balegas et al.**, Indigo, EuroSys 2015; **Li et al.**, RedBlue, OSDI 2012 | which operations of a replicated application must synchronise to preserve invariants: token/conflict relations, reservations, red/blue labels | the same family as Hamsaz (pairs of operations, sufficiency); no lower bound per commitment, no silence. Added after review 15/10; read from abstracts and summaries |
+| **Attiya, Guerraoui, Hendler, Kuznetsov, Michael, Vechev**, *Laws of Order*, POPL 2011 | in shared memory, every strongly non-commutative method must use a fence (RAW) or an atomic read-modify-write (AWAR) | a **lower bound on synchronisation**, existence only, shared memory; here a count per commitment in message passing. Read: introduction and definitions |
+| **Halpern & Moses**, J. ACM 37(3), 1990 | common knowledge cannot be attained asynchronously | background for §8.9 (silence observed vs decided); Hellerstein's *Determinations* (2026) re-derives it as a depth threshold |
 | **Attiya, Enea & Román-Calvo**, "Arbitration-Free Consistency", arXiv 2510.21304 (2025) | a storage specification admits an available implementation iff it needs no total arbitration order | detects one pattern (total-order), yes/no; this note gives a count per commitment |
 | **Bailis et al.**, invariant confluence (PVLDB 8(3), 2014) | necessary and sufficient condition for coordination-free execution of invariants | yes/no criterion, like CALM; no amount |
 | **Brewer**, *CAP Twelve Years Later: How the "Rules" Have Changed*, IEEE Computer 45(2), 2012 | in partition mode, *limit some operations, thereby reducing availability* (ATM: withdraw at most k), or record intent and execute after recovery; which operations depends on the invariants | refusing = losing availability, delaying = acting later — said here, qualitatively; no count of who must be refused — that count (τ) is this note |
@@ -186,7 +191,7 @@ given a non-monotone specification, how much coordination does it require?" This
 (coteries, quorum fault tolerance). What may be new, and only as stated — building on Complete CALM's process assignment and partition-constrained futures (§5,
 Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for any
 specification with property B3 and an implementation that accepts or refuses (B1, §8.12), the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
-commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
+commitments (modulo the modelling step of §6 item 5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
 written down. Nor is minimising coordination as a cover of a conflict graph (Hamsaz, POPL 2019). It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
 Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say all of this.
 
@@ -280,10 +285,10 @@ solvable in quasi-polynomial time (Fredman & Khachiyan 1996).
 **Consequence for novelty.** The set-theoretic core of Theorem 3 (safe ⇔ D is a transversal), and most of what
 `MinimalSilence_Proof.tla` checks, is this classical duality. Our contribution, if any, is the modelling around it: (i) that a
 Complete CALM specification yields such a monotone g at each commitment (origins of invocations + Fact 1), and (ii) that silence
-is the only coordination that contributes (Theorem 2, three moves) — the step §6.5 names as the weak point. In I–K the engineer
+is the only coordination that contributes (Theorem 2, three moves) — the step §6 item 5 names as the weak point. In I–K the engineer
 chooses f (who may act); here the specification determines g (who can break the outcome) and g^d says whom to silence.
 
-**8.12 Closing §6.5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 121/121; only the exact count needs property B3).** The modelling step of §6.5 / §8.9b ("every mechanism
+**8.12 Closing §6 item 5 from Complete CALM's own definitions (9/10/2026; Lemmas A and C checked, [`tla/CoordinatedVariant_Proof.tla`](tla/CoordinatedVariant_Proof.tla), TLAPS 173/173; only the exact count needs property B3).** The modelling step of §6 item 5 / §8.9b ("every mechanism
 is captured by three moves, with free participants") is replaced here by two definitions of Complete CALM itself.
 *Def. 5:* the environment controls invocations (E_inv) and deliveries; an implementation controls only responses, internal events
 and sends. *Def. 11:* a properly coordinated variant Spec' = (E, Obs', ⪯) has Obs'(H) ⊆ Obs(H) and is monotone over its admitted
@@ -304,7 +309,7 @@ histories; coordination is expressed only by shrinking Obs or setting Obs'(H) = 
     silenced needs B3 (`LemmaB`).
   - `NoVariantIfAttemptsBreak` — if the mere attempt of some set A breaks o whatever is silenced, no realizable properly coordinated
     variant exists at all: no coordination can save that commitment.
-  - **B3** (an outcome changes only through invocations that took effect) is now a *property of the specification*, not an
+  - **B3** (whether the commitment breaks depends only on, and grows with, the set of participants whose invocations took effect) is now a *property of the specification*, not an
     assumption of the theorem. With it, `LemmaB`: what is silenced meets every invalidating coalition; and `Chain`: in the run where all
     open participants act, at least τ are silenced. Non-vacuous: TLC finds a model of B1–B3 with τ = 1 (alarm, first-come-wins), and a
     mechanism that silences nobody violates B2 (`tla/cv/`, with mutants).
@@ -359,13 +364,36 @@ later. For commitments o₁, o₂ in one scope:
   whose silence hits it is their set, and a set once taken stays. Their results carry over unchanged and are theirs: over a sequence of
   up to |N| commitments, each revealed after the previous silences, an adversary can force silencing **every** participant where one
   would have sufficed with the future known (their Prop. 8: the coalition "everyone", then "everyone but those already silenced", …), and a deterministic strategy within O(log m · log n) of the offline least exists
-  (m = participants, n = possible coalitions). Smallest instance: F₁ = {{a,b}}, F₂ ∈ {{{a}}, {{b}}} — 1 silence with the future known, 2 without.
+  (m = participants, n = the coalitions that can actually arrive; with n up to 2^|N| the bound is weaker than the trivial |N|, so it helps only when n is polynomial in |N|). Smallest instance: F₁ = {{a,b}}, F₂ ∈ {{{a}}, {{b}}} — 1 silence with the future known, 2 without.
 - **Relation to determination depth** (Hellerstein, *On the Complexity of Determinations*, arXiv 2603.28031, 2026): depth counts the
   sequential layers of commitments, and its framework leaves fault-tolerant settings outside; τ counts the silences within one
   commitment — where a participant that may have stopped enters. The online/offline distinction above is his, measured here in silences.
-- Checked: [`checks/layers.py`](checks/layers.py) — every pair of families on 3 and 4 participants (3,078 and 173,950 cases), 0 violations
+- Checked: [`checks/layers.py`](checks/layers.py) — every first family F₁ with every set of up to two possible second families, among families of ≤ 3 coalitions on 3 participants and ≤ 2 on 4 (3,078 and 173,950 cases), 0 violations
   of the bounds above, and online > offline found ([`checks/layers.out`](checks/layers.out)). Not machine-proved (TLAPS); the bounds are
   elementary properties of hitting sets, and the online bounds are Alon et al.'s.
 
-**Still open after §8:** necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
+**8.16 After an independent review (15/10/2026) — what B3 is, one notion of variant, time.**
+- **B3 as proved.** `CoordinatedVariant_Proof.tla` uses B3 (if the participants whose invocations took effect include an invalidating
+  coalition, o breaks) and B3conv (if they do not, o still has a refinement). Together: *whether o breaks depends only on, and grows
+  with, the set of participants that took effect*. "A refusal leaves no trace" is the first half only, and is **not enough**:
+  "alarm iff **exactly one** of i, j presses; commit *no alarm*" leaves no trace of a refusal, has F_open = {{i}, {j}} and τ = 2, yet a
+  mechanism that refuses a lone presser and accepts both together silences at most one in any run — even with deferral (a lone
+  presser waits forever = is refused). It breaks the "grows with" half: both pressing does not break o.
+  [`checks/b3.py`](checks/b3.py) ([`checks/b3.out`](checks/b3.out)), exhaustive over every commitment on 3 and 4 participants
+  (128 and 32,768): B3 holds for exactly the monotone ones (19 and 167); for **all** of them the least worst-case number silenced equals
+  τ (19/19, 167/167); without B3 it is below τ in 61 and 26,473. Seal, escrow reclaim, "alarm iff both", majority: B3 holds.
+  The examples are checked; that every specification of Complete CALM's Appendix F patterns has B3 is not proved.
+- **One notion of variant for both bounds.** The lower bound `Chain` assumed Def. 11 over all pairs of histories (`ProperVariant`), the
+  upper bound `Sufficiency` only over pairs that start at the commitment (`ProperAt`). `LemmaAAt`, `LemmaBAt`, `ChainAt`, `ExactlyAt`
+  prove the lower bound under `ProperAt` too, so "exactly τ" now holds for one, per-commitment notion (the weaker one, so the lower
+  bound is the stronger statement). Whether the minimum differs under the global Def. 11 is open.
+- **Time, deferral, arrival order.** The model chose Eff[A] knowing the whole set A. `PerRunLowerBound`: in any run where every open
+  participant acts, whatever set E took effect — chosen in any order, after any deferral, with any partial knowledge; a deferral that
+  never ends is a refusal — if E does not break o then Open \ E hits F_open, so at least τ are silenced. The upper bound is already
+  online: the τ-variant refuses a fixed D and accepts everyone else, a rule needing no knowledge of who else will act.
+- **What `MinimalSilence_Proof` checks** is the statement for any upward-closed family of coalitions; how that family arises from a
+  specification is this note's modelling (§1, §8.12), not part of that module.
+- TLAPS for `CoordinatedVariant_Proof.tla` after these additions: **All 173 obligations proved**.
+
+**Still open after §8:** whether the minimum differs under the global Def. 11 (8.16) · necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).

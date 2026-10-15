@@ -1,0 +1,8 @@
+Seal: period content fixed, all 3 open     B3=yes  F_open=[[0], [1], [2]]  tau=3  least worst-case silenced=3
+escrow: reclaim silent 0's share           B3=yes  F_open=[[0]]  tau=1  least worst-case silenced=1
+alarm iff 0 and 1 press; commit no alarm   B3=yes  F_open=[[0, 1]]  tau=1  least worst-case silenced=1
+majority (2 of 3) breaks                   B3=yes  F_open=[[0, 1], [0, 2], [1, 2]]  tau=2  least worst-case silenced=2
+referee: alarm iff EXACTLY one of 0,1      B3=NO   F_open=[[0], [1]]  tau=2  least worst-case silenced=1
+theorem violations among B3 specifications: 0
+n=3: specifications=128, with B3=19, B3 and least worst case == tau: 19/19; without B3 and fewer than tau: 61
+n=4: specifications=32768, with B3=167, B3 and least worst case == tau: 167/167; without B3 and fewer than tau: 26473

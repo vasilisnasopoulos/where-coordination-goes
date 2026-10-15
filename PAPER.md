@@ -10,7 +10,7 @@ the three patterns of non-monotonicity that the same paper identifies in classic
 and **unique-choice** commitment. For each we show where the unavoidable coordination can be *placed in time* — before the decision
 or after it — and what it is paid in: refusals, or latency to finality. Once membership is fixed, the only non-monotone fact any of
 the three requires is a decision about **silence**: that a participant who stopped talking will add nothing more to a period. For
-implementations that accept or refuse, and specifications in which a refused invocation leaves no trace, one commitment at a time,
+implementations that accept or refuse, and specifications in which breaking is monotone in who took effect, one commitment at a time,
 the least coordination is exactly the hitting number (Berge's transversal number) of such silence commitments in the worst case, and
 no other move of such a mechanism is coordination — the question named in Complete CALM's conclusion; the set-theoretic core
 is classical (§5) ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md); core machine-checked). Two small
@@ -54,7 +54,7 @@ Participants put events in a period and then close it. A period becomes final in
 participant is decided both PRESENT and ABSENT. **Checked (TLC):** with nobody silent and nobody suspected, every participant
 finalises without a vote.
 
-## 3. Coordination is the number of decisions about silence (conjectured here; proved per commitment in MINIMAL_SILENCE.md)
+## 3. Coordination is the number of decisions about silence (proved per commitment in MINIMAL_SILENCE.md)
 
 Under fixed membership, in all three patterns the only step that is not a threshold over known facts is deciding that a silent
 participant will contribute nothing more to a period. We conjecture that this is general: **the coordination a specification in
@@ -63,11 +63,11 @@ these patterns requires is the number of such decisions it must take, and its pl
 about silence.
 
 For the specifications of §2 this is proved — definition, necessity, nothing else, sufficiency, and the exact count — in
-[SILENCE.md](SILENCE.md). **Update (7 October 2026):** per commitment, for every specification with property B3 (a refused invocation leaves no trace, MINIMAL_SILENCE §8.12) and implementations that accept or refuse, it is proved in
+[SILENCE.md](SILENCE.md). **Update (7 October 2026):** per commitment, for every specification with property B3 (breaking is monotone in who took effect, MINIMAL_SILENCE §8.12) and implementations that accept or refuse, it is proved in
 [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md): the least coordination is the hitting number of the coalitions of open participants that
 could invalidate the outcome (TLAPS 112/112 for the core), and any mechanism contributes to correctness only through silence
 commitments (TLAPS 36/36; **update 9 October 2026:** derived from Complete CALM's Defs. 5 and 11, TLAPS
-121/121, both bounds; silence and the exact count (worst case) need one property of the specification, B3, §8.12); TLC counterexamples break it exactly at the stated limits. What remains open is listed there.
+173/173, both bounds; silence and the exact count (worst case) need one property of the specification, B3, §8.12); TLC counterexamples break it exactly at the stated limits. What remains open is listed there.
 
 This is close in spirit to Mencius (Mao, Junqueira, Marzullo, OSDI 2008), where a silent server's slots are revoked by agreement; we
 state it against the patterns of Complete CALM and measure it.
@@ -86,7 +86,8 @@ The total-order row was measured on 2 October 2026. A later version of the engin
 on 10 October 2026, has a median time to finality of 0.11–0.20 s (p99 ≤ 0.50 s).
 
 Raw data and scripts that recompute the bounded-cardinality and normal-operation numbers: https://github.com/vasilisnasopoulos/vortex-festival-demo.
-The models here describe *where* coordination sits.
+The models here describe *where* coordination sits. These measurements illustrate the two placements on a running system;
+they do not measure τ or test the count.
 
 ## 5. What this is not
 - Not new mechanisms. Escrow (O'Neil 1986; Barbará & Garcia-Molina 1992; bounded counters, Balegas et al. 2015), batched ordering
@@ -133,7 +134,7 @@ The models here describe *where* coordination sits.
 - M. L. Fredman, L. Khachiyan, *On the Complexity of Dualization of Monotone Disjunctive Normal Forms*, J. Algorithms 21(3), 1996.
 - M. Naor, A. Wool, *The Load, Capacity, and Availability of Quorum Systems*, SIAM J. Comput. 27(2), 1998.
 - D. Malkhi, M. Reiter, *Byzantine Quorum Systems*, Distributed Computing 11(4), 1998.
-- D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, VLDB J. 3, 1994.
+- D. Barbará, H. Garcia-Molina, *The Demarcation Protocol*, EDBT 1992; VLDB J. 3, 1994.
 - V. Balegas et al., *Extending Eventually Consistent Cloud Databases for Enforcing Numeric Invariants*, SRDS 2015.
 - Y. Mao, F. Junqueira, K. Marzullo, *Mencius*, OSDI 2008.
 - A. Thomson et al., *Calvin*, SIGMOD 2012.
@@ -153,3 +154,8 @@ The models here describe *where* coordination sits.
 - F. Houshmand, M. Lesani, *Hamsaz: Replication Coordination Analysis and Synthesis*, PACMPL 3 (POPL), 2019.
 - N. Alon, B. Awerbuch, Y. Azar, N. Buchbinder, J. Naor, *The Online Set Cover Problem*, STOC 2003; SIAM J. Comput. 39(2), 2009.
 - J. M. Hellerstein, *On the Complexity of Determinations*, arXiv 2603.28031 (2026).
+- A. Gotsman, H. Yang, C. Ferreira, M. Najafzadeh, M. Shapiro, *'Cause I'm Strong Enough: Reasoning about Consistency Choices in Distributed Systems* (CISE), POPL 2016.
+- V. Balegas et al., *Putting Consistency Back into Eventual Consistency* (Indigo), EuroSys 2015.
+- C. Li et al., *Making Geo-Replicated Systems Fast as Possible, Consistent when Necessary* (RedBlue), OSDI 2012.
+- H. Attiya, R. Guerraoui, D. Hendler, P. Kuznetsov, M. M. Michael, M. Vechev, *Laws of Order: Expensive Synchronization in Concurrent Algorithms Cannot be Eliminated*, POPL 2011.
+- J. Y. Halpern, Y. Moses, *Knowledge and Common Knowledge in a Distributed Environment*, J. ACM 37(3), 1990.
