@@ -98,13 +98,20 @@ The models here describe *where* coordination sits.
   commitment of any specification with property B3, in the Complete CALM framework. Its set-theoretic core (safe ⇔ transversal) is the classical
   blocker duality also used for coteries (Edmonds & Fulkerson 1970; Ibaraki & Kameda 1993); what is ours is the modelling that
   derives the hypergraph from a specification and shows that, for implementations that accept or refuse, silence is the only
-  coordination that contributes.
+  coordination that contributes. Minimising coordination as a cover of a conflict graph of pairs of operations is Houshmand &
+  Lesani's (Hamsaz, POPL 2019), as a sufficient condition; here the count is bounded from below as well, and coalitions may be
+  larger than pairs.
   See [MINIMAL_SILENCE.md](MINIMAL_SILENCE.md) §7–§7a, §8.11.
 - Read as CAP (Complete CAP, §5 of Complete CALM): a refusal is lost availability (Brewer 2012), waiting is latency (PACELC; Golab
   2018). The count of refusals — τ, and which participants — is what is stated here; time is measured elsewhere (CAL, Lee et al. 2021).
-- Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)); open: the least
-  total when commitments in one scope are taken at different times, whether Ω is necessary for liveness, lying participants. The
-  measurements are examples.
+- Not a proof of the conjecture in full. It is proved per commitment ([MINIMAL_SILENCE.md](MINIMAL_SILENCE.md)). For several
+  commitments in one scope a silence stays in force, so the total lies between the largest τ and their sum. When a later
+  commitment is not known when an earlier one is taken, choosing whom to silence is online hitting set (Alon, Awerbuch, Azar,
+  Buchbinder & Naor 2003/2009): an adversary can force silencing every participant where one would have sufficed with the future
+  known, and a deterministic O(log m log n)-competitive strategy exists — their results, not ours. Hellerstein's *determination
+  depth* (2026) counts the sequential layers of commitments and leaves fault-tolerant settings outside its framework; τ counts the
+  silences within one commitment, which is where a participant that may have stopped enters. Open: whether Ω is necessary for
+  liveness, lying participants. The measurements are examples.
 - The vote-free fast path in `CalmSeal` describes the placement the conjecture needs; the measured system uses a more conservative
   variant that votes once per period whether or not anyone is silent. Its coordination is therefore *one round per period*, still
   independent of the number of decisions.
@@ -143,3 +150,6 @@ The models here describe *where* coordination sits.
 - P. Alvaro, N. Conway, J. M. Hellerstein, D. Maier, *Blazes: Coordination Analysis for Distributed Programs*, arXiv 1309.3324, 2013.
 - L. Kuper, A. Turon, N. R. Krishnaswami, R. R. Newton, *Freeze After Writing: Quasi-Deterministic Parallel Programming with LVars*, POPL 2014.
 - S. Laddad, C. Power, M. Milano, A. Cheung, N. Crooks, J. M. Hellerstein, *Keep CALM and CRDT On*, PVLDB 16(4), 2022.
+- F. Houshmand, M. Lesani, *Hamsaz: Replication Coordination Analysis and Synthesis*, PACMPL 3 (POPL), 2019.
+- N. Alon, B. Awerbuch, Y. Azar, N. Buchbinder, J. Naor, *The Online Set Cover Problem*, STOC 2003; SIAM J. Comput. 39(2), 2009.
+- J. M. Hellerstein, *On the Complexity of Determinations*, arXiv 2603.28031 (2026).
