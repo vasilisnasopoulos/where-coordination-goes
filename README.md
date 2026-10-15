@@ -65,7 +65,8 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
   commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms** —
   both bounds against the same per-commitment form of Def. 11 (*ChainAt, ExactlyAt*), which is weaker than his global Def. 11; the
-  global case is open. Arrival order and deferral: a paper argument resting on the set lemma *PerRunLowerBound* (§8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)).
+  global case is open. Arrival order and deferral: a paper argument resting on the set lemma *PerRunLowerBound* (§8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)) and proved for Seal, unique choice, total order
+  and unit budgets for any number of participants ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), 41/41).
   TLC models in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
@@ -102,6 +103,7 @@ tlapm --toolbox 0 0 tla/MinimalSilence_Proof.tla
 tlapm --toolbox 0 0 tla/ThreeMoves_Proof.tla
 tlapm --toolbox 0 0 tla/CoordinatedVariant_Proof.tla
 tlapm --toolbox 0 0 tla/Membership_Proof.tla
+tlapm --toolbox 0 0 tla/B3Patterns_Proof.tla
 
 # counterexamples: see the table in tla/counter/RESULTS.md (each .cfg sets the variant)
 java -cp tla2tools.jar tlc2.TLC -config tla/counter/CE1_Liar_TRUE.cfg tla/counter/CE1_Liar.tla

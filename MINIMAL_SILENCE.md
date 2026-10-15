@@ -385,7 +385,13 @@ later. For commitments o₁, o₂ in one scope:
   τ (19/19, 167/167); without B3 it is below τ in 61 and 26,473 — counted against mechanisms that see the whole set of actors, so
   these gaps bound what an asynchronous mechanism could save from above. The check covers commitments whose breaking depends on E
   only (a refusal leaves no trace); within that class B3 ⇔ monotone. Seal, escrow reclaim, "alarm iff both", majority: B3 holds.
-  The examples are checked; that every specification of Complete CALM's Appendix F patterns has B3 is not proved.
+  **For the patterns, for any number of participants** ([`tla/B3Patterns_Proof.tla`](tla/B3Patterns_Proof.tla), TLAPS 41/41): when the
+  outcome depends only on the events that counted and adding counted events never repairs o (`UpClosed`), breaking grows with the
+  set of participants that took effect and `Broken(E) ⇔ E ∈ Inv` — B3 and B3conv (`MonoBroken`, `B3Holds`). Instances proved upward
+  closed: Seal (any new event in a closed period), *before w* (an event ordered before w — unique choice with w the winner, total order
+  with w the last event of the committed prefix), and *more than k* (a budget of k units, unit purchases). These are our formalisations
+  of the Appendix F patterns, not his text; budgets with weighted purchases are not covered here. The referee's counterexample is not
+  upward closed ({press_i} breaks o, {press_i, press_j} does not), so `B3Holds` does not apply to it.
 - **One notion of variant for both bounds.** The lower bound `Chain` assumed Def. 11 over all pairs of histories (`ProperVariant`), the
   upper bound `Sufficiency` only over pairs that start at the commitment (`ProperAt`). `LemmaAAt`, `LemmaBAt`, `ChainAt`, `ExactlyAt`
   prove the lower bound under `ProperAt` too, so "exactly τ" now holds for one, per-commitment notion (the weaker one, so the lower
