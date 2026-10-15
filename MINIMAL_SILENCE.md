@@ -348,5 +348,24 @@ coordination; it removes coalitions and lowers τ, possibly to 0; (iv) **how** m
 (v) **liveness** (§8.5). Within these limits, Lemmas A–C say: every properly coordinated variant silences, and pays at least τ in the
 worst case.
 
-**Still open after §8:** necessity of Ω (8.5) · different commitment times inside a scope (8.2) · mechanised Byzantine version (8.8) ·
+**8.15 Several commitments taken at different times (15/10/2026; bounds elementary, online case is prior art).** This answers the
+open part of §8.2 as far as it goes. A silence about i stays in force for the scope, so a coalition with a silenced member breaks nothing
+later. For commitments o₁, o₂ in one scope:
+- **Future known** (both families known when the first silence is chosen): the least total is τ(F₁ ∪ F₂), and
+  max(τ₁, τ₂) ≤ τ(F₁ ∪ F₂) ≤ τ₁ + τ₂. Both ends are reached (the same family twice → the max; disjoint families → the sum). So
+  "number of commitments × τ" is only an upper bound.
+- **Future unknown** (F₂ revealed after the first silences are chosen): this is **online hitting set**, the dual of online set cover
+  (Alon, Awerbuch, Azar, Buchbinder & Naor, STOC 2003; SIAM J. Comput. 2009) — a coalition that arrives is their element, a participant
+  whose silence hits it is their set, and a set once taken stays. Their results carry over unchanged and are theirs: an adversary can
+  force silencing **every** participant where one would have sufficed with the future known (their Prop. 8: the coalition "everyone",
+  then "everyone but the one just silenced", …), and a deterministic strategy within O(log m · log n) of the offline least exists
+  (m = participants, n = possible coalitions). Smallest instance: F₁ = {{a,b}}, F₂ ∈ {{{a}}, {{b}}} — 1 silence with the future known, 2 without.
+- **Relation to determination depth** (Hellerstein, *On the Complexity of Determinations*, arXiv 2603.28031, 2026): depth counts the
+  sequential layers of commitments, and its framework leaves fault-tolerant settings outside; τ counts the silences within one
+  commitment — where a participant that may have stopped enters. The online/offline distinction above is his, measured here in silences.
+- Checked: [`checks/layers.py`](checks/layers.py) — every pair of families on 3 and 4 participants (3,078 and 173,950 cases), 0 violations
+  of the bounds above, and online > offline found ([`checks/layers.out`](checks/layers.out)). Not machine-proved (TLAPS); the bounds are
+  elementary properties of hitting sets, and the online bounds are Alon et al.'s.
+
+**Still open after §8:** necessity of Ω (8.5) · whether the online gap (8.15) is reached by real specifications · mechanised Byzantine version (8.8) ·
 mechanising 8.1's abstraction against a concrete language (e.g. Hydro).
