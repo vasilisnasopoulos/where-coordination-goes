@@ -103,7 +103,7 @@ suffice**.
 
 ## 6. What is NOT shown
 1. **Per commitment.** One silence commitment can serve many outcomes (a whole period). Same-time commitments of one scope: §8.2
-   (union). Commitments taken at different times inside one scope — open.
+   (union). Commitments taken at different times inside one scope: §8.15 (bounds; the online case is online hitting set, prior art).
 2. **Liveness.** That commitments get taken needs a partial-synchrony / failure-detector assumption (FLP). §8.5: Ω suffices; whether it
    is necessary — open.
 3. **Suspected ≠ silent.** In practice the commitment is about a participant not yet heard from; it may be merely slow (§8.6).
@@ -185,7 +185,7 @@ given a non-monotone specification, how much coordination does it require?" This
 **Verdict (revised 9/10/2026).** The mathematics is not ours (§7a), and neither is the use of transversals in distributed systems
 (coteries, quorum fault tolerance). What may be new, and only as stated — building on Complete CALM's process assignment and partition-constrained futures (§5,
 Defs. 12–13), generalised from two sides to any coalition: in the Complete CALM framework, asynchronous, for any
-specification with property B3 (§8.12), the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
+specification with property B3 and an implementation that accepts or refuses (B1, §8.12), the least coordination of **one commitment** equals τ of F_open, and every mechanism contributes only silence
 commitments (modulo the modelling step of §6.5). Not shown to be new: the relation to coterie duality (Ibaraki & Kameda) is not yet
 written down. Nor is minimising coordination as a cover of a conflict graph (Hamsaz, POPL 2019). It is also **not** new that silence/absence carries the essential information (Goren & Moses; Chandra, Hadzilacos &
 Toueg) or that closure lets blocking computation proceed (Chandy & Misra; Tucker et al.). A publication must say all of this.
@@ -201,7 +201,7 @@ coalition S acts, lets only Eff[S] ⊆ S take effect. If it keeps o correct in e
 
 **8.2 Over a run (checked for the union step).** A commitment about i in a scope serves every outcome of that scope. Hitting the families
 of several outcomes = hitting their union (`RunUnion`), so the least total per scope is **τ(⋃ₒ F_open(o))**, and over a run the sum over
-scopes. Open: when commitments in one scope may be taken at different times (H differs per outcome), the families change in between.
+scopes. When commitments in one scope are taken at different times (H differs per outcome), the families change in between: §8.15.
 
 **8.3 Hardness (reduction checked).** For any graph G, the alarm specification "alarm iff both ends of some edge press; commit *no alarm*"
 has Inv = the upward closure of the edges, and hitting it is exactly a vertex cover (`VertexCover`). The reduction is ours; minimising synchronisation by a minimum vertex cover of a conflict graph is Hamsaz's (Houshmand & Lesani, POPL 2019, over methods); the
@@ -356,9 +356,9 @@ later. For commitments o₁, o₂ in one scope:
   "number of commitments × τ" is only an upper bound.
 - **Future unknown** (F₂ revealed after the first silences are chosen): this is **online hitting set**, the dual of online set cover
   (Alon, Awerbuch, Azar, Buchbinder & Naor, STOC 2003; SIAM J. Comput. 2009) — a coalition that arrives is their element, a participant
-  whose silence hits it is their set, and a set once taken stays. Their results carry over unchanged and are theirs: an adversary can
-  force silencing **every** participant where one would have sufficed with the future known (their Prop. 8: the coalition "everyone",
-  then "everyone but the one just silenced", …), and a deterministic strategy within O(log m · log n) of the offline least exists
+  whose silence hits it is their set, and a set once taken stays. Their results carry over unchanged and are theirs: over a sequence of
+  up to |N| commitments, each revealed after the previous silences, an adversary can force silencing **every** participant where one
+  would have sufficed with the future known (their Prop. 8: the coalition "everyone", then "everyone but those already silenced", …), and a deterministic strategy within O(log m · log n) of the offline least exists
   (m = participants, n = possible coalitions). Smallest instance: F₁ = {{a,b}}, F₂ ∈ {{{a}}, {{b}}} — 1 silence with the future known, 2 without.
 - **Relation to determination depth** (Hellerstein, *On the Complexity of Determinations*, arXiv 2603.28031, 2026): depth counts the
   sequential layers of commitments, and its framework leaves fault-tolerant settings outside; τ counts the silences within one

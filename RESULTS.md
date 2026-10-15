@@ -35,5 +35,5 @@ only through the specification.
 - The **conjecture** in PAPER.md §3 is proved **per commitment**, for specifications with property B3: the core in `MinimalSilence_Proof` and
   `ThreeMoves_Proof` above (lever modelled as "which invocations take effect", MINIMAL_SILENCE §6.5), and in Complete CALM's own
   terms in `CoordinatedVariant_Proof` (B3 and an implementation that accepts or refuses needed for "only silence" and the exact count); the rest on paper
-  in MINIMAL_SILENCE.md. Still open: commitments of one scope taken at different times;
-  necessity of Ω for liveness; lying participants (mechanised).
+  in MINIMAL_SILENCE.md. Several commitments at different times: MINIMAL_SILENCE §8.15 and [`checks/layers.py`](checks/layers.py) (exhaustive, ≤ 4
+  participants, 0 violations). Still open: necessity of Ω for liveness; lying participants (mechanised).

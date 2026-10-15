@@ -49,7 +49,7 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
 - **Seal** (`CalmSeal_Proof.tla`): every participant that finalises a period holds the same content (*Agreement*), hence the same
   order and the same unique winner (*UniqueChoice*); a vote-free finalisation never coexists with an ABSENT decision; nobody is
   decided both PRESENT and ABSENT.
-- **Any specification, one commitment** (`MinimalSilence_Proof.tla`, 112/112; lever: which invocations take effect): safe ⇔ the silence commitments hit every open
+- **One commitment, any family of breaking coalitions** (`MinimalSilence_Proof.tla`, 112/112; lever: which invocations take effect): safe ⇔ the silence commitments hit every open
   coalition that could invalidate the outcome ⇔ they hit every minimal one — the least number is the hitting number; a mechanism
   that keeps the outcome correct silences someone in each such coalition; computing the least amount is NP-hard (our vertex-cover reduction; the hardness is Karp's, 1972).
 - **Three moves** (`ThreeMoves_Proof.tla`, 36/36): a mechanism may remove invocations, ask participants for compensation, and choose
@@ -75,8 +75,8 @@ Compensation by a participant that may crash is not a safe mechanism; compensati
 - Seal: with nobody silent and nobody suspected, every participant finalises **without a vote** (liveness).
 
 ### What is not claimed
-- The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Not proved: the least total
-  when commitments in one scope are taken at different times; that the leader oracle Ω is *necessary* for liveness; a mechanised
+- The conjecture of the paper (§3) is proved **per commitment** (MINIMAL_SILENCE; core machine-checked). Several commitments taken at
+  different times: bounds in MINIMAL_SILENCE §8.15 (the online case is online hitting set, Alon et al. — theirs). Not proved: that the leader oracle Ω is *necessary* for liveness; a mechanised
   version with lying participants. From Complete CALM's Defs. 5 and 11, for every specification: a coordinated variant never lets
   the run break the commitment. That this means silencing someone, and the exact count τ (worst case), need property B3 (above) and an implementation
   that accepts or refuses: with value-carrying responses (renaming) coordination without silence exists.
