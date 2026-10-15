@@ -159,3 +159,5 @@ they do not measure τ or test the count.
 - C. Li et al., *Making Geo-Replicated Systems Fast as Possible, Consistent when Necessary* (RedBlue), OSDI 2012.
 - H. Attiya, R. Guerraoui, D. Hendler, P. Kuznetsov, M. M. Michael, M. Vechev, *Laws of Order: Expensive Synchronization in Concurrent Algorithms Cannot be Eliminated*, POPL 2011.
 - J. Y. Halpern, Y. Moses, *Knowledge and Common Knowledge in a Distributed Environment*, J. ACM 37(3), 1990.
+- T. J. Ameloot, B. Ketsman, F. Neven, D. Zinn, *Weaker Forms of Monotonicity for Declarative Networking: a More Fine-grained Answer to the CALM-conjecture*, ACM TODS 40(4), 2016 (PODS 2014).
+- D. Mazières, *The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus*, Stellar Development Foundation, 2015 (v-blocking sets).

@@ -1,5 +1,6 @@
 ----------------------- MODULE CoordinatedVariant_Proof -----------------------
-(* MINIMAL_SILENCE.md §8.12, Lemmas A and C.                                   *)
+(* MINIMAL_SILENCE.md §8.12 and §8.16: Lemmas A-C, OnlySilence, Sufficiency,  *)
+(* and (15/10) LemmaAAt, LemmaBAt, ChainAt, ExactlyAt, PerRunLowerBound.     *)
 (*                                                                             *)
 (* Lemma A, in Complete CALM's own terms (Hellerstein, arXiv 2602.09435,       *)
 (* Defs. 6 and 11): a properly coordinated variant Spec' that admits o at H    *)
@@ -13,7 +14,7 @@
 (*                                                                             *)
 (* Lemma B: Lemma A's "forbid" is Lemma C's "silence".                         *)
 (* OnlySilence needs only B1 and B2: coordination = choosing who counts.       *)
-(* B3 is needed only for the exact count (Lemma B, Chain); without it, if       *)
+(* B3 is needed for "someone is silenced" and the exact count (Lemma B); if    *)
 (* attempts alone break o, no variant exists (NoVariantIfAttemptsBreak).        *)
 (*   B1 (Def. 5, accept/refuse) the environment may make any set A of open  *)
 (*      participants act,                                                     *)
@@ -21,8 +22,9 @@
 (*      response, Eff[A] \subseteq A; the run reaches history HistOf[A][Eff[A]]. *)
 (*   B2 (realizable) the variant admits some outcome on every run the          *)
 (*      environment can produce: ObsP[HistOf[A][Eff[A]]] # {}.                 *)
-(*   B3 (effect through responses) if the EFFECTIVE set R invalidates o, the   *)
-(*      history HistOf[A][R] is an invalidating future of H0 (Def. 6).          *)
+(*   B3 if the EFFECTIVE set R is an invalidating coalition, HistOf[A][R] is  *)
+(*      an invalidating future of H0; B3conv: if not, O0 has a refinement      *)
+(*      there. Together: breaking depends only on, and grows with, R.         *)
 EXTENDS FiniteSets, FiniteSetTheorems, TLAPS
 
 \* ---------------- Lemma A ----------------

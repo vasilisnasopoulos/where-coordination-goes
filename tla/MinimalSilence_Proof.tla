@@ -1,6 +1,6 @@
 -------------------------- MODULE MinimalSilence_Proof --------------------------
-(* Combinatorial core of MINIMAL_SILENCE.md, Theorems 1(b) and 3, for ANY    *)
-(* specification, one commitment at a time.                                    *)
+(* Combinatorial core of MINIMAL_SILENCE.md, Theorems 1(b) and 3, for any    *)
+(* upward-closed family Inv of breaking coalitions, one commitment at a time.  *)
 (*                                                                             *)
 (*   N    : participants (fixed membership)                                    *)
 (*   Open : participants that have not closed the scope (Open \subseteq N)     *)

@@ -25,7 +25,6 @@ rows = [
   ("alarm iff 0 and 1 press; commit no alarm", lambda E: {0, 1} <= E),
   ("majority (2 of 3) breaks", lambda E: len(E) >= 2),
   ("referee: alarm iff EXACTLY one of 0,1", lambda E: len(E & {0, 1}) == 1),
-  ("outcome reports #refused (refusal leaves trace)", None),
 ]
 bad = 0
 for name, f in rows:

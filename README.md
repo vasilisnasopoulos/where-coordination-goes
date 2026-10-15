@@ -64,8 +64,8 @@ workload (Yu & Vahdat 2001). Prior art: MINIMAL_SILENCE §7.
   silences meets every invalidating coalition, and in the run where every open participant acts it silences at least τ (*Lemma B,
   Chain*), even if it chooses whom to silence late. Conversely, silencing a minimum transversal is a properly coordinated variant at the
   commitment that silences exactly τ (*Sufficiency*): **the least coordination of a commitment is exactly τ silences, in his terms** —
-  both bounds against the same per-commitment form of Def. 11, and the lower bound holds per run whatever the order of arrivals or
-  deferrals (*ChainAt, ExactlyAt, PerRunLowerBound*, §8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)).
+  both bounds against the same per-commitment form of Def. 11 (*ChainAt, ExactlyAt*), which is weaker than his global Def. 11; the
+  global case is open. Arrival order and deferral: a paper argument resting on the set lemma *PerRunLowerBound* (§8.16). B3 is checked exhaustively on 3–4 participants ([`checks/b3.py`](checks/b3.py)).
   TLC models in `tla/cv/`.
 
 ### Counterexamples (TLC) — [`tla/counter/RESULTS.md`](tla/counter/RESULTS.md)
