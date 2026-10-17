@@ -7,7 +7,7 @@
 (* is local).  NeverBelowZero (a cardinality bound) follows from            *)
 (* NoUnitTwice for finite Unit; it is checked by TLC, not proved here.     *)
 (***************************************************************************)
-EXTENDS CalmEscrow, TLAPS
+EXTENDS CalmEscrow, TLAPS, FiniteSetTheorems
 
 ASSUME FreeNotNode == FREE \notin Node
 
@@ -111,4 +111,61 @@ THEOREM Safety == Spec => []Inv
   <1>2. Inv /\ [Next]_vars => Inv'
     BY BuyInv, MoveInv, StutterInv DEF Next
   <1> QED BY <1>1, <1>2, PTL DEF Spec
+
+(* NeverBelowZero, proved (17/10/2026) for finite Unit. Note: it needs only  *)
+(* TypeOK — taken is a function on Unit, so approved purchases are an image   *)
+(* of a subset of Unit. The bound holds by the shape of the state, not by the *)
+(* protocol; the protocol's content is Partition + LocalDecision above.       *)
+ASSUME UnitFinite == IsFiniteSet(Unit)
+
+LEMMA TypeNBZ == TypeOK => NeverBelowZero
+  <1> SUFFICES ASSUME TypeOK PROVE NeverBelowZero
+    OBVIOUS
+  <1> DEFINE S == {u \in Unit : taken[u] # FREE}
+  <1>1. IsFiniteSet(S) /\ Cardinality(S) <= Cardinality(Unit)
+    BY UnitFinite, FS_Subset
+  <1>2. {p \in Purchase : Approved(p)} = {taken[u] : u \in S}
+    BY FreeNotPurchase DEF TypeOK, Approved
+  <1>3. Cardinality({taken[u] : u \in S}) <= Cardinality(S)
+    BY <1>1, FS_Image
+  <1>4. Cardinality(S) \in Nat /\ Cardinality(Unit) \in Nat
+    BY <1>1, UnitFinite, FS_CardinalityType
+  <1>5. Cardinality({taken[u] : u \in S}) \in Nat
+    BY <1>1, FS_Image, FS_CardinalityType
+  <1> QED BY <1>1, <1>2, <1>3, <1>4, <1>5 DEF NeverBelowZero
+
+THEOREM NeverBelowZeroThm == Spec => []NeverBelowZero
+  BY Safety, TypeNBZ, PTL DEF Inv
+
+(* NoRevoke (17/10/2026): an approved purchase stays approved. A Buy writes   *)
+(* only a FREE unit; Move leaves taken unchanged.                            *)
+LEMMA StepNoRevoke == ASSUME Inv, [Next]_vars, NEW p \in Purchase, Approved(p) PROVE Approved(p)'
+  <1> USE DEF Inv, TypeOK
+  <1>1. PICK u \in Unit : taken[u] = p
+    BY DEF Approved
+  <1>2. taken'[u] = p
+    <2>1. CASE \E n \in Node, q \in Purchase : Buy(n, q)
+      <3> PICK n \in Node, q \in Purchase : Buy(n, q)
+        BY <2>1
+      <3>1. CASE FreeIn(n) # {}
+        <4> DEFINE w == CHOOSE x \in FreeIn(n) : TRUE
+        <4>1. taken[w] = FREE /\ w \in Unit
+          BY <3>1 DEF FreeIn, Partition
+        <4>2. u # w
+          BY <4>1, <1>1, FreeNotPurchase
+        <4> QED BY <3>1, <4>1, <4>2, <1>1 DEF Buy
+      <3>2. CASE FreeIn(n) = {}
+        BY <3>2, <1>1 DEF Buy
+      <3> QED BY <3>1, <3>2
+    <2>2. CASE \E f, t \in Node, x \in Unit : Move(f, t, x)
+      BY <2>2, <1>1 DEF Move
+    <2>3. CASE UNCHANGED vars
+      BY <2>3, <1>1 DEF vars
+    <2> QED BY <2>1, <2>2, <2>3 DEF Next
+  <1> QED BY <1>2 DEF Approved
+
+THEOREM NoRevokeThm == Spec => NoRevoke
+  <1>1. Inv /\ [Next]_vars => [\A p \in Purchase : Approved(p) => Approved(p)']_vars
+    BY StepNoRevoke
+  <1> QED BY <1>1, Safety, PTL DEF Spec, NoRevoke
 =============================================================================

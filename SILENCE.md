@@ -68,7 +68,7 @@ commitment about its future purchases. So escrow, too, needs coordination only f
 implement Seal safely: every observer that finalises p holds the same tuple, hence the same order and the same winner; a vote-free
 finalisation never coexists with an ABSENT decision; no (i, p) is decided both ways.
 
-**Proof.** Machine-checked: `CalmSeal_Proof.tla`, theorem `Main`, **TLAPS, all 330 obligations proved**, for any number of
+**Proof.** Machine-checked: `CalmSeal_Proof.tla`, theorem `Main`, **TLAPS, all 340 obligations proved**, for any number of
 participants and any pairwise-intersecting quorum system. ∎
 
 ## 5. The amount — upper and lower bound meet

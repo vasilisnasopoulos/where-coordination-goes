@@ -89,4 +89,8 @@ Partition == /\ \A n1, n2 \in Node : n1 # n2 => share[n1] \cap share[n2] = {}
 LocalDecision == \A u \in Unit : taken[u] # FREE => \E n \in Node : u \in share[n] /\ asked[taken[u]] = n
 
 Inv == TypeOK /\ Partition /\ NoUnitTwice /\ LocalDecision
+
+\* An approved purchase stays approved: no step takes its unit away (17/10/2026 —
+\* added after a mutant that resold a sold unit of its own share passed every invariant above).
+NoRevoke == [][\A p \in Purchase : Approved(p) => Approved(p)']_vars
 =============================================================================

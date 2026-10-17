@@ -76,7 +76,7 @@ S ∈ F_open(o, H). Hence **|D| ≥ τ(F_open(o, H))**.
 **Upper bound.** Let D meet every S ∈ F_open(o, H), and let the commitments about D be agreed by all replicas. After them, only
 R = N \ (C ∪ D) can act effectively. If some admissible extension invalidated o it would be an R-extension, so R would contain some
 S ∈ F(o, H) (Fact 1), all open — but then S ∩ D = ∅, a contradiction. So o is safe. Agreement on one PRESENT/ABSENT commitment per
-member of D is an agreement of the kind proved safe in [`tla/CalmSeal_Proof.tla`](tla/CalmSeal_Proof.tla) (TLAPS, 330/330) for the Seal case, where every
+member of D is an agreement of the kind proved safe in [`tla/CalmSeal_Proof.tla`](tla/CalmSeal_Proof.tla) (TLAPS, 340/340) for the Seal case, where every
 coalition is a single participant; for a general D the upper bound in Complete CALM's terms is `Sufficiency` (§8.12). Hence **τ(F_open(o, H)) commitments
 suffice**.
 

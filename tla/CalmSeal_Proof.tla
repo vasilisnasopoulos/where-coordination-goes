@@ -346,6 +346,20 @@ THEOREM FastExcludesAbsentThm == Inv => FastExcludesAbsent
     BY DEF Inv
   <1> QED BY <1>1, AllHA_NoAbsent
 
+\* Validity (17/10/2026): nothing invented — each slot is ABSENT or what its owner closed.
+THEOREM ValidityThm == Inv => Validity
+  <1> SUFFICES ASSUME Inv, NEW m \in Node, NEW n \in Node, Finalised(m)
+               PROVE final[m][n] = ABSENT \/ (closed[n] /\ final[m][n] = emitted[n])
+    BY DEF Validity
+  <1>1. final[m][n] = IF DecidedAbsent(n) THEN ABSENT ELSE emitted[n]
+    BY DEF Inv
+  <1>2. DecidedAbsent(n) \/ closed[n]
+    BY DEF Inv
+  <1> QED BY <1>1, <1>2
+
 THEOREM Main == Spec => [](Agreement /\ UniqueChoice /\ FastExcludesAbsent /\ NotBoth)
   BY SafetyInv, AgreementThm, UniqueChoiceThm, FastExcludesAbsentThm, NotBothLemma, PTL DEF Inv
+
+THEOREM MainValidity == Spec => []Validity
+  BY SafetyInv, ValidityThm, PTL
 =============================================================================
