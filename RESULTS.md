@@ -31,6 +31,8 @@ only through the specification.
 
 **Mutants for the escrow (17/10, `tla/esc_mut/`).** A Buy that may take an already-sold unit of its own share (`ResellOwn`) passed TypeOK, Partition, NoUnitTwice, NeverBelowZero and LocalDecision — none of them says a sale is never taken back. `NoRevoke` was added (TLC on `MC_CalmEscrow`: no error, 62,230 states; the mutant violates it) and proved above. A Buy that may take any unit (`AnyUnit`) is caught only by LocalDecision.
 
+**Mutants for the seal (17/10, `tla/seal_mut/`).** Each of TypeOK, Agreement, Validity, UniqueChoice, FastExcludesAbsent, NotBoth and Inv is violated by a deliberate break (one vote suffices for ABSENT; the slow path invents events; the fast path finalises on its own HaveAll alone; an ill-typed vote). Small model: 3 participants, 2 events.
+
 **About the TLC models for CoordinatedVariant and Membership.** TLC models are one-state specifications whose invariant is the conjunction of the theorem's hypotheses on a concrete instance ("1 distinct state found, no error" = the hypotheses hold together); each has a mutant that must fail ("invariant … is equal to FALSE"): `tla/cv/*_mut`, `tla/mb/*_mut`.
 
 ## How to read this
