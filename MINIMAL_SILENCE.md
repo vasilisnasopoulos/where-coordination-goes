@@ -231,6 +231,22 @@ oracle Ω, Paxos-style agreement terminates (CalmSeal's vote is such an agreemen
 model-checked for 3 participants (`tla/MC_CalmSeal_live.cfg`, [RESULTS](RESULTS.md)). *Open:* that Ω is also **necessary** (a reduction from consensus to one silence
 commitment); conjectured, not proved.
 
+**8.5a What one silence costs — the "at most one takes effect" conflict (paper; known results applied).** Take the simplest conflict:
+several invocations, at most one may take effect (the last unit, the last seat), responses accept/refuse. If a refusal is
+**always allowed**, no failure detector is needed (fix one owner; only the owner ever accepts, every other invoker always refuses, so no
+process that accepted can later promise; the owner may accept at once. This is trivial — refusal-always also satisfies it — which
+is the point: the cost lies entirely in forbidding refusal). If refusal is **not** allowed — an invocation is refused only if an earlier one in a
+linearization took effect, and every correct invoker gets an answer — the conflict is exactly a one-shot **test-and-set**
+(accept = win) — assuming one invocation per process and no returned value beyond the bit. Delporte-Gallet, Fauconnier & Guerraoui (*(Almost) All Objects Are Universal in Message Passing Systems*, DISC 2005)
+show that in the wait-free environment, with n ≥ 3 processes and n-ported objects, any deterministic type with h^r_1 = 2 —
+one-shot test-and-set among them — has weakest failure detector **Σ ∗ Ω**, the same as consensus (their Prop. 7(2), from Prop. 6).
+In other environments Prop. 6 applies only if test-and-set together with what that environment provides (e.g. registers under a
+correct majority) emulates 2-consensus. When only a subset S may invoke, consensus among S needs exactly **Σ_S ∗ Ω_S** (their
+Prop. 2); that this also suffices for an S-only test-and-set follows by universality within S — our step, not theirs. So, for this conflict: τ says *how many* silences, and these results say what
+each one needs. *Scope:* only this conflict; that every silence commitment of Theorems 1–3 has the same detector is **not** shown;
+linearizability and strictness are assumptions; crash faults only. Nothing here is new mathematics — only the observation that a
+strict silence point is a test-and-set.
+
 **8.6 Suspected ≠ silent (paper).** Safety never depends on the suspicion being right (8.1 uses no detector). A wrong suspicion costs
 (i) one commitment that was not needed and (ii) the late invocations of that participant falling out of that scope. With an eventually
 perfect detector (◇P) false suspicions are finite per participant, so the excess over τ is finite per run.
